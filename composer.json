@@ -1,25 +1,39 @@
 {
-    "name": "bravedave/mvp",
-    "description": "Minimum Viable Product",
-    "minimum-stability": "dev",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Dave Bray",
-            "email": "david@brayworth.com.au"
-        }
-    ],
-    "repositories": [
-        { "type": "git", "url": "https://github.com/bravedave/dvc" }
-    ],
-    "require": {
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "": "src/app/"
-
-        }
+  "name": "bravedave/inspectdiary",
+  "description": "Real Estate Agent House Inspect Sceduling",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Dave Bray",
+      "email": "david@brayworth.com.au"
+    }
+  ],
+  "repositories": [
+    { "type": "git", "url": "https://github.com/bravedave/dvc" },
+    { "type": "git", "url": "https://github.com/bravedave/green" }
+  ],
+  "require": {
+    "php": ">=7.3",
+    "bravedave/green": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "inspectdiary\\": "src/inspectdiary/"
 
     }
+
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "": "src/app/"
+
+    }
+
+  },
+  "scripts": {
+    "post-update-cmd": "inspectdiary\\postUpdate::upgrade"
+
+  }
 
 }
