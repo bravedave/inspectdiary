@@ -182,10 +182,7 @@ $_report = strings::rand();
 
               </div>
 
-              <div class="col">
-                <div class="text-truncate"><?= $dto->address_street ?></div>
-
-              </div>
+              <div class="col text-truncate"><?= $dto->address_street ?></div>
 
               <div class="col-2">
                 <div class="row">
@@ -207,13 +204,10 @@ $_report = strings::rand();
 
               </div>
 
-              <div class="d-none d-md-block col">
-                <div class="text-truncate"><?php
-                  if ( $dto->type == 'Inspect') print $dto->contact_name;
+              <div class="d-none d-md-block col text-truncate"><?php
+                if ( $dto->type == 'Inspect') print $dto->contact_name;
 
-                ?></div>
-
-              </div>
+              ?></div>
 
               <div class="col-1 d-none d-md-block"><?php if ( $dto->hasappointment) print config::$HTML_TICK ?></div>
 
