@@ -15,7 +15,7 @@
   ],
   "require": {
     "php": ">=7.3",
-    "bravedave/green": "dev-master"
+    "bravedave/green": "*"
   },
   "autoload": {
     "psr-4": {

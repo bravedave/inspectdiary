@@ -7,10 +7,17 @@
  * MIT License
  *
  */	?>
-
+<style>
+@media screen and (max-width: 767px) {
+  .navbar-brand {max-width: 70%;}
+}
+@media screen and (min-width: 768px) {
+  .navbar-brand {min-width: 30%;}
+}
+</style>
 <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top" role="navigation" >
 	<div class="container-fluid">
-    <div class="navbar-brand text-truncate" style="max-width: 70%;"><?= $this->data->title	?></div>
+    <div class="navbar-brand text-truncate"><?= $this->data->title	?></div>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#<?= $_uid = strings::rand() ?>"
       aria-controls="<?= $_uid ?>" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +26,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="<?= $_uid ?>">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <a class="nav-link" href="<?= strings::url('inspectdiary') ?>">
             Inspect

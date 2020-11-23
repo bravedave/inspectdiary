@@ -10,10 +10,11 @@
 
 namespace inspectdiary;
 
-use Json;
+use currentUser;
 use green;
-use strings;
+use Json;
 use Response;
+use strings;
 
 class controller extends \Controller {
   protected $viewPath = __DIR__ . '/views/';
@@ -75,7 +76,15 @@ class controller extends \Controller {
 
   }
 
+	protected function before() {
+		config::inspectdiary_checkdatabase();
+		parent::before();
+
+  }
+
   protected function page( $params) {
+
+    \dvc\pages\bootstrap::$primaryClass = str_replace( 'pt-3', 'pt-0 pt-md-3', \dvc\pages\bootstrap::$primaryClass);
 
     if ( !isset( $params['latescripts'])) $params['latescripts'] = [];
     $params['latescripts'][] = sprintf(
@@ -177,8 +186,59 @@ class controller extends \Controller {
       }
 
     }
+    elseif ( 'inspection-save' == $action) {
+      $a = [
+        'type' => $this->getPost('type'),
+        'person_id' => $this->getPost('person_id'),
+        'property_id' => $this->getPost('property_id'),
+        'name' => $this->getPost('name'),
+        'mobile' => $this->getPost('mobile'),
+        'email' => $this->getPost('email'),
+        'comment' => $this->getPost('comment'),
+        'notes' => $this->getPost('notes'),
+        'tasks' => $this->getPost('tasks'),
+        'fu_buyer' => $this->getPost('fu_buyer'),
+        'fu_interested_party' => $this->getPost('fu_interested_party'),
+        'fu_neighbour' => $this->getPost('fu_neighbour'),
+        'fu_nsl' => $this->getPost('fu_nsl'),
+        'property2sell' => $this->getPost('property2sell'),
+        'user_id' => currentUser::id(),
+
+      ];
+
+      $dao = new dao\inspect;
+      if ( $id = (int)$this->getPost('id')) {
+        $dao->UpdateByID( $a, $id);
+
+      }
+      else {
+        $a['inspect_diary_id'] = $this->getPost('inspect_diary_id');
+        $id = $dao->Insert( $a);
+
+      }
+
+      Json::ack( $action)
+        ->add( 'id', $id);
+
+      // $dbc->defineField('date', 'date');
+      // $dbc->defineField('inspect_time', 'varchar', 10);
+      // $dbc->defineField('home_address', 'varchar', 100 );
+      // $dbc->defineField('fu_info', 'varchar', 3 );
+      // $dbc->defineField('fu_info_complete', 'datetime');
+      // $dbc->defineField('fu_task', 'varchar', 3 );
+      // $dbc->defineField('fu_task_complete', 'datetime');
+      // $dbc->defineField('fu_sms', 'varchar', 3 );
+      // $dbc->defineField('fu_sms_complete', 'datetime');
+      // $dbc->defineField('fu_sms_bulk', 'tinyint' );
+      // $dbc->defineField('email_sent', 'datetime');
+      // $dbc->defineField('reminder', 'bigint' );
+
+    }
     elseif ( 'search-people' == $action) {
-			if ( $term = $this->getPost('term')) {
+      if ( $term = $this->getPost('term')) {
+
+        green\search::$peopleFields[] = 'property2sell';
+
 				Json::ack( $action)
 					->add( 'term', $term)
 					->add( 'data', green\search::people( $term));
@@ -237,7 +297,47 @@ class controller extends \Controller {
 
     $this->load('edit');
 
-	}
+  }
+
+  public function inspection( $id = 0) {
+    $this->data = (object)[
+      'title' => $this->title = 'Add Inspection',
+      'dto' => new dao\dto\inspect
+
+    ];
+
+    $dao = new dao\inspect;
+		if ( $id = (int)$id) {
+      if ( $dto = $dao->getByID( $id)) {
+        $this->data->dto = $dto;
+
+      }
+    }
+    else {
+      $this->data->dto->inspect_diary_id = (int)$this->getParam( 'idid');
+
+    }
+
+    $this->data->dto = $dao->getDetail($this->data->dto);
+
+    $this->load( 'inspection');
+
+  }
+
+  public function inspects( $inspectdiaryID = 0) {
+    if ( $inspectdiaryID = (int)$inspectdiaryID) {
+      $dao = new dao\inspect;
+
+      $this->data = (object)[
+        'dtoSet' => $dao->prendiIlDiario($inspectdiaryID)
+
+      ];
+
+      $this->load( 'report-for-diary-id');
+
+    }
+
+  }
 
   public function js( $lib = '') {
     $s = [];

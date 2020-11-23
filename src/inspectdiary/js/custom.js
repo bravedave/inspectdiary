@@ -27,8 +27,8 @@
 
   }
 
-  if ('undefined' == typeof _.search.people) {
-    _.search.people = (request, response) => {
+  if ('undefined' == typeof _.search.inspectdiary_people) {
+    _.search.inspectdiary_people = (request, response) => {
       _.post({
         url: '{{route}}',
         data: {

@@ -16,10 +16,9 @@ $dbc->defineField('created', 'datetime');
 $dbc->defineField('updated', 'datetime');
 $dbc->defineField('date', 'date');
 $dbc->defineField('inspect_time', 'varchar', 10);
-$dbc->defineField('property_id', 'bigint', 20 );
-$dbc->defineField('property_address', 'varchar', 100 );
+$dbc->defineField('property_id', 'bigint' );
 $dbc->defineField('type', 'varchar', 20 );
-$dbc->defineField('person_id', 'bigint', 20 );
+$dbc->defineField('person_id', 'bigint');
 $dbc->defineField('name', 'varchar', 100 );
 $dbc->defineField('mobile', 'varchar', 100 );
 $dbc->defineField('email', 'varchar', 100 );
@@ -44,7 +43,8 @@ $dbc->defineField('reminder', 'bigint' );
 $dbc->defineField('user_id', 'bigint' );
 $dbc->defineField('archived', 'tinyint' );
 $dbc->defineField('archive_date', 'datetime');
-$dbc->defineField('inspection_id', 'bigint' );
+// $dbc->defineField('inspection_id', 'bigint' );
+$dbc->defineField('inspect_diary_id', 'bigint' );
 
 $dbc->defineIndex('date', 'date' );
 

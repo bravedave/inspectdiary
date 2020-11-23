@@ -289,12 +289,12 @@ $dto = $this->data->dto;
 
 		$('input[name="contact_name"]', '#<?= $_form ?>').autofill({
 			autoFocus: true,
-			source: _.search.people,
+			source: _.search.inspectdiary_people,
 			select: ( e, ui) => {
 				let o = ui.item;
-				$('input[name="contact_id"]').val( o.id);
-				$('input[name="contact_mobile"]').val( o.mobile);
-				$('input[name="contact_email"]').val( o.email);
+				$('input[name="contact_id"]', '#<?= $_form ?>').val( o.id);
+				$('input[name="contact_mobile"]', '#<?= $_form ?>').val( o.mobile);
+				$('input[name="contact_email"]', '#<?= $_form ?>').val( o.email);
 
 			},
 
