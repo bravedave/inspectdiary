@@ -53,6 +53,11 @@ $dto = $this->data->dto;  ?>
 
             </div>
 
+            <div class="row">
+              <div class="col" id="<?= $_collapseDocs ?>content">&nbsp;</div>
+
+            </div>
+
           </div>
 
           <div class="form-row row mb-2"><!-- name -->
@@ -326,7 +331,7 @@ $dto = $this->data->dto;  ?>
           if ( !!window._cms_.property) {
             if ( !!window._cms_.property.extensions) {
               _cms_.property.extensions({
-                host : '#<?= $_collapseDocs ?>',
+                host : '#<?= $_collapseDocs ?>content',
                 property_id : _data.property_id
 
               })
