@@ -34,7 +34,7 @@ class inspect extends _dao {
 			FROM
 				property_diary
 			WHERE
-				inspect_id > 0 &&  follow_up = 0
+				inspect_id > 0 && follow_up = 0
 			GROUP BY
 				inspect_id) pd
 		ON

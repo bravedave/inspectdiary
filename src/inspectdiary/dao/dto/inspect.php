@@ -46,6 +46,7 @@ class inspect extends _dto {
   public $user_id = '';
   public $archived = '';
   public $archive_date = '';
-  public $inspect_diary_id = '';
+  public $inspect_id = 0;
+  public $inspect_diary_id = 0;
 
 }

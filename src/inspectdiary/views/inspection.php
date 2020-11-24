@@ -35,6 +35,26 @@ $dto = $this->data->dto;  ?>
         </div>
 
         <div class="modal-body px-2">
+
+          <div class="collapse" id="<?= $_collapseDocs = strings::rand() ?>">
+            <div class="container-fluid mb-2 border-bottom">
+              <div class="row">
+                <div class="col">
+                  <h6 class="mt-1 mb-0">Library</h6>
+
+                </div>
+
+                <div class="col-auto">
+                  <button type="button" class='close' data-toggle="collapse" data-target="#<?= $_collapseDocs ?>">&times;</button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
           <div class="form-row row mb-2"><!-- name -->
             <label class="d-none d-md-block col-md-3 col-form-label" for="<?= $_uid = strings::rand() ?>" >Contact</label>
 
@@ -243,7 +263,8 @@ $dto = $this->data->dto;  ?>
 
           </div>
 
-          <button type="button" class="btn btn-secondary">docs</button>
+          <button type="button" class="btn btn-secondary d-none" data-toggle="collapse"
+            id="<?= $_docs_Button = strings::rand() ?>" data-target="#<?= $_collapseDocs ?>">docs</button>
           <!-- button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button -->
           <button type="submit" class="btn btn-primary">Save</button>
 
@@ -293,6 +314,31 @@ $dto = $this->data->dto;  ?>
       $('#<?= $_tasks ?>').autoResize();
 
       $('#<?= $_form ?>')
+      .on( 'property-id-change', function( e) {
+        let _form = $(this);
+        let _data = _form.serializeFormJSON();
+
+        $('#<?= $_docs_Button ?>').addClass('d-none');
+
+        if ( parseInt( _data.property_id) < 1) return;
+
+        if ( !!window._cms_) {
+          if ( !!window._cms_.property) {
+            if ( !!window._cms_.property.extensions) {
+              _cms_.property.extensions({
+                host : '#<?= $_collapseDocs ?>',
+                property_id : _data.property_id
+
+              })
+              .then( () => $('#<?= $_docs_Button ?>').removeClass('d-none'));
+
+            }
+
+          }
+
+        }
+
+      })
       .on( 'submit', function( e) {
         let _form = $(this);
         let _data = _form.serializeFormJSON();
@@ -320,7 +366,9 @@ $dto = $this->data->dto;  ?>
 
       });
 
-    })
+      $('#<?= $_form ?>').trigger( 'property-id-change');
+
+    });
 
   })( _brayworth_);
   </script>

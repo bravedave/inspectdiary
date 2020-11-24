@@ -28,7 +28,7 @@ class postUpdate extends dvc\service {
     green\baths\config::green_baths_checkdatabase();
     green\property_type\config::green_property_type_checkdatabase();
     green\postcodes\config::green_postcodes_checkdatabase();
-    green\property_diary\config::green_property_diary_checkdatabase();
+    // green\property_diary\config::green_property_diary_checkdatabase();
     // green\users\config::green_users_checkdatabase();
 
     green\people\config::green_people_checkdatabase();

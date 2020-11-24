@@ -100,18 +100,52 @@ class controller extends \Controller {
 	protected function postHandler() {
     $action = $this->getPost('action');
 
-    if ( 'inspect-diary-save' == $action) {
+    if ( 'get-by-id' == $action) {
+      /*
+        ( _ => {
+          _.post({
+            url : _.url('inspectdiary'),
+            data : {
+              action : 'get-by-id',
+              id : 4
+            },
+
+          }).then( d => console.log( d));
+
+        }) (_brayworth_);
+       */
+
+      if ( $id = (int)$this->getPost('id')) {
+        $dao = new dao\inspect_diary;
+        if ( $dto = $dao->getByID( $id)) {
+
+          $dto = $dao->getDetail( $dto);
+          $dto->shortdate = strings::asShortDate( $dto->date);
+          $dto->shorttime = strings::AMPM( $dto->time);
+
+          Json::ack( $action)
+            ->add( 'data', $dto);
+
+        } else { Json::nak( $action); }
+
+      } else { Json::nak( $action); }
+
+    }
+    elseif ( 'inspect-diary-save' == $action) {
 			$a = [
-				'type' => (string)$this->getPost('type'),
-				'property_id' => (int)$this->getPost('property_id'),
+        'property_id' => (int)$this->getPost('property_id'),
 				'date' => $this->getPost('date'),
 				'time' => strings::HoursMinutes( $this->getPost('time')),
         'auto' => 0
 
       ];
 
-			if ( $a['property_id'] > 0) {
+      if ( $type = (string)$this->getPost('type')) {
+        $a['type'] = $type;
 
+      }
+
+			if ( $a['property_id'] > 0) {
         $id = (int)$this->getPost('id');
 				$dao = new dao\inspect_diary;
 				if ( $id > 0) {
@@ -123,45 +157,43 @@ class controller extends \Controller {
 
 				}
 
-        if ( $pid = (int)$this->getPost('contact_id')) {
-          if ( $dto = $dao->getById( $id)) {
-            $aI = [
-              'type' => $a['type'],
-              'property_id' => $a['property_id'],
-              'date' => $a['date'],
-              'person_id' => $pid,
-              'name' => $this->getPost('contact_name'),
-              'mobile' => $this->getPost('contact_mobile'),
-              'email' => $this->getPost('contact_email')
+        if ( $dto = $dao->getById( $id)) {
+          $qp = QuickPerson::find([
+            'name' => $this->getPost('contact_name'),
+            'mobile' => $this->getPost('contact_mobile'),
+            'email' => $this->getPost('contact_email'),
 
-            ];
+          ]);
 
-            if ( $dto->inspect_id) {
-              if ( 'Inspect' == $a['type']) {
-                $dao = new dao\inspect;
-                if ( $dao->getByID( $dto->inspect_id)) {
-                  $dao->UpdateByID( $aI, $dto->inspect_id);
+          $pid = (int)$this->getPost('contact_id');
+          if ( !$pid) {
+            if ( $qp->id) {
+              $pid = $qp->id;
 
-                }
-                else {
-                  $dao = new dao\inspect;
-                  $dto->inspect_id = $dao->Insert( $aI);
+            }
 
-                  $dao = new dao\inspect_diary;
-                  $dao->UpdateByID( ['inspect_id' => $dto->inspect_id], $dto->id);
+          }
 
-                }
+          $aI = [
+            'type' => $dto->type,
+            'property_id' => $a['property_id'],
+            'date' => $a['date'],
+            'person_id' => $pid,
+            'name' => $this->getPost('contact_name'),
+            'mobile' => $this->getPost('contact_mobile'),
+            'email' => $this->getPost('contact_email'),
+            'inspect_diary_id' => $id
+
+          ];
+
+          if ( $dto->inspect_id) {
+            if ( 'Inspect' == $dto->type) {
+              $dao = new dao\inspect;
+              if ( $dao->getByID( $dto->inspect_id)) {
+                $dao->UpdateByID( $aI, $dto->inspect_id);
 
               }
               else {
-                $dao = new dao\inspect_diary;
-                $dao->UpdateByID( ['inspect_id' => 0]);
-
-              }
-
-            }
-            else {
-              if ( 'Inspect' == $a['type']) {
                 $dao = new dao\inspect;
                 $dto->inspect_id = $dao->Insert( $aI);
 
@@ -169,6 +201,24 @@ class controller extends \Controller {
                 $dao->UpdateByID( ['inspect_id' => $dto->inspect_id], $dto->id);
 
               }
+
+            }
+            else {
+              $dao = new dao\inspect_diary;
+              $dao->UpdateByID( ['inspect_id' => 0], $id);
+              \sys::logger( sprintf('<%s> %s', 'cleared - not Inspect', __METHOD__));
+
+
+            }
+
+          }
+          else {
+            if ( 'Inspect' == $dto->type) {
+              $dao = new dao\inspect;
+              $dto->inspect_id = $dao->Insert( $aI);
+
+              $dao = new dao\inspect_diary;
+              $dao->UpdateByID( ['inspect_id' => $dto->inspect_id], $dto->id);
 
             }
 
@@ -189,7 +239,6 @@ class controller extends \Controller {
     elseif ( 'inspection-save' == $action) {
       $a = [
         'type' => $this->getPost('type'),
-        'person_id' => $this->getPost('person_id'),
         'property_id' => $this->getPost('property_id'),
         'name' => $this->getPost('name'),
         'mobile' => $this->getPost('mobile'),
@@ -205,6 +254,26 @@ class controller extends \Controller {
         'user_id' => currentUser::id(),
 
       ];
+
+      $qp = QuickPerson::find([
+        'name' => $this->getPost('name'),
+        'mobile' => $this->getPost('mobile'),
+        'email' => $this->getPost('email'),
+
+        ]
+
+      );
+
+      $pid = (int)$this->getPost('person_id');
+      if ( !$pid) {
+        if ( $qp->id) {
+          $pid = $qp->id;
+
+        }
+
+      }
+
+      $a['person_id'] = $pid;
 
       $dao = new dao\inspect;
       if ( $id = (int)$this->getPost('id')) {
@@ -275,7 +344,7 @@ class controller extends \Controller {
           $dto = $dao->getDetail( $dto);
 
 					$this->data->dto = $dto;
-          $this->data->title = 'edit';
+          $this->data->title = $this->title = 'Edit Diary Entry';
 
         }
 

@@ -35,53 +35,25 @@ $dto = $this->data->dto;
 				</div>
 
 				<div class="modal-body">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col">
-								<div class="form-row mb-2"><!-- date/time -->
-									<label class="col-md-2 col-form-label" for="<?= $_uid = strings::rand() ?>">Date</label>
+					<div class="row">
+						<div class="col">
+							<div class="form-row"><!-- date/time -->
+								<label class="d-none col-md-block col-md-2 col-form-label" for="<?= $_uid = strings::rand() ?>">Date</label>
 
-									<div class="col-md-5">
-										<input type="date" class="form-control" name="date" required id="<?= $_uid ?>"
-											value="<?= $dto->date ?>" />
+								<div class="col-7 col-md-5 pb-2">
+									<input type="date" class="form-control" name="date" required id="<?= $_uid ?>"
+										value="<?= $dto->date ?>" />
 
-									</div>
+								</div>
 
-									<div class="col-md-5">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<label class="input-group-text" for="<?= $_uid = strings::rand() ?>">Time</label>
-
-											</div>
-
-											<input type="text" class="form-control" name="time" id="<?= $_uid ?>" value="<?= $dto->time ?>" required />
+								<div class="col-5 col-md-5 pb-2">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<label class="input-group-text" for="<?= $_uid = strings::rand() ?>">@</label>
 
 										</div>
 
-									</div>
-
-								</div>
-
-								<div class="form-row mb-2"><!-- type -->
-									<label class="col-3 col-md-2 col-form-label" for="<?= $_uid = strings::rand() ?>">Type</label>
-
-									<div class="col-9 col-md-10">
-										<select class="form-control" name="type" id="<?= $_uid ?>">
-											<option value="Inspect" <?= $dto->type == 'Inspect' ? 'selected' : '' ?>>Buyer Inspection</option>
-											<option value="OH Inspect" <?= $dto->type == 'OH Inspect' ? 'selected' : '' ?>>OH Inspection</option>
-
-										</select>
-
-									</div>
-
-								</div>
-
-								<div class="form-row mb-2"><!-- address -->
-									<label class="col-3 col-md-2 col-form-label" for="<?= $_uid = strings::rand() ?>">Address</label>
-
-									<div class="col-9 col-md-10">
-										<input type="text" name="address_street" class="form-control" id="<?= $_uid ?>"
-											value="<?= $dto->address_street ?>" required>
+										<input type="text" class="form-control" name="time" id="<?= $_uid ?>" value="<?= $dto->time ?>" required />
 
 									</div>
 
@@ -89,49 +61,75 @@ $dto = $this->data->dto;
 
 							</div>
 
+							<div class="form-row mb-2"><!-- type -->
+								<label class="col-3 col-md-2 col-form-label" for="<?= $_uid = strings::rand() ?>">Type</label>
+
+								<div class="col-9 col-md-10">
+									<select class="form-control" name="type" id="<?= $_uid ?>" <?php if ( $dto->inspect_id > 0) print 'disabled' ?> >
+										<option value="Inspect" <?= $dto->type == 'Inspect' ? 'selected' : '' ?>>Buyer Inspection</option>
+										<option value="OH Inspect" <?= $dto->type == 'OH Inspect' ? 'selected' : '' ?>>OH Inspection</option>
+
+									</select>
+
+								</div>
+
+							</div>
+
+							<div class="form-row mb-2"><!-- address -->
+								<label class="col-3 col-md-2 col-form-label" for="<?= $_uid = strings::rand() ?>">Address</label>
+
+								<div class="col-9 col-md-10">
+									<input type="text" name="address_street" class="form-control" id="<?= $_uid ?>"
+										value="<?= $dto->address_street ?>" required>
+
+								</div>
+
+							</div>
+
 						</div>
 
-						<div class="row" id="<?= $_contactDetails = strings::rand() ?>">
-							<div class="col">
-								<label for="<?= $_uid = strings::rand() ?>">Contact</label>
+					</div>
 
-								<div class="form-row mb-2">
-									<div class="col">
-										<input type="text" name="contact_name" class="form-control" id="<?= $_uid ?>"
-											value="<?= $dto->contact_name ?>" placeholder="name">
+					<div class="form-row" id="<?= $_contactDetails = strings::rand() ?>"><!-- contact -->
+						<label class="col-sm-3 col-md-2" for="<?= $_uid = strings::rand() ?>">Contact</label>
+
+						<div class="col">
+							<div class="form-row mb-2">
+								<div class="col">
+									<input type="text" name="contact_name" class="form-control" id="<?= $_uid ?>"
+										value="<?= $dto->contact_name ?>" placeholder="name">
+
+								</div>
+
+							</div>
+
+							<div class="form-row mb-2">
+								<div class="col">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<div class="input-group-text"><?= icon::get( icon::phone ) ?></div>
+
+										</div>
+
+										<input type="text" name="contact_mobile" class="form-control" placeholder="mobile"
+											pattern=".{8,}" title="0000 000 000, minimum 8 character"
+											value="<?= $dto->contact_mobile ?>">
 
 									</div>
 
 								</div>
 
-								<div class="form-row mb-2">
-									<div class="col">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<div class="input-group-text"><?= icon::get( icon::phone ) ?></div>
+							</div>
 
-											</div>
-
-											<input type="text" name="contact_mobile" class="form-control" placeholder="mobile"
-												value="<?= $dto->contact_mobile ?>">
-
+							<div class="form-row mb-2">
+								<div class="col">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<div class="input-group-text">@</div>
 										</div>
 
-									</div>
-
-								</div>
-
-								<div class="form-row mb-2">
-									<div class="col">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<div class="input-group-text">@</div>
-											</div>
-
-											<input type="text" name="contact_email" class="form-control"
-												value="<?= $dto->contact_email ?>" placeholder="@">
-
-										</div>
+										<input type="text" name="contact_email" class="form-control"
+											value="<?= $dto->contact_email ?>" placeholder="@">
 
 									</div>
 
@@ -293,10 +291,24 @@ $dto = $this->data->dto;
 			select: ( e, ui) => {
 				let o = ui.item;
 				$('input[name="contact_id"]', '#<?= $_form ?>').val( o.id);
-				$('input[name="contact_mobile"]', '#<?= $_form ?>').val( o.mobile);
-				$('input[name="contact_email"]', '#<?= $_form ?>').val( o.email);
+				$('input[name="contact_mobile"]', '#<?= $_form ?>').val( o.mobile).trigger('change');
+				$('input[name="contact_email"]', '#<?= $_form ?>').val( o.email).trigger('change');
 
 			},
+
+		});
+
+		$('input[name="contact_mobile"]', '#<?= $_form ?>').on( 'change', function(e) {
+			let _me = $(this);
+			$('input[name="contact_email"]', '#<?= $_form ?>')
+			.prop( 'required', !(String( _me.val()).IsPhone()))
+
+		});
+
+		$('input[name="contact_email"]', '#<?= $_form ?>').on( 'change', function(e) {
+			let _me = $(this);
+			$('input[name="contact_mobile"]', '#<?= $_form ?>')
+			.prop( 'required', !(String( _me.val()).isEmail()))
 
 		});
 
@@ -305,10 +317,13 @@ $dto = $this->data->dto;
 
 			if ( 'Inspect' == _me.val()) {
 				$('#<?= $_contactDetails ?>').removeClass( 'd-none');
+				$('input[name="contact_name"]', '#<?= $_form ?>').trigger( 'required', true);
+				$('input[name="contact_mobile"], input[name="contact_email"]', '#<?= $_form ?>').trigger( 'change');
 
 			}
 			else {
 				$('#<?= $_contactDetails ?>').addClass( 'd-none');
+				$('input[name="contact_name"], input[name="contact_mobile"], input[name="contact_email"]', '#<?= $_form ?>').prop( 'required', false);
 
 			}
 

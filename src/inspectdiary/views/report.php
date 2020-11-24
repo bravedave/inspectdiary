@@ -19,12 +19,12 @@ $_report = strings::rand();
 
 <div class="accordion" id="<?= $_accordion = strings::rand() ?>">
   <div class="accordion-item">
-    <div class="accordion-collapse collapse" id="<?= $_inspection = strings::rand() ?>" data-parent="#<?= $_accordion ?>">
+    <div class="accordion-collapse collapse border-0" id="<?= $_inspection = strings::rand() ?>" data-parent="#<?= $_accordion ?>">
       <div style="margin-left: -15px; margin-right: -15px;">
         <nav class="navbar navbar-light bg-light" style="padding-left: 15px; padding-right: 15px;">
-          <div class="flex-fill">
+          <div class="d-flex flex-fill">
             <div class="navbar-brand" id="<?= $_title = strings::rand() ?>">Inspection</div>
-            <button type="button" class="close" aria-label="Close" data-toggle="collapse" data-target="#<?= $_report ?>">&times;</button>
+            <button type="button" class="close ml-auto" aria-label="Close" data-toggle="collapse" data-target="#<?= $_report ?>">&times;</button>
 
           </div>
 
@@ -39,7 +39,7 @@ $_report = strings::rand();
   </div>
 
   <div class="accordion-item">
-    <div class="accordion-collapse collapse" id="<?= $_report ?>" data-parent="#<?= $_accordion ?>">
+    <div class="accordion-collapse collapse border-0" id="<?= $_report ?>" data-parent="#<?= $_accordion ?>">
       <?php
         $_uid = strings::rand();
         if ( false) { ?>
@@ -142,8 +142,8 @@ $_report = strings::rand();
             <div class="col">address</div>
             <div class="col-2">
               <div class="row">
-                <div class="col">type</div>
-                <div class="col text-center">no.</div>
+                <div class="col text-center">type</div>
+                <div class="col d-none d-md-block text-center">no.</div>
 
               </div>
 
@@ -163,30 +163,44 @@ $_report = strings::rand();
               data-property_id="<?= $dto->property_id ?>"
               data-address_street="<?= htmlentities( $dto->address_street) ?>"
               data-person_id="<?= $dto->contact_id ?>"
-              data-property_diary_id="<?= $dto->pdid ?>"
-              data-date="<?= $dto->date ?>"
-              data-time="<?= date( 'c', strtotime( sprintf( '%s %s', $dto->date, strings::AMPM( $dto->time)))) ?>"
-              data-type="<?= $dto->type ?>"
-              data-hasappointment="<?= $dto->hasappointment ?>">
+              data-inspect_id="<?= $dto->inspect_id ?>"
+              data-type="<?= $dto->type ?>">
 
               <div class="d-none d-md-block col-1 text-center small"><?= ++$i ?></div>
               <div class="col-3">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-6 pr-1" data-field="date">
                     <?= strings::asShortDate( $dto->date) ?>
 
                   </div>
-                  <div class="col-md-6"><?= strings::AMPM( $dto->time) ?></div>
+                  <div class="col-md-6 pr-1" data-field="time"><?= strings::AMPM( $dto->time) ?></div>
 
                 </div>
 
               </div>
 
-              <div class="col text-truncate"><?= $dto->address_street ?></div>
+              <div class="col">
+                <div class="row">
+                  <div class="col text-truncate" data-field="street">
+                    <?= $dto->address_street ?>
+
+                  </div>
+
+                </div>
+
+                <div class="row d-md-none">
+                  <div class="col text-truncate text-muted" data-field="contact_name">
+                    <?php  if ( $dto->type == 'Inspect') print $dto->contact_name; ?>
+
+                  </div>
+
+                </div>
+
+              </div>
 
               <div class="col-2">
                 <div class="row">
-                  <div class="col">
+                  <div class="col text-center" data-field="type">
                     <?php
                       if ( 'OH Inspect' == $dto->type)
                         print 'OH';
@@ -208,8 +222,6 @@ $_report = strings::rand();
                 if ( $dto->type == 'Inspect') print $dto->contact_name;
 
               ?></div>
-
-              <div class="col-1 d-none d-md-block"><?php if ( $dto->hasappointment) print config::$HTML_TICK ?></div>
 
             </div>
           <?php
@@ -311,6 +323,84 @@ $_report = strings::rand();
       let _row = $(row);
       // let _data = _row.data();
 
+      let contextMenu = function( e) {
+        if ( e.shiftKey)
+          return;
+
+        e.stopPropagation();e.preventDefault();
+
+        _brayworth_.hideContexts();
+
+        let _me = $(this);
+        let _data = _me.data();
+        let _context = _brayworth_.context();
+
+        if ( 'Inspect' == _data.type) {
+          if ( _data.inspect_id > 0) {
+            _context.append( $('<a class="font-weight-bold" href="#">inspection</a>').on( 'click', function( e) {
+              e.stopPropagation();e.preventDefault();
+
+              _context.close();
+
+              $(document).trigger( 'view-inspection', _data.inspect_id);
+
+            }));
+
+          }
+          else {
+            _context.append( $('<a class="font-weight-bold text-danger" href="#">inspection not found</a>').on( 'click', function( e) {
+              e.stopPropagation();e.preventDefault();
+
+              _context.close();
+
+            }));
+
+          }
+
+        }
+        else {
+          _context.append( $('<a class="font-weight-bold" href="#">inspections</a>').on( 'click', function( e) {
+            e.stopPropagation();e.preventDefault();
+
+            _context.close();
+
+            $(document).trigger( 'load-inspects', _data);
+
+          }));
+
+        }
+
+        _context.append( $('<a href="#"><i class="fa fa-pencil"></i>edit</a>').on( 'click', function( e) {
+          e.stopPropagation();e.preventDefault();
+
+          _context.close();
+          _me.trigger('edit');
+
+        }));
+
+        _context.append( '<hr>');
+        _context.append( $('<a href="#">close</a>').on( 'click', function( e) {
+          e.stopPropagation();e.preventDefault();
+
+          _context.close();
+
+        }));
+
+        _context.open( e);
+
+      };
+
+      let click = function( e) {
+        e.stopPropagation();e.preventDefault();
+
+        let _me = $(this);
+        let _data = _me.data();
+
+        $(document).trigger( 'load-inspects', _data);
+        // console.log( _data);
+
+      }
+
       _row
       .on( 'edit', function(e) {
         let _me = $(this);
@@ -327,43 +417,57 @@ $_report = strings::rand();
         let _me = $(this);
         let _data = _me.data();
 
+        _.post({
+          url : _.url('inspectdiary'),
+          data : {
+            action : 'get-by-id',
+            id : _data.id
+
+          },
+
+        }).then( d => {
+          if ( 'ack' == d.response) {
+            _me.data('property_id', d.data.property_id);
+            _me.data('address_street', d.data.address_street);
+            _me.data('person_id', d.data.contact_id);
+            _me.data('inspect_id', d.data.inspect_id);
+            _me.data('type', d.data.type);
+
+            $('[data-field="date"]', _me).html( d.data.shortdate);
+            $('[data-field="time"]', _me).html( d.data.shorttime);
+            $('[data-field="street"]', _me).html( d.data.address_street);
+            $('[data-field="contact_name"]', _me).html( d.data.contact_name);
+            if ( 'OH Inspect' == d.data.type) {
+              $('[data-field="type"]', _me).html( 'OH');
+
+            }
+            else if ( 'Inspect' == d.data.type) {
+              $('[data-field="type"]', _me).html( 'Insp');
+
+            }
+            else {
+              $('[data-field="type"]', _me).html( d.data.type);
+
+            }
+
+            // $('[data-field]', _me).each( (i, el) => console.log( $(el).data('field')));
+            // console.log( d.data);
+            _me.removeClass( 'bg-warning');
+
+          }
+          else {
+            _.growl(d);
+
+          }
+
+        });
+
         _me.addClass( 'bg-warning');
 
       })
       .addClass('pointer')
-      .on( 'click', function( e) {
-        e.stopPropagation();e.preventDefault();
-
-        let _me = $(this);
-        let _data = _me.data();
-
-        $(document).trigger( 'load-inspects', _data);
-        // console.log( _data);
-
-      })
-      .on( 'contextmenu', function( e) {
-        if ( e.shiftKey)
-          return;
-
-        e.stopPropagation();e.preventDefault();
-
-        _brayworth_.hideContexts();
-
-        let _me = $(this);
-        let _data = _me.data();
-        let _context = _brayworth_.context();
-
-        _context.append( $('<a class="font-weight-bold" href="#">edit</a>').on( 'click', function( e) {
-          e.stopPropagation();e.preventDefault();
-
-          _context.close();
-          _me.trigger('edit');
-
-        }));
-
-        _context.open( e);
-
-      });
+      .on( 'click', _.browser.isMobileDevice ? contextMenu : click)
+      .on( 'contextmenu', contextMenu);
 
     });
 

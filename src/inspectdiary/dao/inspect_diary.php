@@ -11,6 +11,7 @@
 namespace inspectdiary\dao;
 
 use dao\_dao;
+use strings;
 
 class inspect_diary extends _dao {
 	protected $_db_name = 'inspect_diary';
@@ -19,11 +20,7 @@ class inspect_diary extends _dao {
 	public $debug = false;
 
 	const fields = 'id.id, id.date, id.time, id.type, id.property_id, id.inspect_id, p.address_street,
-		i.person_id contact_id, i.name contact_name, i.mobile contact_mobile, i.email contact_email,
-		pd.id pdid,
-		CASE WHEN pd.item_id IS NULL OR "" THEN 0
-		ELSE 1
-		END hasappointment';
+		i.person_id contact_id, i.name contact_name, i.mobile contact_mobile, i.email contact_email';
 
 	public function getDetail( $dto) {
 		if ( $dto->inspect_id) {
@@ -97,8 +94,6 @@ class inspect_diary extends _dao {
 				properties p ON p.id = id.property_id
 			LEFT JOIN
 				inspect i ON i.id = id.inspect_id
-			LEFT JOIN
-				property_diary pd ON pd.inspect_diary_id = id.id
 			WHERE %s', $fields, $where);
 
 		if ( $debug) \sys::trace('inspect_diary->getFiltered :: logging SQL');
@@ -131,15 +126,23 @@ class inspect_diary extends _dao {
 		//~ \sys::logSQL( $_sql);
 
 		$this->Q( 'ALTER TABLE _tmp ADD COLUMN inspections INT');
+		// $this->Q( 'UPDATE
+		// 	_tmp SET `inspections` =
+		// 			(SELECT
+		// 				count
+		// 			FROM
+		// 				_tmp2
+		// 			WHERE
+		// 				_tmp2.`date` = _tmp.date
+		// 				AND _tmp2.property_id = _tmp.property_id)');
 		$this->Q( 'UPDATE
 			_tmp SET `inspections` =
 					(SELECT
-						count
+						count(*)
 					FROM
-						_tmp2
+						inspect
 					WHERE
-						_tmp2.`date` = _tmp.date
-						AND _tmp2.property_id = _tmp.property_id)');
+						inspect.`inspect_diary_id` = _tmp.id)');
 
 		if ( $res = $this->Result( sprintf( 'SELECT * FROM _tmp %s', $order)))
 			return ( (object)[
