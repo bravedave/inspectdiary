@@ -150,7 +150,6 @@ $_report = strings::rand();
             </div>
 
             <div class="col d-none d-md-block">person</div>
-            <div class="col-1 d-none d-md-block" title="has appointment"><i class="fa fa-calendar-o"></i></div>
 
           </div>
 
@@ -179,18 +178,24 @@ $_report = strings::rand();
 
               </div>
 
-              <div class="col">
+              <div class="col-7 col-md-3">
                 <div class="row">
-                  <div class="col text-truncate" data-field="street">
-                    <?= $dto->address_street ?>
+                  <div class="col">
+                    <div class="" data-field="street">
+                      <?= $dto->address_street ?>
+
+                    </div>
 
                   </div>
 
                 </div>
 
                 <div class="row d-md-none">
-                  <div class="col text-truncate text-muted" data-field="contact_name">
-                    <?php  if ( $dto->type == 'Inspect') print $dto->contact_name; ?>
+                  <div class="col text-muted">
+                    <div class="text-truncate" data-field="contact_name">
+                      <?php  if ( $dto->type == 'Inspect') print $dto->contact_name; ?>
+
+                    </div>
 
                   </div>
 
@@ -473,6 +478,10 @@ $_report = strings::rand();
 
     // var someTabTriggerEl = document.querySelector('#someTabTrigger')
     // var tab = new bootstrap.Tab(someTabTriggerEl)
+
+    $('[data-role="content-primary"]')
+    .removeClass('pt-3')
+    .addClass('pt-0 pt-md-3')
 
     $('#<?= $_report ?>').collapse('show');
 

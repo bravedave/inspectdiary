@@ -83,9 +83,6 @@ class controller extends \Controller {
   }
 
   protected function page( $params) {
-
-    \dvc\pages\bootstrap::$primaryClass = str_replace( 'pt-3', 'pt-0 pt-md-3', \dvc\pages\bootstrap::$primaryClass);
-
     if ( !isset( $params['latescripts'])) $params['latescripts'] = [];
     $params['latescripts'][] = sprintf(
       '<script type="text/javascript" src="%s"></script>',
