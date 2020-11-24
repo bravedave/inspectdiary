@@ -156,7 +156,7 @@ $_report = strings::rand();
           <?php
             $i = 0;
             foreach ( $this->data->data as $dto) {	?>
-            <div class="row mb-2 border-bottom"
+            <div class="row py-1 border-bottom"
               data-role="item"
               data-id="<?= $dto->id ?>"
               data-property_id="<?= $dto->property_id ?>"
@@ -241,6 +241,12 @@ $_report = strings::rand();
   </div>
 
 </div>
+
+<style>
+#<?= $_uid ?>RentalDiary div[data-role="item"]:nth-of-type(odd) {
+    background-color: rgba(0,0,0,.05)
+}
+</style>
 
 <script>
 ( _ => {
