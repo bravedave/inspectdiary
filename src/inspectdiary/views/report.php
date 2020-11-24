@@ -407,7 +407,14 @@ $_report = strings::rand();
         let _me = $(this);
         let _data = _me.data();
 
-        $(document).trigger( 'load-inspects', _data);
+        if ( _data.inspect_id > 0) {
+          $(document).trigger( 'view-inspection', _data.inspect_id);
+
+        }
+        else {
+          $(document).trigger( 'load-inspects', _data);
+
+        }
         // console.log( _data);
 
       }
