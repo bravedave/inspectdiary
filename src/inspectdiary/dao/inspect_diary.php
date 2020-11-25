@@ -224,6 +224,7 @@ class inspect_diary extends _dao {
 	public function getRange( $from, $to) : array {
 		$sql = sprintf(
 			'SELECT
+				i.id,
 				i.date,
 				i.time,
 				i.type,
