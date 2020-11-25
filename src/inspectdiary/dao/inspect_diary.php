@@ -11,6 +11,7 @@
 namespace inspectdiary\dao;
 
 use dao\_dao;
+use DateInterval;
 use DateTime;
 use DateTimeZone;
 use strings;
@@ -43,8 +44,19 @@ class inspect_diary extends _dao {
 
 				);
 
+				$end = new DateTime(
+					sprintf(
+						'%s %s',
+						$dto->date,
+						strings::AMPM( $dto->time)
+
+					)
+
+				);
+
+				$end->add(new DateInterval('PT30M'));
+
 				// $end = new DateTime( sprintf( '%s 08:00:00', $dto->settlement_deposit_due));
-				$end = $start;
 				$start->setTimezone( new DateTimeZone('UTC'));
 				$end->setTimezone( new DateTimeZone('UTC'));
 				$type = $dto->type;
