@@ -11,7 +11,11 @@
 namespace inspectdiary\dao;
 
 use dao\_dao;
+use DateTime;
+use DateTimeZone;
 use strings;
+
+use Sabre\VObject\Component\VCalendar;
 
 class inspect_diary extends _dao {
 	protected $_db_name = 'inspect_diary';
@@ -21,6 +25,54 @@ class inspect_diary extends _dao {
 
 	const fields = 'id.id, id.date, id.time, id.type, id.property_id, id.inspect_id, p.address_street,
 		i.person_id contact_id, i.name contact_name, i.mobile contact_mobile, i.email contact_email';
+
+	public function getCalendary( $from, $to) : string {
+		$vcal = new  VCalendar;
+		$vcal->add('REFRESH-INTERVAL;VALUE=DURATION','PT5M');
+		$vcal->add('X-PUBLISHED-TTL','PT5M');
+
+		if ( $dtoSet = $this->getRange( $from, $to)) {
+			foreach ($dtoSet as $dto) {
+				$start = new DateTime(
+					sprintf(
+						'%s %s',
+						$dto->date,
+						strings::AMPM( $dto->time)
+
+					)
+
+				);
+
+				// $end = new DateTime( sprintf( '%s 08:00:00', $dto->settlement_deposit_due));
+				$end = $start;
+				$start->setTimezone( new DateTimeZone('UTC'));
+				$end->setTimezone( new DateTimeZone('UTC'));
+				$type = $dto->type;
+				$_type = strtolower( preg_replace( '@[^a-zA-Z0-9\.]@', '_', $dto->type));
+				if ( 'OH Inspect' == $dto->type) {
+					$type = 'OH';
+
+				}
+				elseif ( 'Inspect' == $dto->type) {
+					$type = 'Insp';
+
+				}
+
+				$vevent = $vcal->add( 'VEVENT', [
+					'SUMMARY' => sprintf( '%s - %s', $type, $dto->address_street),
+					'UID' => sprintf( '%s-%d@cmss.darcy.com.au', $_type, $dto->id),
+					'DTSTART' => $start,
+					'DTEND'   => $end
+
+				]);
+
+			}
+
+		}
+
+		return $vcal->serialize();
+
+	}
 
 	public function getDetail( $dto) {
 		if ( $dto->inspect_id) {
@@ -154,6 +206,34 @@ class inspect_diary extends _dao {
 				]);
 
 		return ( false);
+
+	}
+
+	public function getRange( $from, $to) : array {
+		$sql = sprintf(
+			'SELECT
+				i.date,
+				i.time,
+				i.type,
+				p.address_street
+			FROM `%s` i
+				LEFT JOIN
+				properties p ON p.id = i.property_id
+			WHERE i.`date` BETWEEN "%s" AND "%s"',
+			$this->db_name(),
+			$from, $to
+
+		);
+
+		// \sys::logger( sprintf('<%s> %s', $sql, __METHOD__));
+
+
+		if ( $res = $this->Result( $sql)) {
+			return $this->dtoSet( $res);
+
+		}
+
+		return [];
 
 	}
 

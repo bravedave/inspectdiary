@@ -15,7 +15,8 @@
   ],
   "require": {
     "php": ">=7.3",
-    "bravedave/green": "*"
+    "bravedave/green": "*",
+    "sabre/vobject": "^4.3"
   },
   "require-dev" : {
     "twbs/bootstrap": "<5.0"

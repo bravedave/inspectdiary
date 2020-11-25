@@ -203,7 +203,7 @@ $_report = strings::rand();
 
               </div>
 
-              <div class="col-2">
+              <div class="col-2"><!-- type -->
                 <div class="row">
                   <div class="col text-center" data-field="type">
                     <?php
