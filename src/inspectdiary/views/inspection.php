@@ -71,7 +71,7 @@ $dto = $this->data->dto;  ?>
 
                 <div class="input-group-append" id="<?= $_LinkedContactControl = strings::rand() ?>">
                   <div class="input-group-text">
-                    <i class="fa fa-chain-broken"></i>
+                    <i class="fa <?=  $dto->person_id ? 'fa-chain' : 'fa-chain-broken' ?>"></i>
 
                   </div>
 

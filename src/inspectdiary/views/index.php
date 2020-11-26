@@ -19,12 +19,13 @@ use strings;	?>
 	line-height: 1rem;
 
 }
+.fa-fw { width: 1.25rem }
 </style>
 
 <ul class="nav flex-column">
 	<li><a href="<?php print self::$url ?>"><h6>Inspect Home</h6></a></li>
 	<?php	if ( isset( $this->data->seed)) {	?>
-		<li class="nav-link">
+		<li class="nav-item">
 			<div class="input-group">
 
 				<div class="input-group-prepend">
@@ -52,9 +53,9 @@ use strings;	?>
 
 	<?php	}	// if ( isset( $this->data->seed)) {	?>
 
-	<li class="nav-link"><a class="nav-item" href="#" id="<?= $_addNew = strings::rand() ?>"><i class="icon"><?= icon::get( icon::plus) ?></i>Set New Inspect</a></li>
-	<li class="nav-link"><a class="nav-item" href="#" id="<?= $_OpenThisWeek = strings::rand() ?>"><i class="fa fa-fw fa-opera"></i>Open This Week</a></li>
-	<li class="nav-link"><a class="nav-item" href="#" id="<?= $_addSMSTemplate = strings::rand() ?>"><i class="fa fa-fw fa-clone"></i>SMS Template</a></li>
+	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_addNew = strings::rand() ?>"><i class="icon"><?= icon::get( icon::plus) ?></i>Set New Inspect</a></li>
+	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_OpenThisWeek = strings::rand() ?>"><i class="fa fa-fw fa-opera"></i>Open This Week</a></li>
+	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_addSMSTemplate = strings::rand() ?>"><i class="fa fa-fw fa-clone"></i>SMS Template</a></li>
 
 </ul>
 <script>
@@ -106,38 +107,4 @@ use strings;	?>
 	})
 
 }))( _brayworth_);
-
-$(document).ready( function() {
-	$('#inspect-new').on( 'click', function( e) {
-		e.stopPropagation(); e.preventDefault();
-
-		var _el = $(this);
-		_el.blur();
-		_cms_.modal.browser({ url: _cms_.urlwrite( 'inspect/frame/0'),
-			width: 880,
-			height: 600,
-			onClose : function() {
-				window.location.reload();
-				//~ refreshRow( _el);
-			}
-
-		});
-
-	});
-
-	$('#add-sms-template').on( 'click', function( e) {
-		e.stopPropagation(); e.preventDefault();
-		$(this).blur();
-
-		_cms_.getInspectDefaultSMSText().then( _cms_.inspect.report.editSMSTemplate);
-
-	})
-
-	$('#-open-this-week-').on( 'click', function( e) {
-		e.stopPropagation();
-		_cms_.inspect.OpenThisWeek();
-
-	})
-
-});
 </script>

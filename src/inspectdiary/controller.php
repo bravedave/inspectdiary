@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * David Bray
  * BrayWorth Pty Ltd
  * e. david@brayworth.com.au
@@ -66,7 +66,8 @@ class controller extends \Controller {
       'title' => $this->title = 'Inspect Home : ' . $this->data->scope,
       'primary' => 'report',
 			'secondary' => [
-        'index'
+        'index',
+        'index-default-interface'
       ]
 
     ]);
@@ -359,6 +360,11 @@ class controller extends \Controller {
 			} else { Json::nak( $action); }
 
     }
+    elseif ( 'set-inspect-interface-modern' == $action) {
+			currentUser::option( 'inspect-interface-modern', $this->getPost('value'));
+      Json::ack( $action);
+
+    }
     else {
       parent::postHandler();
 
@@ -366,33 +372,37 @@ class controller extends \Controller {
 
   }
 
-  // public function calendar() {
-  //   $from = $this->getParam( 'from');
-  //   if ( !$from || strtotime( $from) < 1) {
-  //     $from = date( 'Y-m-d', strtotime('-2 months'));
+  /*
 
-  //   }
+    public function calendar() {
+      $from = $this->getParam( 'from');
+      if ( !$from || strtotime( $from) < 1) {
+        $from = date( 'Y-m-d', strtotime('-2 months'));
 
-  //   $to = $this->getParam( 'to');
-  //   if ( !$to || strtotime( $to) < 1) {
-  //     $to = date( 'Y-m-d', strtotime('+2 months'));
+      }
 
-  //   }
+      $to = $this->getParam( 'to');
+      if ( !$to || strtotime( $to) < 1) {
+        $to = date( 'Y-m-d', strtotime('+2 months'));
 
-  //   $dao = new dao\inspect_diary;
-  //   $cal = $dao->getCalendary( $from, $to);
+      }
 
-  //   // Response::headers('text/plain');
-  //   Response::headers('text/calendar');
-	// 	header( sprintf( 'Content-disposition: inline; name="%s"; filename="%s.ics"',
-	// 		\config::$WEBNAME,
-	// 		strtolower( preg_replace( '@[^a-zA-Z0-9\.]@', '_', \config::$WEBNAME))
-  //     ));
+      $dao = new dao\inspect_diary;
+      $cal = $dao->getCalendary( $from, $to);
 
-  //   print $cal;
+      // Response::headers('text/plain');
+      Response::headers('text/calendar');
+      header( sprintf( 'Content-disposition: inline; name="%s"; filename="%s.ics"',
+        \config::$WEBNAME,
+        strtolower( preg_replace( '@[^a-zA-Z0-9\.]@', '_', \config::$WEBNAME))
+        ));
+
+      print $cal;
 
 
-  // }
+    }
+
+  */
 
 	public function edit( $id = 0) {
 		$this->data = (object)[
@@ -477,6 +487,7 @@ class controller extends \Controller {
 
       ];
 
+      // \sys::dump( $this->data, null, false);return;
       $this->load( 'report-for-diary-id');
 
     }

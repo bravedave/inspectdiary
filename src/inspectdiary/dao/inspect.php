@@ -58,7 +58,14 @@ class inspect extends _dao {
 
 	public function prendiIlDiario( int $inspectdiaryID) : array {
 		$sql = sprintf(
-			'SELECT * FROM inspect WHERE inspect_diary_id = %d',
+			'SELECT
+				i.*,
+				u.name user_name
+			FROM
+				inspect i
+				LEFT JOIN users u on u.id = i.user_id
+			WHERE
+				i.inspect_diary_id = %d',
 			$inspectdiaryID
 
 		);

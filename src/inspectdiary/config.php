@@ -16,6 +16,7 @@ class config extends \config {
   const label = 'Smoke Alarms 2022';
 	const inspectdiary_db_version = 0.31;
 
+  static $INSPECTDIARY_ROUTE_PEOPLE = 'people';
   static protected $_INSPECTDIARY_VERSION = 0;
 
 	static protected function inspectdiary_version( $set = null) {
