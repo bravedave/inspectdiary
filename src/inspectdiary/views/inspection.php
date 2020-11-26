@@ -264,7 +264,7 @@ $dto = $this->data->dto;  ?>
         <div class="modal-footer px-2">
           <div class="btn-group mr-auto" role="group">
             <button type="button" class="btn btn-secondary d-none" id="<?= $_btnReminder = strings::rand() ?>"><i class="fa fa-fw fa-bell-o"></i>remind</button>
-            <button type="button" class="btn btn-secondary"><i class="fa fa-fw fa-tasks"></i>task</button>
+            <button type="button" class="btn btn-secondary d-none" id="<?= $_btnTask = strings::rand() ?>"><i class="fa fa-fw fa-tasks"></i>task</button>
 
           </div>
 
@@ -354,6 +354,20 @@ $dto = $this->data->dto;  ?>
 
               })
               .then( () => $('#<?= $_btnReminder ?>').removeClass('d-none'));
+
+            }
+
+            if ( !!window._cms_.property.taskButton) {
+              _cms_.property.taskButton({
+                button : '#<?= $_btnTask ?>',
+                person_id : _data.person_id,
+                person : _data.name,
+                property_id : _data.property_id,
+                inspect_id : _data.id,
+                inspect_type : _data.type,
+
+              })
+              .then( () => $('#<?= $_btnTask ?>').removeClass('d-none'));
 
             }
 
