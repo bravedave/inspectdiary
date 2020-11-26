@@ -332,7 +332,11 @@ $dto = $this->data->dto;  ?>
             if ( !!window._cms_.property.extensions) {
               _cms_.property.extensions({
                 host : '#<?= $_collapseDocs ?>content',
-                property_id : _data.property_id
+                person_id : _data.person_id,
+                person : _data.name,
+                property_id : _data.property_id,
+                inspect_id : _data.id,
+                inspect_type : _data.type,
 
               })
               .then( () => $('#<?= $_docs_Button ?>').removeClass('d-none'));
