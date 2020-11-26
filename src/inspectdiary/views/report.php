@@ -242,11 +242,11 @@ $_report = strings::rand();
 
 </div>
 
-<style>
+<!-- style>
 #<?= $_uid ?>RentalDiary div[data-role="item"]:nth-of-type(odd) {
     background-color: rgba(0,0,0,.05)
 }
-</style>
+</style -->
 
 <script>
 ( _ => {

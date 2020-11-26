@@ -109,14 +109,6 @@ $('#<?= $uidExport ?> > form').on( 'submit', function(e) {
 <script>
 $(document).ready( function() {
 	console.log( '<?= $uidExport ?>');
-	$('#add-sms-template').on( 'click', function( e) {
-		e.stopPropagation(); e.preventDefault();
-		$(this).blur();
-
-		_cms_.getInspectDefaultSMSText().then( _cms_.inspect.report.editSMSTemplate);
-
-	})
-
 	$('#inspect-app-link').on( 'click', function( e) {
 		e.stopPropagation(); e.preventDefault();
 
@@ -131,12 +123,6 @@ $(document).ready( function() {
 
 		});
 
-
-	})
-
-	$('#-open-this-week-').on( 'click', function( e) {
-		e.stopPropagation();
-		_cms_.inspect.OpenThisWeek();
 
 	})
 

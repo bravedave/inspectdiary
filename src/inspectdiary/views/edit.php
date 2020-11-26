@@ -267,99 +267,128 @@ $dto = $this->data->dto;
 
 		};
 
-	}) (_brayworth_);
+		$('#<?= $_modal ?>').on('shown.bs.modal', e => $('input[name="date"]', '#<?= $_form ?>').focus());
 
-	$('#<?= $_modal ?>').on('shown.bs.modal', e => $('input[name="date"]', '#<?= $_form ?>').focus());
-
-	( _ => $(document).ready( () => {
-		$('input[name="time"]', '#<?= $_form ?>').on('change', _.CheckTimeFormat);	// cms has a function for this
-
-		$('input[name="address_street"]', '#<?= $_form ?>').autofill({
-			autoFocus: true,
-			source: _.search.address,
-			select: ( e, ui) => {
-				let o = ui.item;
-				$('input[name="property_id"]', '#<?= $_form ?>').val( o.id);
-
-			},
-
-		});
-
-		$('input[name="contact_name"]', '#<?= $_form ?>').autofill({
-			autoFocus: true,
-			source: _.search.inspectdiary_people,
-			select: ( e, ui) => {
-				let o = ui.item;
-				$('input[name="contact_id"]', '#<?= $_form ?>').val( o.id);
-				$('input[name="contact_mobile"]', '#<?= $_form ?>').val( o.mobile).trigger('change');
-				$('input[name="contact_email"]', '#<?= $_form ?>').val( o.email).trigger('change');
-
-			},
-
-		});
-
-		$('input[name="contact_mobile"]', '#<?= $_form ?>').on( 'change', function(e) {
+		$('input[name="property_id"]', '#<?= $_form ?>').on('resolve', function(e) {
 			let _me = $(this);
-			$('input[name="contact_email"]', '#<?= $_form ?>')
-			.prop( 'required', !(String( _me.val()).IsPhone()))
+			let id = Number( _me.val());
 
-		});
+			if ( id > 0) {
+				_.post({
+					url : _.url('<?= $this->route ?>'),
+					data : {
+						action : 'get-property-by-id',
+						id : id
 
-		$('input[name="contact_email"]', '#<?= $_form ?>').on( 'change', function(e) {
-			let _me = $(this);
-			$('input[name="contact_mobile"]', '#<?= $_form ?>')
-			.prop( 'required', !(String( _me.val()).isEmail()))
+					},
 
-		});
+				}).then( d => {
+					if ( 'ack' == d.response) {
+						$('input[name="address_street"]', '#<?= $_form ?>').val( d.data.address_street);
 
-		$('select[name="type"]', '#<?= $_form ?>').on( 'change', function(e) {
-			let _me = $(this);
+					}
+					else {
+						_.growl( d);
 
-			if ( 'Inspect' == _me.val()) {
-				$('#<?= $_contactDetails ?>').removeClass( 'd-none');
-				$('input[name="contact_name"]', '#<?= $_form ?>').trigger( 'required', true);
-				$('input[name="contact_mobile"], input[name="contact_email"]', '#<?= $_form ?>').trigger( 'change');
+					}
 
-			}
-			else {
-				$('#<?= $_contactDetails ?>').addClass( 'd-none');
-				$('input[name="contact_name"], input[name="contact_mobile"], input[name="contact_email"]', '#<?= $_form ?>').prop( 'required', false);
+				});
 
 			}
 
-		})
-		.trigger('change');
+		});
 
-		$('#<?= $_form ?>')
-		.on( 'submit', function( e) {
-			let _form = $(this);
-			let _data = _form.serializeFormJSON();
+		$(document).ready( () => {
+			$('input[name="time"]', '#<?= $_form ?>').on('change', _.CheckTimeFormat);	// cms has a function for this
 
-			// console.table( _data);
-			_.post({
-				url : _.url('<?= $this->route ?>'),
-				data : _data,
+			$('input[name="address_street"]', '#<?= $_form ?>').autofill({
+				autoFocus: true,
+				source: _.search.address,
+				select: ( e, ui) => {
+					let o = ui.item;
+					$('input[name="property_id"]', '#<?= $_form ?>').val( o.id);
 
-			}).then( d => {
-
-				if ( 'ack' == d.response) {
-					$('#<?= $_modal ?>').trigger('success');
-
-				}
-				else {
-					_.growl( d);
-
-				}
-
-				$('#<?= $_modal ?>').modal('hide');
+				},
 
 			});
 
-			return false;
+			$('input[name="contact_name"]', '#<?= $_form ?>').autofill({
+				autoFocus: true,
+				source: _.search.inspectdiary_people,
+				select: ( e, ui) => {
+					let o = ui.item;
+					$('input[name="contact_id"]', '#<?= $_form ?>').val( o.id);
+					$('input[name="contact_mobile"]', '#<?= $_form ?>').val( o.mobile).trigger('change');
+					$('input[name="contact_email"]', '#<?= $_form ?>').val( o.email).trigger('change');
+
+				},
+
+			});
+
+			$('input[name="contact_mobile"]', '#<?= $_form ?>').on( 'change', function(e) {
+				let _me = $(this);
+				$('input[name="contact_email"]', '#<?= $_form ?>')
+				.prop( 'required', !(String( _me.val()).IsPhone()))
+
+			});
+
+			$('input[name="contact_email"]', '#<?= $_form ?>').on( 'change', function(e) {
+				let _me = $(this);
+				$('input[name="contact_mobile"]', '#<?= $_form ?>')
+				.prop( 'required', !(String( _me.val()).isEmail()))
+
+			});
+
+			$('select[name="type"]', '#<?= $_form ?>').on( 'change', function(e) {
+				let _me = $(this);
+
+				if ( 'Inspect' == _me.val()) {
+					$('#<?= $_contactDetails ?>').removeClass( 'd-none');
+					$('input[name="contact_name"]', '#<?= $_form ?>').trigger( 'required', true);
+					$('input[name="contact_mobile"], input[name="contact_email"]', '#<?= $_form ?>').trigger( 'change');
+
+				}
+				else {
+					$('#<?= $_contactDetails ?>').addClass( 'd-none');
+					$('input[name="contact_name"], input[name="contact_mobile"], input[name="contact_email"]', '#<?= $_form ?>').prop( 'required', false);
+
+				}
+
+			})
+			.trigger('change');
+
+			$('#<?= $_form ?>')
+			.on( 'submit', function( e) {
+				let _form = $(this);
+				let _data = _form.serializeFormJSON();
+
+				// console.table( _data);
+				_.post({
+					url : _.url('<?= $this->route ?>'),
+					data : _data,
+
+				}).then( d => {
+
+					if ( 'ack' == d.response) {
+						$('#<?= $_modal ?>').trigger('success');
+
+					}
+					else {
+						_.growl( d);
+
+					}
+
+					$('#<?= $_modal ?>').modal('hide');
+
+				});
+
+				return false;
+
+			});
 
 		});
 
-	}))( _brayworth_);
+	})( _brayworth_);
 	</script>
 
 </form>

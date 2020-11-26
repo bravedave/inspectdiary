@@ -53,10 +53,8 @@ use strings;	?>
 	<?php	}	// if ( isset( $this->data->seed)) {	?>
 
 	<li class="nav-link"><a class="nav-item" href="#" id="<?= $_addNew = strings::rand() ?>"><i class="icon"><?= icon::get( icon::plus) ?></i>Set New Inspect</a></li>
-	<li class="nav-link"><a class="nav-item" href="#" id="-open-this-week-"><i class="fa fa-fw fa-opera"></i>Open This Week</a></li>
-	<li class="nav-link"><a class="nav-item" href="#" id="add-sms-template"><i class="fa fa-fw fa-clone"></i>SMS Template</a></li>
-
-	<li class="nav-link"><a class="nav-item" href="#" id="inspect-new">New Inspection</a></li>
+	<li class="nav-link"><a class="nav-item" href="#" id="<?= $_OpenThisWeek = strings::rand() ?>"><i class="fa fa-fw fa-opera"></i>Open This Week</a></li>
+	<li class="nav-link"><a class="nav-item" href="#" id="<?= $_addSMSTemplate = strings::rand() ?>"><i class="fa fa-fw fa-clone"></i>SMS Template</a></li>
 
 </ul>
 <script>
@@ -71,6 +69,41 @@ use strings;	?>
 		});
 
 	});
+
+	$('#<?= $_OpenThisWeek ?>').on( 'click', function( e) {
+		e.stopPropagation();
+		_.get.modal( _.url( '<?= $this->route ?>/openThisWeek'))
+		.then( modal => {
+			modal.on( 'rebook', (e, data) => {
+				_.get.modal( _.url( '<?= $this->route ?>/edit/'))
+				.then( modal => {
+
+					let form = modal.closest('form');
+					let d = _.dayjs( data.date);
+					$('input[name="date"]', form).val( d.format('YYYY-MM-DD'))
+					$('input[name="time"]', form).val( d.format('h:mm a')).trigger('change');
+					$('input[name="type"]', form).val( 'OH Inspect').trigger('change');
+					$('input[name="property_id"]', form).val( data.property_id).trigger('resolve');
+
+					console.log( data);
+					console.log( $('input[name="property_id"]', form));
+
+					modal.on( 'success', () => window.location.reload());
+
+				});
+
+			});
+
+		});
+
+	})
+
+	$('#<?= $_addSMSTemplate ?>').on( 'click', function( e) {
+		e.stopPropagation(); e.preventDefault();
+
+		_.get.modal( _.url( '<?= $this->route ?>/editSMSTemplate'));
+
+	})
 
 }))( _brayworth_);
 

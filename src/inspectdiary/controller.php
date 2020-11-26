@@ -128,6 +128,44 @@ class controller extends \Controller {
       } else { Json::nak( $action); }
 
     }
+    elseif ( 'get-property-by-id' == $action) {
+      /*
+        ( _ => {
+          _.post({
+            url : _.url('inspectdiary'),
+            data : {
+              action : 'get-property-by-id',
+              id : 1
+            },
+
+          }).then( d => console.log( d));
+
+        }) (_brayworth_);
+       */
+
+      if ( $id = (int)$this->getPost('id')) {
+        $dao = new dao\properties;
+        if ( $dto = $dao->getByID( $id)) {
+          Json::ack( $action)
+            ->add( 'data', $dto);
+
+        } else { Json::nak( $action); }
+
+      } else { Json::nak( $action); }
+
+    }
+		elseif ( $action == 'save-sms-template') {
+      $text = $this->getPost('text');
+      currentUser::option('inspect-sms-template', $text);
+
+      Json::ack( $action);
+
+		}
+		elseif ( $action == 'get-sms-template') {
+      Json::ack( $action)
+        ->add( 'data', currentUser::option( 'inspect-sms-template'));
+
+		}
     elseif ( 'inspect-diary-save' == $action) {
 			$a = [
         'property_id' => (int)$this->getPost('property_id'),
@@ -393,6 +431,18 @@ class controller extends \Controller {
 
   }
 
+  public function editSMSTemplate() {
+    $this->data = (object)[
+      'action' => 'save-sms-template',
+      'text' => currentUser::option( 'inspect-sms-template'),
+      'title' => $this->title = 'Edit SMS Template'
+
+    ];
+
+    $this->load( 'template-editor');
+
+  }
+
   public function inspection( $id = 0) {
     $this->data = (object)[
       'title' => $this->title = 'Add Inspection',
@@ -445,6 +495,77 @@ class controller extends \Controller {
 
     Response::javascript_headers();
     print $js;
+
+  }
+
+  public function openThisWeek() {
+    $dao = new dao\inspect_diary;
+    $daoProperties = new dao\properties;
+
+    $d = [
+      'lastweek' => $dao->getFiltered('lastweek'),
+      'thisweek' => $dao->getFiltered('thisweek'),
+      'nextweek' => $dao->getFiltered('nextweek'),
+      'weekafternext' => $dao->getFiltered('weekafternext')
+    ];
+
+    $p = [];
+    foreach ( $d as $w) {
+      foreach ( $w->data as $insp) {
+        $p[] = $insp->property_id;
+
+      }
+
+    }
+
+    $d['properties'] = [];
+    $sql = sprintf(
+      'SELECT `id`, `address_street`, `street_index`
+      FROM properties
+      WHERE id IN (%s)
+      ORDER BY `street_index`',
+      implode(',', $p)
+
+    );
+    //~ sys::logSQL( $sql);
+    $secondPass = false;
+    if ( $res = $this->db->result( $sql)) {
+      $d['properties'] = $res->dtoSet();
+
+    }
+
+    /*
+      Sometimes properties->street_index is blank,
+      check and update
+      and have another shot if required
+
+      possible second pass to get right order
+      */
+    foreach ( $d['properties'] as $p) {
+      if ( $p->street_index == '') {
+        $secondPass = true;
+        $daoProperties->UpdateByID( ['street_index' => strings::street_index( $p->address_street )], $p->id);
+
+      }
+
+    }
+    reset( $d['properties']);
+
+    if ( $secondPass) {
+      \sys::logger( 'inspect_diary/opens :: second pass');
+      if ( $res = $this->db->result( $sql))
+        $d['properties'] = $res->dtoSet();
+
+    }
+
+    $this->data = (object)[
+      'title' => $this->title = 'Open This Week',
+      'inspectdata' => $d
+
+    ];
+
+    // $this->load( 'dump'); return;
+    $this->load( 'openThisWeek');
 
   }
 
