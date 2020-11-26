@@ -345,14 +345,15 @@ $dto = $this->data->dto;  ?>
 
             if ( !!window._cms_.property.reminderButton) {
               _cms_.property.reminderButton({
-                host : '#<?= $_btnReminder ?>',
+                button : '#<?= $_btnReminder ?>',
                 person_id : _data.person_id,
                 person : _data.name,
                 property_id : _data.property_id,
                 inspect_id : _data.id,
                 inspect_type : _data.type,
 
-              });
+              })
+              .then( () => $('#<?= $_btnReminder ?>').removeClass('d-none'));
 
             }
 
