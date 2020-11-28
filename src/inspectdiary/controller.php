@@ -10,6 +10,7 @@
 
 namespace inspectdiary;
 
+use db;
 use currentUser;
 use green;
 use Json;
@@ -155,18 +156,53 @@ class controller extends \Controller {
       } else { Json::nak( $action); }
 
     }
-		elseif ( $action == 'save-sms-template') {
+		elseif ( 'get-sms-template' == $action) {
+      Json::ack( $action)
+        ->add( 'data', currentUser::option( 'inspect-sms-template'));
+
+		}
+		elseif ( 'save-sms-template' == $action) {
       $text = $this->getPost('text');
       currentUser::option('inspect-sms-template', $text);
 
       Json::ack( $action);
 
 		}
-		elseif ( $action == 'get-sms-template') {
-      Json::ack( $action)
-        ->add( 'data', currentUser::option( 'inspect-sms-template'));
+		elseif ( $action == 'sms-complete' || $action == 'sms-complete-bulk') {
+      if ( $id = (int)$this->getPost( 'id')) {
+        $a = [
+          'fu_sms' => 'com',
+          'fu_sms_complete' => db::dbTimeStamp()
+        ];
 
-		}
+        if ( $action == 'sms-complete-bulk') {
+          $a['fu_sms_bulk'] = 1;
+
+        }
+
+        $dao = new dao\inspect;
+        $dao->UpdateByID( $a, $id);
+
+        Json::ack( $action);
+
+      } else { \Json::nak( $action); }
+
+    }
+		elseif ( $action == 'sms-complete-undo') {
+      if ( $id = (int)$this->getPost( 'id')) {
+        $a = [
+          'fu_sms' => '',
+          'fu_sms_complete' => db::dbTimeStamp()
+        ];
+
+        $dao = new dao\inspect;
+        $dao->UpdateByID( $a, $id);
+
+        Json::ack( $action);
+
+      } else { \Json::nak( $action); }
+
+    }
     elseif ( 'inspect-diary-save' == $action) {
 			$a = [
         'property_id' => (int)$this->getPost('property_id'),
@@ -483,9 +519,16 @@ class controller extends \Controller {
       $dao = new dao\inspect;
 
       $this->data = (object)[
+        'dto' => false,
         'dtoSet' => $dao->prendiIlDiario($inspectdiaryID)
 
       ];
+
+      $dao = new dao\inspect_diary;
+      if ( $dto = $dao->getByID($inspectdiaryID)) {
+        $this->data->dto = $dao->getDetail( $dto);
+
+      }
 
       // \sys::dump( $this->data, null, false);return;
       $this->load( 'report-for-diary-id');

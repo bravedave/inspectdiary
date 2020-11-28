@@ -24,7 +24,7 @@ $_report = strings::rand();
         <nav class="navbar navbar-light bg-light" style="padding-left: 15px; padding-right: 15px;">
           <div class="d-flex flex-fill">
             <div class="navbar-brand" id="<?= $_title = strings::rand() ?>">Inspection</div>
-            <button type="button" class="close ml-auto" aria-label="Close" data-toggle="collapse" data-target="#<?= $_report ?>">&times;</button>
+            <button type="button" class="btn btn-light ml-auto" aria-label="Close" data-toggle="collapse" data-target="#<?= $_report ?>"><i class="fa fa-times"></i></button>
 
           </div>
 

@@ -18,7 +18,7 @@ use strings;	?>
 		<div class="nav-link">
 			<div class="form-check">
 				<input type="checkbox" class="form-check-input" name="use-this-interfacce"
-					<?php if ( currentUser::option( 'inspect-interface-modern')) print 'checked'; ?>
+					<?php if ( 'yes' == currentUser::option( 'inspect-interface-modern')) print 'checked'; ?>
 					id="<?= $_uid = strings::rand()  ?>">
 
 				<label class="form-check-label" for="<?= $_uid ?>">

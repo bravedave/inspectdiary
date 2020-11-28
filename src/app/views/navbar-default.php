@@ -7,6 +7,7 @@
  * MIT License
  *
  */	?>
+
 <style>
 @media screen and (max-width: 767px) {
   .navbar-brand {max-width: 70%;}
@@ -37,13 +38,14 @@
 
         <li class="nav-item dropdown">
           <a class="nav-link pb-0 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Admin
+            <?= dvc\icon::get( dvc\icon::gear ) ?>
 
           </a>
 
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="<?= strings::url('people') ?>">People</a>
             <a class="dropdown-item" href="<?= strings::url('properties') ?>">Properties</a>
+            <a class="dropdown-item" href="<?= strings::url('sms') ?>">SMS</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="<?= strings::url('beds') ?>">Beds</a>
             <a class="dropdown-item" href="<?= strings::url('baths') ?>">Baths</a>

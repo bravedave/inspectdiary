@@ -60,10 +60,15 @@ class inspect extends _dao {
 		$sql = sprintf(
 			'SELECT
 				i.*,
+				p.name people_name,
+				p.telephone people_telephone,
+				p.mobile people_mobile,
+				p.email people_email,
 				u.name user_name
 			FROM
 				inspect i
 				LEFT JOIN users u on u.id = i.user_id
+				LEFT JOIN people p on p.id = i.person_id
 			WHERE
 				i.inspect_diary_id = %d',
 			$inspectdiaryID
