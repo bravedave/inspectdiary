@@ -286,7 +286,7 @@ use strings;  ?>
         // console.log( _data);
 
         _.email.activate({
-          to : _.email.rfc922(_data.email)
+          to : _.email.rfc922(_data.email),
           subject : <?= json_encode( $this->data->dto->address_street) ?>
 
         });
