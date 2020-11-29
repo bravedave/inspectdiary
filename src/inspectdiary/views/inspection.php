@@ -89,8 +89,8 @@ $dto = $this->data->dto;  ?>
                 <div class="input-group-prepend">
                   <div class="input-group-text">
                     <i class="fa fa-mobile"></i>
-
                   </div>
+
 
                 </div>
 
@@ -98,18 +98,18 @@ $dto = $this->data->dto;  ?>
                   value="<?= $dto->mobile ?>">
 
                 <div class="input-group-append">
-                  <div class="input-group-text">
+                  <button type="button" class="btn input-group-text d-none" sendsms>
                     <i class="fa fa-commenting-o"></i>
 
-                  </div>
+                  </button>
 
                 </div>
 
-                <div class="input-group-append">
-                  <div class="input-group-text">
+                <div class="input-group-append" >
+                  <button type="button" class="btn input-group-text d-none" phonecall>
                     <i class="fa fa-phone"></i>
 
-                  </div>
+                  </button>
 
                 </div>
 
@@ -305,7 +305,7 @@ $dto = $this->data->dto;  ?>
         select: ( e, ui) => {
           let o = ui.item;
           $('input[name="person_id"]', '#<?= $_form ?>').val( o.id);
-          $('input[name="mobile"]', '#<?= $_form ?>').val( o.mobile);
+          $('input[name="mobile"]', '#<?= $_form ?>').val( o.mobile).trigger('change');
           $('input[name="email"]', '#<?= $_form ?>').val( o.email);
           $('input[name="property2sell"]', '#<?= $_form ?>').val( o.property2sell);
           $('#<?= $_LinkedContactControl ?> .fa').removeClass( 'fa-chain-broken').addClass( 'fa-chain');
@@ -313,6 +313,66 @@ $dto = $this->data->dto;  ?>
         },
 
       });
+
+      $('[sendsms]', '#<?= $_form ?>')
+      .addClass( 'pointer')
+      .on( 'click', e => {
+        e.stopPropagation();
+
+        let _fld = $('input[name="mobile"]', '#<?= $_form ?>');
+        let tel = String( _fld.val());
+
+        tel = tel.replace( /\s/g, '');
+
+        _.get.sms().then( modal => {
+          modal.trigger( 'add.recipient', tel);
+          $('textarea[name="message"]', modal).focus();
+
+        });
+
+      });
+
+      $('[phonecall]', '#<?= $_form ?>')
+      .addClass( 'pointer')
+      .on( 'click', e => {
+        e.stopPropagation();
+
+        let _fld = $('input[name="mobile"]', '#<?= $_form ?>');
+        let tel = String( _fld.val());
+
+        tel = tel.replace( /\s/g, '');
+        tel = tel.replace( /^0/, '+61');
+
+        window.location.href = 'tel:' + tel;
+
+      });
+
+      $('input[name="mobile"]', '#<?= $_form ?>')
+      .on( 'change', function(e) {
+        let _me = $(this);
+        let grp = _me.closest('.input-group')
+        let tel = String( _me.val());
+
+        if ( tel.IsMobilePhone()) {
+          _.get.sms.enabled().then( () => $('[sendsms]', grp).removeClass( 'd-none'));
+
+        }
+        else {
+          $('[sendsms]', grp).addClass( 'd-none');
+
+        }
+
+        if ( tel.IsPhone()) {
+          $('[phonecall]', grp).removeClass( 'd-none');
+
+        }
+        else {
+          $('[phonecall]', grp).addClass( 'd-none');
+
+        }
+
+      })
+      .trigger('change');
 
       $('#<?= $_comment ?>').autoResize();
       $('#<?= $_notes ?>').autoResize();
