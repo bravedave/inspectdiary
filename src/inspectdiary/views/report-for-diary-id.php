@@ -71,8 +71,9 @@ use strings;  ?>
     <div class="form-row border-bottom"
       data-id="<?= $dto->id ?>"
       data-person_id="<?= $dto->person_id ?>"
-      data-name="<?= htmlentities($dto->name) ?>"
+      data-name=<?= json_encode( $dto->name, JSON_UNESCAPED_SLASHES)?>
       data-mobile="<?= strings::CleanPhoneString( $dto->mobile) ?>"
+      data-email=<?= json_encode( $dto->email, JSON_UNESCAPED_SLASHES)?>
       data-fu_sms="<?= $dto->fu_sms ?>">
       <div class="col py-2"><?= $dto->name ?></div>
       <div class="d-none d-lg-block col-8">
@@ -184,13 +185,31 @@ use strings;  ?>
 
         }));
 
-        _context.append( $('<a href="#"><i class="fa fa-commenting-o"></i>sms</a>').on( 'click', function( e) {
-          e.stopPropagation();e.preventDefault();
+        if ( String( _data.mobile).IsMobilePhone()) {
+          ( ctrl => {
+            ctrl.addClass('d-none');
+            _.get.sms.enabled().then( () => ctrl.removeClass( 'd-none'));
 
-          _row.trigger('sms');
-          _context.close();
+          })(_context.create( $('<a href="#"><i class="fa fa-commenting-o"></i>sms</a>').on( 'click', e => {
+            e.stopPropagation();e.preventDefault();
 
-        }));
+            _row.trigger('sms');
+            _context.close();
+
+          })));
+
+        }
+
+        if ( String( _data.email).isEmail() && !!_.email.activate) {
+          _context.append( $('<a href="#"><i class="fa fa-paper-plane-o"></i>email</a>').on( 'click', e => {
+            e.stopPropagation();e.preventDefault();
+
+            _row.trigger('email');
+            _context.close();
+
+          }));
+
+        }
 
         _context.append( $('<a href="#">view '+_data.name+'</a>').on( 'click', function( e) {
           e.stopPropagation();e.preventDefault();
@@ -260,6 +279,19 @@ use strings;  ?>
         $(document).trigger( 'view-inspection', _data.id);
 
       })
+      .on( 'email', function( e) {
+        let _me = $(this);
+        let _data = _me.data();
+
+        // console.log( _data);
+
+        _.email.activate({
+          to : _.email.rfc922(_data.email)
+          subject : <?= json_encode( $this->data->dto->address_street) ?>
+
+        });
+
+      })
       .on( 'sms', function( e) {
         let _me = $(this);
         let _data = _me.data();
@@ -278,8 +310,7 @@ use strings;  ?>
 
             let msg = String(d.data).replace( /{address}/, <?= json_encode( $this->data->dto->address_street) ?>);
 
-            _.get.modal( _.url('sms/dialog'))
-            .then( modal => {
+            _.get.sms().then( modal => {
               modal.trigger( 'add.recipient', _data.mobile);
               $('textarea[name="message"]', modal)
               .val( msg).focus();
@@ -344,6 +375,8 @@ use strings;  ?>
       .on( 'contextmenu', contextMenu);
 
     });
+
+    _.get.sms.enabled().then( () => console.log( 'sms enabled...'));
 
   }))( _brayworth_);
 </script>
