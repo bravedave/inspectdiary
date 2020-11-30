@@ -27,7 +27,7 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
     }
   </style>
 
-  <div class="form-row d-none d-lg-flex border-bottom">
+  <div class="form-row d-none d-lg-flex border-bottom" id="<?= $_headline = strings::rand()  ?>">
     <div class="col">name</div>
     <div class="col-8">
       <div class="form-row">
@@ -38,6 +38,7 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
         <div class="col text-center" title="has comment"><i class="fa fa-sticky-note-o"></i></div>
         <div class="col text-center" title="has info"><i class="fa fa-info-circle"></i></div>
         <div class="col text-center" title="has task"><i class="fa fa-tasks"></i></div>
+        <div class="col text-center" title="reminder"><i class="fa fa-bell-o"></i></div>
         <div class="col text-center" title="sms"><i class="fa fa-commenting"></i></div>
         <?php if ( $offertobuy) { ?>
         <div class="col text-center" title="offer to buy">otb</div>
@@ -81,7 +82,8 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
       data-name=<?= json_encode( $dto->name, JSON_UNESCAPED_SLASHES)?>
       data-mobile="<?= strings::CleanPhoneString( $dto->mobile) ?>"
       data-email=<?= json_encode( $dto->email, JSON_UNESCAPED_SLASHES)?>
-      data-fu_sms="<?= $dto->fu_sms ?>">
+      data-fu_sms="<?= $dto->fu_sms ?>"
+      data-has_reminder="<?= (int)$dto->reminder > 0 ? 'yes' : 'no' ?>">
       <div class="col py-2"><?= $dto->name ?></div>
       <div class="d-none d-lg-block col-8">
         <div class="form-row">
@@ -106,6 +108,7 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
           <div class="col text-center py-2"><?php if ( $dto->comment) print strings::html_tick ?></div>
           <div class="col text-center py-2"><?php if ( $dto->notes) print strings::html_tick ?></div>
           <div class="col text-center py-2"><?php if ( $dto->tasks) print strings::html_tick ?></div>
+          <div class="col text-center py-2"><?php if ( (int)$dto->reminder > 0) print strings::html_tick ?></div>
           <div class="col text-center py-2" sms><?php
             if ( $dto->fu_sms == 'com') {
               if ( $dto->fu_sms_bulk == 1)
@@ -182,11 +185,11 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
         e.stopPropagation();e.preventDefault();
 
-        _brayworth_.hideContexts();
+        _.hideContexts();
 
         let _row = $(this);
         let _data = _row.data();
-        let _context = _brayworth_.context();
+        let _context = _.context();
 
         _context.append( $('<a href="#" class="font-weight-bold">Open Inspection</a>').on( 'click', function( e) {
           e.stopPropagation();e.preventDefault();
@@ -388,6 +391,80 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
     });
 
     _.get.sms.enabled();  // .then( () => console.log( 'sms enabled...'));
+
+    $('#<?= $_wrapper ?>').on('set-reminders', function( e) {
+      // console.log( 'here');
+
+      if ( !!window._cms_) {
+        if ( !!window._cms_.property) {
+
+          let _me = $(this);
+          let c = 0;
+          let f = () => {
+            c--;
+            if ( 0 == c) $(document).trigger( 'refresh-inspects');
+
+          };
+          $('>[data-id]', this).each( (i, row) => {
+
+            let _row = $(row);
+            let _data = _row.data();
+
+            let parms = {
+              person : () => {
+                return {
+                  id : _data.person_id,
+                  name : _data.name
+
+                };
+
+              },
+              property_id: <?= (int)$this->data->dto->property_id ?>,
+              inspect_id: _data.id,
+
+            }
+
+            c++;
+
+            _cms_.property.reminderAuto( parms)
+            .then( d => {
+              _row.addClass( 'text-warning');
+              f();
+
+            });
+
+          });
+
+          return;
+
+        }
+
+      }
+
+      console.log( '_cms_.reminders not available')
+
+    });
+
+    $('#<?= $_headline ?>').on( 'contextmenu', function( e) {
+      if ( e.shiftKey)
+        return;
+
+      e.stopPropagation();e.preventDefault();
+
+      _.hideContexts();
+
+      let _context = _.context();
+
+      _context.append( $('<a href="#">set reminders</a>').on( 'click', function( e) {
+        e.stopPropagation();e.preventDefault();
+
+        $('#<?= $_wrapper ?>').trigger('set-reminders');
+        _context.close();
+
+      }));
+
+      _context.open( e);
+    });
 
   }))( _brayworth_);
 </script>

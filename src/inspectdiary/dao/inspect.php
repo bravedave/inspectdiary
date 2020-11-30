@@ -58,7 +58,7 @@ class inspect extends _dao {
 
 	public function prendiIlDiario( int $inspectdiaryID) : array {
 		$timer = false;
-		$timer = new \timer;
+		// $timer = new \timer;
 
 		$sql = sprintf(
 			'SELECT
@@ -79,10 +79,11 @@ class inspect extends _dao {
 		);
 
 		$this->Q( sprintf( 'CREATE TEMPORARY TABLE _t AS %s', $sql));
+		// if ( $timer) \sys::logSQL( $sql);
+
 		$this->Q( 'ALTER TABLE _t ADD COLUMN `offer_to_buy` DATE NULL DEFAULT "0000-00-00"');
 
 		if ( $timer) \sys::logger( sprintf('<%s - extract> %s', $timer->elapsed(), __METHOD__));
-
 
 		if ( $this->db->table_exists('email_log')) {
 			$this->Q( 'UPDATE _t
