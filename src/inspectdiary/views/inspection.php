@@ -435,10 +435,23 @@ $dto = $this->data->dto;  ?>
             if ( !!window._cms_.property.extensions) {
               _cms_.property.extensions({
                 host : '#<?= $_collapseDocs ?>content',
-                person_id : _data.person_id,
-                person : _data.name,
-                property_id : _data.property_id,
                 inspect_id : _data.id,
+                person : () => {
+                  let _form = $('#<?= $_form ?>');  // the latest
+                  let _data = _form.serializeFormJSON();
+
+                  let r = {
+                    id : _data.person_id,
+                    name : _data.name,
+                    email : _data.email,
+                    mobile : _data.mobile,
+
+                  };
+
+                  return r;
+
+                },
+                property_id : _data.property_id,
                 inspect_type : _data.type,
 
               })
