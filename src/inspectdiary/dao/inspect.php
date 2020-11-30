@@ -85,8 +85,6 @@ class inspect extends _dao {
 
 
 		if ( $this->db->table_exists('email_log')) {
-			if ( $timer) \sys::logger( sprintf('<%s - extract email> %s', $timer->elapsed(), __METHOD__));
-
 			$this->Q( 'UPDATE _t
 				LEFT JOIN
 					email_log e ON e.person_id = _t.person_id
@@ -97,7 +95,11 @@ class inspect extends _dao {
 				WHERE
 					e.person_id = _t.person_id
 						AND e.property_id = _t.property_id
-						AND e.offer_to_buy = 1');
+						AND e.offer_to_buy = 1'
+
+			);
+
+			if ( $timer) \sys::logger( sprintf('<%s - extract email> %s', $timer->elapsed(), __METHOD__));
 
 		}
 
