@@ -241,6 +241,25 @@ $_report = strings::rand();
 
 </div>
 
+<div class="row mt-4">
+  <div class="offset-md-2 col-md-8">
+    <div class="alert alert-warning alert-dismissible fade show">
+      <p><strong>caution!</strong> This work is NOT fully compatible with inspect<sup>v1</sup></p>
+
+      <p>Missing data is populated by running the <em>inspect diary</em> report -
+      so normally should not be a problem, but if you use the mobile inspect App
+      without running the report, data will not appear</p>
+
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
 <!-- style>
 #<?= $_uid ?>RentalDiary div[data-role="item"]:nth-of-type(odd) {
     background-color: rgba(0,0,0,.05)
