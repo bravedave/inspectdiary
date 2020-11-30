@@ -184,17 +184,12 @@ class controller extends \Controller {
       Json::ack( $action);
 
 		}
-		elseif ( $action == 'sms-complete' || $action == 'sms-complete-bulk') {
+		elseif ( 'sms-complete' == $action) {
       if ( $id = (int)$this->getPost( 'id')) {
         $a = [
           'fu_sms' => 'com',
           'fu_sms_complete' => db::dbTimeStamp()
         ];
-
-        if ( $action == 'sms-complete-bulk') {
-          $a['fu_sms_bulk'] = 1;
-
-        }
 
         $dao = new dao\inspect;
         $dao->UpdateByID( $a, $id);
@@ -202,6 +197,30 @@ class controller extends \Controller {
         Json::ack( $action);
 
       } else { \Json::nak( $action); }
+
+    }
+		elseif ( 'sms-complete-bulk' == $action) {
+      $a = [
+        'fu_sms' => 'com',
+        'fu_sms_bulk' => 1,
+        'fu_sms_complete' => db::dbTimeStamp()
+      ];
+
+      if ( $ids = $this->getPost('ids')) {
+        $ids = explode( ',', $ids);
+
+        $dao = new dao\inspect;
+        foreach ($ids as $id) {
+          if ( $id = (int)$id) {
+            \sys::logger( sprintf('<%s> %s', $id, __METHOD__));
+            $dao->UpdateByID( $a, $id);
+
+          }
+
+        }
+      }
+
+      Json::ack( $action);
 
     }
 		elseif ( $action == 'sms-complete-undo') {
@@ -550,6 +569,11 @@ class controller extends \Controller {
       $this->load( 'report-for-diary-id');
 
     }
+
+  }
+
+  public function nosmstosend() {
+    $this->load( 'no-sms-to-send');
 
   }
 

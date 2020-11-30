@@ -408,7 +408,75 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
     _.get.sms.enabled();  // .then( () => console.log( 'sms enabled...'));
 
-    $('#<?= $_wrapper ?>').on('set-reminders', function( e) {
+    $('#<?= $_wrapper ?>')
+    .on('send-sms-followup', function( e) {
+      let ids = [];
+      let mobiles = [];
+
+      $('>[data-id]', this).each( (i, row) => {
+
+        let _row = $(row);
+        let _data = _row.data();
+
+        if ( !/^(yes|com)$/.test( _data.fu_sms)) {
+          if ( String(_data.mobile).IsMobilePhone()) {
+            ids.push( _data.id);
+            mobiles.push( _data.mobile);
+
+          }
+
+        }
+
+      });
+
+      if ( mobiles.length > 0) {
+        _.post({
+          url : _.url('<?= $this->route ?>'),
+          data : { action : 'get-sms-template' },
+
+        }).then( d => {
+          if ( 'ack' == d.response) {
+
+            let msg = String(d.data).replace( /{address}/, <?= json_encode( $this->data->dto->address_street) ?>);
+
+            _.get.sms().then( modal => {
+              $.each( mobiles, (i,m) => modal.trigger( 'add.recipient', m));
+              $('textarea[name="message"]', modal)
+              .val( msg).focus();
+
+              // console.log( ids.join(','));
+
+              modal.on( 'success', d => {
+                _.post({
+                  url: _.url( '<?= $this->route ?>'),
+                  data : {
+                    ids : ids.join(','),
+                    action : 'sms-complete-bulk'
+
+                  }
+
+                }).then( d => {
+                  _.growl( d);
+                  $(document).trigger( 'refresh-inspects');
+
+                })
+
+              });
+
+            });
+
+          } else { _.growl( d); }
+
+        });
+
+      }
+      else {
+        _.get.modal( _.url('<?= $this->route ?>/nosmstosend'));
+
+      }
+
+    })
+    .on('set-reminders', function( e) {
       // console.log( 'here');
 
       if ( !!window._cms_) {
@@ -436,7 +504,6 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
               },
               property_id: <?= (int)$this->data->dto->property_id ?>,
-              property_address: <?= json_encode($this->data->dto->address_street) ?>,
               inspect_id: _data.id,
               inspect_type : 'Inspect' == _data.type ? 'insp' : 'oh',
 
@@ -463,7 +530,7 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
     });
 
-    $('#<?= $_headline ?>').on( 'contextmenu', function( e) {
+    let headlineContext = function( e) {
       if ( e.shiftKey)
         return;
 
@@ -481,8 +548,20 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
       }));
 
+      _context.append( $('<a href="#">send sms followup</a>').on( 'click', function( e) {
+        e.stopPropagation();e.preventDefault();
+
+        $('#<?= $_wrapper ?>').trigger('send-sms-followup');
+        _context.close();
+
+      }));
+
       _context.open( e);
-    });
+
+    };
+
+    $('#<?= $_headline ?>').on( 'contextmenu', headlineContext);
+    $(document).trigger( 'set-inspection-context', headlineContext);
 
   }))( _brayworth_);
 </script>

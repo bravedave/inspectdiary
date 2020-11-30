@@ -26,7 +26,9 @@ $_report = strings::rand();
           <button type="button" class="btn btn-light ml-auto"
             title="add inspection"
             id="<?= $_addInspection = strings::rand() ?>"><?= icon::get( icon::person_plus ) ?></button>
-          <button type="button" class="btn btn-light" aria-label="Close" data-toggle="collapse" data-target="#<?= $_report ?>"><i class="fa fa-times"></i></button>
+          <button type="button" class="btn btn-light d-none" aria-label="context menu"
+            id="<?= $_context = strings::rand() ?>"><?= icon::get( icon::menu_up ) ?></button>
+          <button type="button" class="btn btn-light" aria-label="Close" data-toggle="collapse" data-target="#<?= $_report ?>"><?= icon::get( icon::x ) ?></button>
 
         </div>
 
@@ -252,7 +254,11 @@ $_report = strings::rand();
     let _el = $(e.target);
     let id = _el.attr('id');
 
-    if ( '<?= $_inspection ?>' == id) $('#<?= $_inspection ?>content').html('');
+    if ( '<?= $_inspection ?>' == id) {
+      $('#<?= $_inspection ?>content').html('');
+      $('#<?= $_context ?>').addClass( 'd-none').off( 'click');
+
+    }
 
   });
 
@@ -328,6 +334,13 @@ $_report = strings::rand();
 
   })
   .on( 'refresh-inspects', ( e) => $('#<?= $_inspection ?>content').trigger( 'refresh'))
+  .on( 'set-inspection-context', ( e, context) => {
+    $('#<?= $_context ?>')
+    .removeClass( 'd-none')
+    .off( 'click')
+    .on( 'click', context);
+
+  })
   .ready( () => {
     $('div[data-role="item"]', '#<?= $_uid ?>RentalDiary').each( ( i, row) => {
       let _row = $(row);
