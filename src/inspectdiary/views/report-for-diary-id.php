@@ -14,7 +14,7 @@ use dvc\icon;
 use strings;
 use sys;
 
-$offertobuy = sys::dbi()->table_exists( 'email'); ?>
+$offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
 <div id="<?= $_wrapper = strings::rand() ?>">
 
