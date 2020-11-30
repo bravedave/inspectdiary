@@ -99,7 +99,23 @@ class controller extends \Controller {
 	protected function postHandler() {
     $action = $this->getPost('action');
 
-    if ( 'get-by-id' == $action) {
+		if ( 'email-sent' == $action) {
+      if ( $id = (int)$this->getPost('id')) {
+        $dao = new dao\inspect;
+        if ( $dto = $dao->getByID( $id)) {
+
+          $a = [ 'email_sent' => db::dbTimeStamp()];
+          if ( 'yes' == $dto->fu_sms) $a['fu_sms'] = '';
+
+          $dao->UpdateByID( $a, $id);
+          Json::ack( $action);
+
+        } else { Json::nak( $action); }
+
+      } else { \Json::nak( $action); }
+
+    }
+    elseif ( 'get-by-id' == $action) {
       /*
         ( _ => {
           _.post({

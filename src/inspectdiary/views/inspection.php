@@ -432,25 +432,27 @@ $dto = $this->data->dto;  ?>
 
         if ( !!window._cms_) {
           if ( !!window._cms_.property) {
+            let person = () => {
+              let _form = $('#<?= $_form ?>');  // the latest
+              let _data = _form.serializeFormJSON();
+
+              let r = {
+                id : _data.person_id,
+                name : _data.name,
+                email : _data.email,
+                mobile : _data.mobile,
+
+              };
+
+              return r;
+
+            };
+
             if ( !!window._cms_.property.extensions) {
               _cms_.property.extensions({
                 host : '#<?= $_collapseDocs ?>content',
                 inspect_id : _data.id,
-                person : () => {
-                  let _form = $('#<?= $_form ?>');  // the latest
-                  let _data = _form.serializeFormJSON();
-
-                  let r = {
-                    id : _data.person_id,
-                    name : _data.name,
-                    email : _data.email,
-                    mobile : _data.mobile,
-
-                  };
-
-                  return r;
-
-                },
+                person : person,
                 property_id : _data.property_id,
                 inspect_type : _data.type,
 
@@ -462,8 +464,7 @@ $dto = $this->data->dto;  ?>
             if ( !!window._cms_.property.reminderButton) {
               _cms_.property.reminderButton({
                 button : '#<?= $_btnReminder ?>',
-                person_id : _data.person_id,
-                person : _data.name,
+                person : person,
                 property_id : _data.property_id,
                 inspect_id : _data.id,
                 inspect_type : _data.type,
@@ -476,8 +477,7 @@ $dto = $this->data->dto;  ?>
             if ( !!window._cms_.property.taskButton) {
               _cms_.property.taskButton({
                 button : '#<?= $_btnTask ?>',
-                person_id : _data.person_id,
-                person : _data.name,
+                person : person,
                 property_id : _data.property_id,
                 inspect_id : _data.id,
                 inspect_type : _data.type,
