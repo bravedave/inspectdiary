@@ -131,10 +131,10 @@ $dto = $this->data->dto;  ?>
                   value="<?= $dto->email ?>">
 
                 <div class="input-group-append">
-                  <div class="input-group-text">
+                  <button type="button" class="btn input-group-text d-none" sendemail>
                     <i class="fa fa-envelope-o"></i>
 
-                  </div>
+                  </button>
 
                 </div>
 
@@ -314,7 +314,7 @@ $dto = $this->data->dto;  ?>
 
       });
 
-      $('[sendsms]', '#<?= $_form ?>')
+      $('button[sendsms]', '#<?= $_form ?>')
       .addClass( 'pointer')
       .on( 'click', e => {
         e.stopPropagation();
@@ -332,7 +332,7 @@ $dto = $this->data->dto;  ?>
 
       });
 
-      $('[phonecall]', '#<?= $_form ?>')
+      $('button[phonecall]', '#<?= $_form ?>')
       .addClass( 'pointer')
       .on( 'click', e => {
         e.stopPropagation();
@@ -368,6 +368,49 @@ $dto = $this->data->dto;  ?>
         }
         else {
           $('[phonecall]', grp).addClass( 'd-none');
+
+        }
+
+      })
+      .trigger('change');
+
+      $('button[sendemail]', '#<?= $_form ?>')
+      .addClass( 'pointer')
+      .on( 'click', e => {
+        e.stopPropagation();
+
+        let _fld = $('input[name="email"]', '#<?= $_form ?>');
+        let email = String( _fld.val());
+
+        let person = {
+          name : $('input[name="name"]', '#<?= $_form ?>').val(),
+          email : email
+
+        };
+
+        let ea = {
+          to : _.email.rfc922( person),
+          subject : <?= json_encode( $dto->address_street) ?>
+
+        }
+
+        console.log( ea);
+        _.email.activate(ea);
+
+      });
+
+      $('input[name="email"]', '#<?= $_form ?>')
+      .on( 'change', function(e) {
+        let _me = $(this);
+        let grp = _me.closest('.input-group')
+        let email = String( _me.val());
+
+        if ( email.isEmail() && !!_.email.activate) {
+          _.get.sms.enabled().then( () => $('[sendemail]', grp).removeClass( 'd-none'));
+
+        }
+        else {
+          $('[sendemail]', grp).addClass( 'd-none');
 
         }
 
