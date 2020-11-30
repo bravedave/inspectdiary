@@ -17,222 +17,219 @@ $_report = strings::rand();
 
 ?>
 
-<div class="accordion" id="<?= $_accordion = strings::rand() ?>">
-  <div class="accordion-item">
-    <div class="accordion-collapse collapse border-0" id="<?= $_inspection = strings::rand() ?>" data-parent="#<?= $_accordion ?>">
-      <div style="margin-left: -15px; margin-right: -15px;">
-        <nav class="navbar navbar-light bg-light" style="padding-left: 15px; padding-right: 15px;">
-          <div class="d-flex flex-fill">
-            <div class="navbar-brand" id="<?= $_title = strings::rand() ?>">Inspection</div>
-            <button type="button" class="btn btn-light ml-auto" aria-label="Close" data-toggle="collapse" data-target="#<?= $_report ?>"><i class="fa fa-times"></i></button>
+<div id="<?= $_collapse = strings::rand() ?>">
+  <div class="collapse" id="<?= $_inspection = strings::rand() ?>" data-parent="#<?= $_collapse ?>">
+    <div style="margin-left: -15px; margin-right: -15px;">
+      <nav class="navbar navbar-light bg-light" style="padding-left: 15px; padding-right: 15px;">
+        <div class="d-flex flex-fill">
+          <div class="navbar-brand" id="<?= $_title = strings::rand() ?>">Inspection</div>
+          <button type="button" class="btn btn-light ml-auto"
+            title="add inspection"
+            id="<?= $_addInspection = strings::rand() ?>"><?= icon::get( icon::person_plus ) ?></button>
+          <button type="button" class="btn btn-light" aria-label="Close" data-toggle="collapse" data-target="#<?= $_report ?>"><i class="fa fa-times"></i></button>
 
-          </div>
+        </div>
 
-        </nav>
-
-      </div>
-
-      <div id="<?= $_inspection ?>content"></div>
+      </nav>
 
     </div>
 
+    <div id="<?= $_inspection ?>content"></div>
+
   </div>
 
-  <div class="accordion-item">
-    <div class="accordion-collapse collapse border-0" id="<?= $_report ?>" data-parent="#<?= $_accordion ?>">
-      <?php
-        $_uid = strings::rand();
-        if ( false) { ?>
-        <div class="form-row mb-2">
-          <div class="col">
-            <div class="form-check form-check-inline">
-              <input type="checkbox" class="form-check-input" id="<?= $_uid ?>chk-open-homes" />
-              <label class="form-check-label" for="<?= $_uid ?>chk-open-homes">
-                OH
+  <div class="collapse" id="<?= $_report ?>" data-parent="#<?= $_collapse ?>">
+    <?php
+      $_uid = strings::rand();
+      if ( false) { ?>
+      <div class="form-row mb-2">
+        <div class="col">
+          <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" id="<?= $_uid ?>chk-open-homes" />
+            <label class="form-check-label" for="<?= $_uid ?>chk-open-homes">
+              OH
 
-              </label>
+            </label>
 
-            </div>
+          </div>
 
-            <div class="form-check form-check-inline">
-              <input type="checkbox" class="form-check-input" id="<?= $_uid ?>chk-inspections" />
-              <label class="form-check-label" for="<?= $_uid ?>chk-inspections">
-                Inspections
+          <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" id="<?= $_uid ?>chk-inspections" />
+            <label class="form-check-label" for="<?= $_uid ?>chk-inspections">
+              Inspections
 
-              </label>
+            </label>
 
-            </div>
+          </div>
 
-            <div class="form-check form-check-inline">
-              <input type="checkbox" class="form-check-input" id="<?= $_uid ?>chk-rental-open-homes" />
-              <label class="form-check-label" for="<?= $_uid ?>chk-rental-open-homes">
-                Rental OH
+          <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" id="<?= $_uid ?>chk-rental-open-homes" />
+            <label class="form-check-label" for="<?= $_uid ?>chk-rental-open-homes">
+              Rental OH
 
-              </label>
-
-            </div>
+            </label>
 
           </div>
 
         </div>
-        <script>
-        ( _ => $(document).ready( () => {
-          (params => {
-            let j = {
-              OH : true,
-              inspections : true,
-              ROH : true,
 
-            }
-
-            $.extend( j, JSON.parse( params));
-
-            $('#<?= $_uid ?>chk-open-homes').prop( 'checked', j.OH).trigger( 'change');
-            $('#<?= $_uid ?>chk-inspections').prop( 'checked', j.inspections).trigger( 'change');
-            $('#<?= $_uid ?>chk-rental-open-homes').prop( 'checked', j.ROH).trigger( 'change');
-
-          })( localStorage.getItem('inspect_diary'));
-
-          let setDefault = () => {
-            let j = {
-              OH : $('#<?= $_uid ?>chk-open-homes').prop( 'checked'),
-              inspections : $('#<?= $_uid ?>chk-inspections').prop( 'checked'),
-              ROH : $('#<?= $_uid ?>chk-rental-open-homes').prop( 'checked'),
-
-            }
-
-            localStorage.setItem( 'inspect_diary', JSON.stringify( j));
-
-          };
-
-          let setVisibility = () => {
-            $('#<?= $_uid ?>chk-open-homes').prop('checked') ?
-              $('#<?= $_uid ?>RentalDiary').addClass('show-oh') :
-              $('#<?= $_uid ?>RentalDiary').removeClass('show-oh');
-
-            $('#<?= $_uid ?>chk-inspections').prop('checked') ?
-              $('#<?= $_uid ?>RentalDiary').addClass('show-insp') :
-              $('#<?= $_uid ?>RentalDiary').removeClass('show-insp');
-
-            $('#<?= $_uid ?>chk-rental-open-homes').prop('checked') ?
-              $('#<?= $_uid ?>RentalDiary').addClass('show-roh') :
-              $('#<?= $_uid ?>RentalDiary').removeClass('show-roh');
+      </div>
+      <script>
+      ( _ => $(document).ready( () => {
+        (params => {
+          let j = {
+            OH : true,
+            inspections : true,
+            ROH : true,
 
           }
 
-          $('#<?= $_uid ?>chk-open-homes').on( 'change', () => { setVisibility(); setDefault();});
-          $('#<?= $_uid ?>chk-inspections').on( 'change', () => { setVisibility(); setDefault(); });
-          $('#<?= $_uid ?>chk-rental-open-homes').on( 'change', () => { setVisibility(); setDefault(); });
+          $.extend( j, JSON.parse( params));
 
-          setVisibility();
+          $('#<?= $_uid ?>chk-open-homes').prop( 'checked', j.OH).trigger( 'change');
+          $('#<?= $_uid ?>chk-inspections').prop( 'checked', j.inspections).trigger( 'change');
+          $('#<?= $_uid ?>chk-rental-open-homes').prop( 'checked', j.ROH).trigger( 'change');
 
-        }))( _brayworth_);
-        </script>
+        })( localStorage.getItem('inspect_diary'));
 
-      <?php } ?>
+        let setDefault = () => {
+          let j = {
+            OH : $('#<?= $_uid ?>chk-open-homes').prop( 'checked'),
+            inspections : $('#<?= $_uid ?>chk-inspections').prop( 'checked'),
+            ROH : $('#<?= $_uid ?>chk-rental-open-homes').prop( 'checked'),
 
-      <div class="row" id="<?= $_uid ?>RentalDiary">
-        <div class="col">
-          <div class="row bg-light border-bottom">
-            <div class="d-none d-md-block col-1 text-center">
-              <i class="fa fa-calendar-plus-o" data-role="new-inspect-diary-control" title="add new"></i>
+          }
+
+          localStorage.setItem( 'inspect_diary', JSON.stringify( j));
+
+        };
+
+        let setVisibility = () => {
+          $('#<?= $_uid ?>chk-open-homes').prop('checked') ?
+            $('#<?= $_uid ?>RentalDiary').addClass('show-oh') :
+            $('#<?= $_uid ?>RentalDiary').removeClass('show-oh');
+
+          $('#<?= $_uid ?>chk-inspections').prop('checked') ?
+            $('#<?= $_uid ?>RentalDiary').addClass('show-insp') :
+            $('#<?= $_uid ?>RentalDiary').removeClass('show-insp');
+
+          $('#<?= $_uid ?>chk-rental-open-homes').prop('checked') ?
+            $('#<?= $_uid ?>RentalDiary').addClass('show-roh') :
+            $('#<?= $_uid ?>RentalDiary').removeClass('show-roh');
+
+        }
+
+        $('#<?= $_uid ?>chk-open-homes').on( 'change', () => { setVisibility(); setDefault();});
+        $('#<?= $_uid ?>chk-inspections').on( 'change', () => { setVisibility(); setDefault(); });
+        $('#<?= $_uid ?>chk-rental-open-homes').on( 'change', () => { setVisibility(); setDefault(); });
+
+        setVisibility();
+
+      }))( _brayworth_);
+      </script>
+
+    <?php } ?>
+
+    <div class="row" id="<?= $_uid ?>RentalDiary">
+      <div class="col">
+        <div class="row bg-light border-bottom">
+          <div class="d-none d-md-block col-1 text-center">
+            <i class="fa fa-calendar-plus-o" data-role="new-inspect-diary-control" title="add new"></i>
+
+          </div>
+          <div class="col-3">date</div>
+          <div class="col">address</div>
+          <div class="col-2">
+            <div class="row">
+              <div class="col text-center">type</div>
+              <div class="col d-none d-md-block text-center">no.</div>
 
             </div>
-            <div class="col-3">date</div>
-            <div class="col">address</div>
-            <div class="col-2">
-              <div class="row">
-                <div class="col text-center">type</div>
-                <div class="col d-none d-md-block text-center">no.</div>
-
-              </div>
-
-            </div>
-
-            <div class="col d-none d-md-block">person</div>
 
           </div>
 
-          <?php
-            $i = 0;
-            foreach ( $this->data->data as $dto) {	?>
-            <div class="row py-1 border-bottom"
-              data-role="item"
-              data-id="<?= $dto->id ?>"
-              data-property_id="<?= $dto->property_id ?>"
-              data-address_street="<?= htmlentities( $dto->address_street) ?>"
-              data-person_id="<?= $dto->contact_id ?>"
-              data-inspect_id="<?= $dto->inspect_id ?>"
-              data-type="<?= $dto->type ?>">
-
-              <div class="d-none d-md-block col-1 text-center small"><?= ++$i ?></div>
-              <div class="col-3">
-                <div class="row">
-                  <div class="col-md-6 pr-1" data-field="date">
-                    <?= strings::asShortDate( $dto->date) ?>
-
-                  </div>
-                  <div class="col-md-6 pr-1" data-field="time"><?= strings::AMPM( $dto->time) ?></div>
-
-                </div>
-
-              </div>
-
-              <div class="col-7 col-md-3">
-                <div class="row">
-                  <div class="col">
-                    <div class="" data-field="street">
-                      <?= $dto->address_street ?>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-                <div class="row d-md-none">
-                  <div class="col text-muted">
-                    <div class="text-truncate" data-field="contact_name">
-                      <?php  if ( $dto->type == 'Inspect') print $dto->contact_name; ?>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div class="col-2"><!-- type -->
-                <div class="row">
-                  <div class="col text-center" data-field="type">
-                    <?php
-                      if ( 'OH Inspect' == $dto->type)
-                        print 'OH';
-                      elseif ( 'Inspect' == $dto->type)
-                        print 'Insp';
-                      else
-                        print $dto->type;
-
-                    ?>
-                  </div>
-
-                  <div class="col text-center"><?= $dto->inspections ?></div>
-
-                </div>
-
-              </div>
-
-              <div class="d-none d-md-block col text-truncate"><?php
-                if ( $dto->type == 'Inspect') print $dto->contact_name;
-
-              ?></div>
-
-            </div>
-          <?php
-            }	// foreach ( $this->data as $dto)	?>
+          <div class="col d-none d-md-block">person</div>
 
         </div>
+
+        <?php
+          $i = 0;
+          foreach ( $this->data->data as $dto) {	?>
+          <div class="row py-1 border-bottom"
+            data-role="item"
+            data-id="<?= $dto->id ?>"
+            data-property_id="<?= $dto->property_id ?>"
+            data-address_street="<?= htmlentities( $dto->address_street) ?>"
+            data-person_id="<?= $dto->contact_id ?>"
+            data-inspect_id="<?= $dto->inspect_id ?>"
+            data-type="<?= $dto->type ?>">
+
+            <div class="d-none d-md-block col-1 text-center small"><?= ++$i ?></div>
+            <div class="col-3">
+              <div class="row">
+                <div class="col-md-6 pr-1" data-field="date">
+                  <?= strings::asShortDate( $dto->date) ?>
+
+                </div>
+                <div class="col-md-6 pr-1" data-field="time"><?= strings::AMPM( $dto->time) ?></div>
+
+              </div>
+
+            </div>
+
+            <div class="col-7 col-md-3">
+              <div class="row">
+                <div class="col">
+                  <div class="" data-field="street">
+                    <?= $dto->address_street ?>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="row d-md-none">
+                <div class="col text-muted">
+                  <div class="text-truncate" data-field="contact_name">
+                    <?php  if ( $dto->type == 'Inspect') print $dto->contact_name; ?>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="col-2"><!-- type -->
+              <div class="row">
+                <div class="col text-center" data-field="type">
+                  <?php
+                    if ( 'OH Inspect' == $dto->type)
+                      print 'OH';
+                    elseif ( 'Inspect' == $dto->type)
+                      print 'Insp';
+                    else
+                      print $dto->type;
+
+                  ?>
+                </div>
+
+                <div class="col text-center"><?= $dto->inspections ?></div>
+
+              </div>
+
+            </div>
+
+            <div class="d-none d-md-block col text-truncate"><?php
+              if ( $dto->type == 'Inspect') print $dto->contact_name;
+
+            ?></div>
+
+          </div>
+        <?php
+          }	// foreach ( $this->data as $dto)	?>
 
       </div>
 
@@ -250,16 +247,12 @@ $_report = strings::rand();
 
 <script>
 ( _ => {
-  $('#<?= $_accordion ?>')
+  $('#<?= $_collapse ?>')
   .on( 'hidden.bs.collapse', function(e) {
     let _el = $(e.target);
-    let _data = _el.data();
     let id = _el.attr('id');
 
-    if ( '<?= $_inspection ?>' == id) {
-      $('#<?= $_inspection ?>content').html('');
-
-    }
+    if ( '<?= $_inspection ?>' == id) $('#<?= $_inspection ?>content').html('');
 
   });
 
@@ -314,6 +307,12 @@ $_report = strings::rand();
 
 
     });
+
+  });
+
+  $('#<?= $_addInspection ?>').on( 'click', e => {
+    e.stopPropagation();
+    $('#<?= $_inspection ?>content').trigger('add-inspection');
 
   });
 

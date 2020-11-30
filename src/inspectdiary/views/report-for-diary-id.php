@@ -11,7 +11,10 @@
 namespace inspectdiary;
 
 use dvc\icon;
-use strings;  ?>
+use strings;
+use sys;
+
+$offertobuy = sys::dbi()->table_exists( 'email'); ?>
 
 <div id="<?= $_wrapper = strings::rand() ?>">
 
@@ -36,6 +39,9 @@ use strings;  ?>
         <div class="col text-center" title="has info"><i class="fa fa-info-circle"></i></div>
         <div class="col text-center" title="has task"><i class="fa fa-tasks"></i></div>
         <div class="col text-center" title="sms"><i class="fa fa-commenting"></i></div>
+        <?php if ( $offertobuy) { ?>
+        <div class="col text-center" title="offer to buy">otb</div>
+        <?php } // if ( $offertobuy) ?>
         <div class="col text-center" title="new seller lead">nsl</div>
         <div class="col text-center" title="buyer">buy</div>
         <div class="col text-center" title="neighbour">nbr</div>
@@ -44,6 +50,7 @@ use strings;  ?>
         <div class="col text-center" title="has info">user</div>
 
       </div>
+
     </div>
 
   </div>
@@ -130,6 +137,24 @@ use strings;  ?>
             }
 
           ?></div>
+
+          <?php if ( $offertobuy) {
+            if ( strtotime( $dto->offer_to_buy) > 0) {
+              printf(
+                '<div class="col text-center py-2">%s</div>',
+                strings::asLocalDate( $dto->offer_to_buy),
+                strings::html_tick
+
+              );
+
+            }
+            else {
+              print '<div class="col"></div>';
+
+            }
+
+          } // if ( $offertobuy) ?>
+
           <div class="col text-center py-2"><?= $dto->fu_nsl ?></div>
           <div class="col text-center py-2"><?= $dto->fu_buyer ?></div>
           <div class="col text-center py-2"><?= $dto->fu_neighbour ?></div>
@@ -145,23 +170,9 @@ use strings;  ?>
 
   <?php } ?>
 
-  <div class="row">
-    <div class="col py-2 text-right">
-      <button class="btn btn-primary" id="<?= $_addInspection = strings::rand() ?>"><?= icon::get( icon::person_plus ) ?></button>
-
-    </div>
-
-  </div>
-
 </div>
 <script>
   ( _ => $(document).ready( () => {
-    $('#<?= $_addInspection ?>').on( 'click', e => {
-      e.stopPropagation();
-      $(document).trigger('add-inspection');
-
-    });
-
     $('#<?= $_wrapper ?> > [data-id]').each( (i, row) => {
       let _row = $(row);
 
@@ -376,7 +387,7 @@ use strings;  ?>
 
     });
 
-    _.get.sms.enabled().then( () => console.log( 'sms enabled...'));
+    _.get.sms.enabled();  // .then( () => console.log( 'sms enabled...'));
 
   }))( _brayworth_);
 </script>

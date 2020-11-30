@@ -27,7 +27,7 @@ $dto = $this->data->dto;  ?>
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header bg-secondary text-white py-2 pl-2">
-          <h5 class="modal-title" id="<?= $_modal ?>Label"><?= $dto->address_street ?></h5>&nbsp;1/4
+          <h5 class="modal-title" id="<?= $_modal ?>Label"><?= $dto->address_street ?></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
