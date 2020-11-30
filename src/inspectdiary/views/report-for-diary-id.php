@@ -78,6 +78,7 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
     <div class="form-row border-bottom"
       data-id="<?= $dto->id ?>"
+      data-type="<?= $dto->type ?>"
       data-person_id="<?= $dto->person_id ?>"
       data-name=<?= json_encode( $dto->name, JSON_UNESCAPED_SLASHES)?>
       data-mobile="<?= strings::CleanPhoneString( $dto->mobile) ?>"
@@ -175,6 +176,21 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
 </div>
 <script>
+  // window._cms_ = {
+  //   property : {
+  //     reminderAuto : ( parms) => {
+  //       return new Promise( r => {
+  //         console.log( parms);
+  //         r();
+
+  //       });
+
+  //     }
+
+  //   }
+
+  // };
+
   ( _ => $(document).ready( () => {
     $('#<?= $_wrapper ?> > [data-id]').each( (i, row) => {
       let _row = $(row);
@@ -420,7 +436,9 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
               },
               property_id: <?= (int)$this->data->dto->property_id ?>,
+              property_address: <?= json_encode($this->data->dto->address_street) ?>,
               inspect_id: _data.id,
+              inspect_type : 'Inspect' == _data.type ? 'insp' : 'oh',
 
             }
 
