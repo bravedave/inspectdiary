@@ -190,15 +190,6 @@ class inspect_diary extends _dao {
 		//~ \sys::logSQL( $_sql);
 
 		$this->Q( 'ALTER TABLE _tmp ADD COLUMN inspections INT');
-		// $this->Q( 'UPDATE
-		// 	_tmp SET `inspections` =
-		// 			(SELECT
-		// 				count
-		// 			FROM
-		// 				_tmp2
-		// 			WHERE
-		// 				_tmp2.`date` = _tmp.date
-		// 				AND _tmp2.property_id = _tmp.property_id)');
 		$this->Q( 'UPDATE
 			_tmp SET `inspections` =
 					(SELECT
@@ -218,6 +209,25 @@ class inspect_diary extends _dao {
 				]);
 
 		return ( false);
+
+	}
+
+	public function getInspectionCount( dto\inspect_diary $dto) : int {
+		$sql = sprintf(
+			'SELECT count(*) tot FROM inspect WHERE `inspect_diary_id` = %d',
+			$dto->id
+
+		);
+
+		if ( $_res = $this->Result( $sql)) {
+			if ( $_dto = $_res->dto()) {
+				return (int)$_dto->tot;
+
+			}
+
+		}
+
+		return 0;
 
 	}
 

@@ -161,9 +161,10 @@ $_report = strings::rand();
             data-role="item"
             data-id="<?= $dto->id ?>"
             data-property_id="<?= $dto->property_id ?>"
-            data-address_street="<?= htmlentities( $dto->address_street) ?>"
+            data-address_street=<?= json_encode( $dto->address_street, JSON_UNESCAPED_SLASHES) ?>
             data-person_id="<?= $dto->contact_id ?>"
             data-inspect_id="<?= $dto->inspect_id ?>"
+            data-inspections="<?= $dto->inspections ?>"
             data-type="<?= $dto->type ?>">
 
             <div class="d-none d-md-block col-1 text-center small"><?= ++$i ?></div>
@@ -383,7 +384,6 @@ $_report = strings::rand();
               e.stopPropagation();e.preventDefault();
 
               _context.close();
-
               $(document).trigger( 'view-inspection', _data.inspect_id);
 
             }));
@@ -420,6 +420,17 @@ $_report = strings::rand();
 
         }));
 
+        if ( 'Inspect' == _data.type || 0 == Number( _data.inspections)) {
+          _context.append( $('<a href="#"><i class="fa fa-trash"></i>delete</a>').on( 'click', function( e) {
+            e.stopPropagation();e.preventDefault();
+
+            _context.close();
+            _me.trigger( 'delete', _data.inspect_id);
+
+          }));
+
+        }
+
         _context.append( '<hr>');
         _context.append( $('<a href="#">close</a>').on( 'click', function( e) {
           e.stopPropagation();e.preventDefault();
@@ -451,6 +462,49 @@ $_report = strings::rand();
       }
 
       _row
+      .on( 'delete', function(e) {
+        let _me = $(this);
+
+				_.ask({
+					headClass: 'text-white bg-danger',
+					text: 'Are you sure ?',
+					title: 'Confirm Delete',
+					buttons : {
+						yes : function(e) {
+							$(this).modal('hide');
+							_me.trigger( 'delete-confirmed');
+
+						}
+
+					}
+
+				});
+
+      })
+      .on( 'delete-confirmed', function(e) {
+        let _me = $(this);
+        let _data = _me.data();
+
+        _.post({
+          url : _.url('<?= $this->route ?>'),
+          data : {
+            action : 'inspect-diary-delete',
+            id : _data.id
+          },
+
+        }).then( d => {
+          if ( 'ack' == d.response) {
+            window.location.reload();
+
+          }
+          else {
+            _.growl( d);
+
+          }
+
+        });
+
+      })
       .on( 'edit', function(e) {
         let _me = $(this);
         let _data = _me.data();

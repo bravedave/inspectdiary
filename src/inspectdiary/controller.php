@@ -238,6 +238,37 @@ class controller extends \Controller {
       } else { \Json::nak( $action); }
 
     }
+    elseif ( 'inspect-diary-delete' == $action) {
+      if ( $id = (int)$this->getPost('id')) {
+        $dao = new dao\inspect_diary;
+        if ( $dto = $dao->getByID( $id)) {
+          if ( 'Inspect' == $dto->type) {
+            $count = $dao->getInspectionCount( $dto);
+            $dao->Q( sprintf( 'DELETE FROM inspect WHERE inspect_diary_id = %d', $dto->id));
+            \sys::logger( sprintf('<there were %s inspects> %s', $count, __METHOD__));
+            $dao->delete( $dto->id);
+            Json::ack( $action);
+
+          }
+          else {
+            $count = $dao->getInspectionCount( $dto);
+            if ( $count) {
+              Json::nak( $action);
+
+            }
+            else {
+              $dao->delete( $dto->id);
+              Json::ack( $action);
+
+            }
+
+          }
+
+        } else { Json::nak( $action); }
+
+      } else { Json::nak( $action); }
+
+    }
     elseif ( 'inspect-diary-save' == $action) {
 			$a = [
         'property_id' => (int)$this->getPost('property_id'),
