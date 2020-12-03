@@ -344,6 +344,25 @@ $_report = strings::rand();
 
   $(document)
   .on( 'add-inspection', e => $('#<?= $_inspection ?>content').trigger('add-inspection'))
+  .on( 'edit-inspection-by-id', (e, id) => {
+    $('#<?= $_report ?>').collapse('show');
+
+    let found = false;
+    $('div[data-role="item"]', '#<?= $_uid ?>RentalDiary').each( ( i, row) => {
+      let _row = $(row);
+      let _data = _row.data();
+
+      if ( id == _data.id) {
+        _row.trigger('edit');
+
+        found = true;
+        return false;
+
+      }
+
+    });
+
+  })
   .on( 'view-inspection', (e,id) => $('#<?= $_inspection ?>content').trigger('view-inspection', id))
   .on( 'load-inspects', ( e, data) => {
 
@@ -569,7 +588,7 @@ $_report = strings::rand();
 
       })
       .addClass('pointer')
-      .on( 'click', _.browser.isMobileDevice ? contextMenu : click)
+      .on( 'click', click)
       .on( 'contextmenu', contextMenu);
 
     });

@@ -556,6 +556,15 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
       }));
 
+      _context.append( $('<a href="#"><i class="fa fa-pencil"></i>edit inspection</a>').on( 'click', function( e) {
+        e.stopPropagation();e.preventDefault();
+
+        _context.close();
+
+        $(document).trigger( 'edit-inspection-by-id', <?= $this->data->dto->id ?>);
+
+      }));
+
       _context.open( e);
 
     };
