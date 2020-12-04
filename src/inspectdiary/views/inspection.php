@@ -282,23 +282,50 @@ $dto = $this->data->dto;  ?>
   </div>
   <script>
   ( _ => {
-    <?php if ( !$dto->person_id) { ?>
-      $('#<?= $_modal ?>').on( 'shown.bs.modal', e => $('input[name="name"]', '#<?= $_form ?>').focus());
+    $('#<?= $_modal ?>').on( 'shown.bs.modal', e => {
+      <?php if ( !$dto->person_id) { ?>
+        $('input[name="name"]', '#<?= $_form ?>').focus();
 
-    <?php } ?>
+      <?php } ?>
 
-    $(document).ready( () => {
-      $('#<?= $_LinkedContactControl ?>')
-      .addClass( 'pointer')
-      .on( 'click', function( e) {
-        e.stopPropagation();
+      $('#<?= $_comment ?>').trigger('resize');
+      $('#<?= $_notes ?>').trigger('resize');
+      $('#<?= $_tasks ?>').trigger('resize');
 
-        $('input[name="person_id"]', '#<?= $_form ?>').val( 0);
-        $('.fa', this).removeClass( 'fa-chain').addClass( 'fa-chain-broken');
+    });
 
-      })
+    $('#<?= $_LinkedContactControl ?>')
+    .addClass( 'pointer')
+    .on( 'click', function( e) {
+      e.stopPropagation();
 
-      $('input[name="name"]', '#<?= $_form ?>').autofill({
+      $('input[name="person_id"]', '#<?= $_form ?>').val( 0);
+      $('.fa', this).removeClass( 'fa-chain').addClass( 'fa-chain-broken');
+
+    })
+
+    $('input[name="name"]', '#<?= $_form ?>').autofill({
+      autoFocus: false,
+      source: _.search.inspectdiary_people,
+      select: ( e, ui) => {
+        let o = ui.item;
+        $('input[name="person_id"]', '#<?= $_form ?>').val( o.id);
+        $('input[name="mobile"]', '#<?= $_form ?>').val( o.mobile).trigger('change');
+        $('input[name="email"]', '#<?= $_form ?>').val( o.email);
+        $('input[name="property2sell"]', '#<?= $_form ?>').val( o.property2sell);
+        $('#<?= $_LinkedContactControl ?> .fa').removeClass( 'fa-chain-broken').addClass( 'fa-chain');
+
+        $('input[name="mobile"]', '#<?= $_form ?>').autofill('destroy');
+
+      },
+
+    });
+
+    (() => {
+      let id = $('input[name="person_id"]', '#<?= $_form ?>').val();
+      if ( Number( id) > 0 ) return;
+
+      $('input[name="mobile"]', '#<?= $_form ?>').autofill({
         autoFocus: false,
         source: _.search.inspectdiary_people,
         select: ( e, ui) => {
@@ -309,247 +336,226 @@ $dto = $this->data->dto;  ?>
           $('input[name="property2sell"]', '#<?= $_form ?>').val( o.property2sell);
           $('#<?= $_LinkedContactControl ?> .fa').removeClass( 'fa-chain-broken').addClass( 'fa-chain');
 
+          if ( '' == $('input[name="name"]', '#<?= $_form ?>').val()) {
+            $('input[name="name"]', '#<?= $_form ?>').val( o.name).trigger('change');
+
+          }
           $('input[name="mobile"]', '#<?= $_form ?>').autofill('destroy');
 
         },
 
       });
 
-      (() => {
-        let id = $('input[name="person_id"]', '#<?= $_form ?>').val();
-        if ( Number( id) > 0 ) return;
+    })();
 
-        $('input[name="mobile"]', '#<?= $_form ?>').autofill({
-          autoFocus: false,
-          source: _.search.inspectdiary_people,
-          select: ( e, ui) => {
-            let o = ui.item;
-            $('input[name="person_id"]', '#<?= $_form ?>').val( o.id);
-            $('input[name="mobile"]', '#<?= $_form ?>').val( o.mobile).trigger('change');
-            $('input[name="email"]', '#<?= $_form ?>').val( o.email);
-            $('input[name="property2sell"]', '#<?= $_form ?>').val( o.property2sell);
-            $('#<?= $_LinkedContactControl ?> .fa').removeClass( 'fa-chain-broken').addClass( 'fa-chain');
+    $('#<?= $_comment ?>').autoResize();
+    $('#<?= $_notes ?>').autoResize();
+    $('#<?= $_tasks ?>').autoResize();
 
-            if ( '' == $('input[name="name"]', '#<?= $_form ?>').val()) {
-              $('input[name="name"]', '#<?= $_form ?>').val( o.name).trigger('change');
+    $('button[sendsms]', '#<?= $_form ?>')
+    .addClass( 'pointer')
+    .on( 'click', e => {
+      e.stopPropagation();
 
-            }
-            $('input[name="mobile"]', '#<?= $_form ?>').autofill('destroy');
+      let _fld = $('input[name="mobile"]', '#<?= $_form ?>');
+      let tel = String( _fld.val());
 
-          },
+      tel = tel.replace( /\s/g, '');
 
-        });
-
-      })();
-
-      $('button[sendsms]', '#<?= $_form ?>')
-      .addClass( 'pointer')
-      .on( 'click', e => {
-        e.stopPropagation();
-
-        let _fld = $('input[name="mobile"]', '#<?= $_form ?>');
-        let tel = String( _fld.val());
-
-        tel = tel.replace( /\s/g, '');
-
-        _.get.sms().then( modal => {
-          modal.trigger( 'add.recipient', tel);
-          $('textarea[name="message"]', modal).focus();
-
-        });
+      _.get.sms().then( modal => {
+        modal.trigger( 'add.recipient', tel);
+        $('textarea[name="message"]', modal).focus();
 
       });
 
-      $('button[phonecall]', '#<?= $_form ?>')
-      .addClass( 'pointer')
-      .on( 'click', e => {
-        e.stopPropagation();
+    });
 
-        let _fld = $('input[name="mobile"]', '#<?= $_form ?>');
-        let tel = String( _fld.val());
+    $('button[phonecall]', '#<?= $_form ?>')
+    .addClass( 'pointer')
+    .on( 'click', e => {
+      e.stopPropagation();
 
-        tel = tel.replace( /\s/g, '');
-        tel = tel.replace( /^0/, '+61');
+      let _fld = $('input[name="mobile"]', '#<?= $_form ?>');
+      let tel = String( _fld.val());
 
-        window.location.href = 'tel:' + tel;
+      tel = tel.replace( /\s/g, '');
+      tel = tel.replace( /^0/, '+61');
 
-      });
+      window.location.href = 'tel:' + tel;
 
-      $('input[name="mobile"]', '#<?= $_form ?>')
-      .on( 'change', function(e) {
-        let _me = $(this);
-        let grp = _me.closest('.input-group')
-        let tel = String( _me.val());
+    });
 
-        if ( tel.IsMobilePhone()) {
-          _.get.sms.enabled().then( () => $('[sendsms]', grp).removeClass( 'd-none'));
+    $('input[name="mobile"]', '#<?= $_form ?>')
+    .on( 'change', function(e) {
+      let _me = $(this);
+      let grp = _me.closest('.input-group')
+      let tel = String( _me.val());
 
-        }
-        else {
-          $('[sendsms]', grp).addClass( 'd-none');
+      if ( tel.IsMobilePhone()) {
+        _.get.sms.enabled().then( () => $('[sendsms]', grp).removeClass( 'd-none'));
 
-        }
+      }
+      else {
+        $('[sendsms]', grp).addClass( 'd-none');
 
-        if ( tel.IsPhone()) {
-          $('[phonecall]', grp).removeClass( 'd-none');
+      }
 
-        }
-        else {
-          $('[phonecall]', grp).addClass( 'd-none');
+      if ( tel.IsPhone()) {
+        $('[phonecall]', grp).removeClass( 'd-none');
 
-        }
+      }
+      else {
+        $('[phonecall]', grp).addClass( 'd-none');
 
-      })
-      .trigger('change');
+      }
 
-      $('button[sendemail]', '#<?= $_form ?>')
-      .addClass( 'pointer')
-      .on( 'click', e => {
-        e.stopPropagation();
+    })
+    .trigger('change');
 
-        let _fld = $('input[name="email"]', '#<?= $_form ?>');
-        let email = String( _fld.val());
+    $('button[sendemail]', '#<?= $_form ?>')
+    .addClass( 'pointer')
+    .on( 'click', e => {
+      e.stopPropagation();
 
-        let person = {
-          name : $('input[name="name"]', '#<?= $_form ?>').val(),
-          email : email
+      let _fld = $('input[name="email"]', '#<?= $_form ?>');
+      let email = String( _fld.val());
 
-        };
+      let person = {
+        name : $('input[name="name"]', '#<?= $_form ?>').val(),
+        email : email
 
-        let ea = {
-          to : _.email.rfc922( person),
-          subject : <?= json_encode( $dto->address_street) ?>
+      };
 
-        }
+      let ea = {
+        to : _.email.rfc922( person),
+        subject : <?= json_encode( $dto->address_street) ?>
 
-        console.log( ea);
-        _.email.activate(ea);
+      }
 
-      });
+      console.log( ea);
+      _.email.activate(ea);
 
-      $('input[name="email"]', '#<?= $_form ?>')
-      .on( 'change', function(e) {
-        let _me = $(this);
-        let grp = _me.closest('.input-group')
-        let email = String( _me.val());
+    });
 
-        if ( email.isEmail() && !!_.email.activate) {
-          _.get.sms.enabled().then( () => $('[sendemail]', grp).removeClass( 'd-none'));
+    $('input[name="email"]', '#<?= $_form ?>')
+    .on( 'change', function(e) {
+      let _me = $(this);
+      let grp = _me.closest('.input-group')
+      let email = String( _me.val());
 
-        }
-        else {
-          $('[sendemail]', grp).addClass( 'd-none');
+      if ( email.isEmail() && !!_.email.activate) {
+        _.get.sms.enabled().then( () => $('[sendemail]', grp).removeClass( 'd-none'));
 
-        }
+      }
+      else {
+        $('[sendemail]', grp).addClass( 'd-none');
 
-      })
-      .trigger('change');
+      }
 
-      $('#<?= $_comment ?>').autoResize();
-      $('#<?= $_notes ?>').autoResize();
-      $('#<?= $_tasks ?>').autoResize();
+    })
+    .trigger('change');
 
-      $('#<?= $_form ?>')
-      .on( 'property-id-change', function( e) {
-        let _form = $(this);
-        let _data = _form.serializeFormJSON();
+    $('#<?= $_form ?>')
+    .on( 'property-id-change', function( e) {
+      let _form = $(this);
+      let _data = _form.serializeFormJSON();
 
-        $('#<?= $_docs_Button ?>').addClass('d-none');
+      $('#<?= $_docs_Button ?>').addClass('d-none');
 
-        if ( parseInt( _data.property_id) < 1) return;
+      if ( parseInt( _data.property_id) < 1) return;
 
-        if ( !!window._cms_) {
-          if ( !!window._cms_.property) {
-            let person = () => {
-              let _form = $('#<?= $_form ?>');  // the latest
-              let _data = _form.serializeFormJSON();
+      if ( !!window._cms_) {
+        if ( !!window._cms_.property) {
+          let person = () => {
+            let _form = $('#<?= $_form ?>');  // the latest
+            let _data = _form.serializeFormJSON();
 
-              let r = {
-                id : _data.person_id,
-                name : _data.name,
-                email : _data.email,
-                mobile : _data.mobile,
-
-              };
-
-              return r;
+            let r = {
+              id : _data.person_id,
+              name : _data.name,
+              email : _data.email,
+              mobile : _data.mobile,
 
             };
 
-            if ( !!window._cms_.property.extensions) {
-              _cms_.property.extensions({
-                host : '#<?= $_collapseDocs ?>content',
-                inspect_id : _data.id,
-                person : person,
-                property_id : _data.property_id,
-                inspect_type : _data.type,
+            return r;
 
-              })
-              .then( () => $('#<?= $_docs_Button ?>').removeClass('d-none'));
+          };
 
-            }
+          if ( !!window._cms_.property.extensions) {
+            _cms_.property.extensions({
+              host : '#<?= $_collapseDocs ?>content',
+              inspect_id : _data.id,
+              person : person,
+              property_id : _data.property_id,
+              inspect_type : _data.type,
 
-            if ( !!window._cms_.property.reminderButton) {
-              _cms_.property.reminderButton({
-                button : '#<?= $_btnReminder ?>',
-                person : person,
-                property_id : _data.property_id,
-                inspect_id : _data.id,
-                inspect_type : _data.type,
+            })
+            .then( () => $('#<?= $_docs_Button ?>').removeClass('d-none'));
 
-              })
-              .then( () => $('#<?= $_btnReminder ?>').removeClass('d-none'));
+          }
 
-            }
+          if ( !!window._cms_.property.reminderButton) {
+            _cms_.property.reminderButton({
+              button : '#<?= $_btnReminder ?>',
+              person : person,
+              property_id : _data.property_id,
+              inspect_id : _data.id,
+              inspect_type : _data.type,
 
-            if ( !!window._cms_.property.taskButton) {
-              _cms_.property.taskButton({
-                button : '#<?= $_btnTask ?>',
-                person : person,
-                property_id : _data.property_id,
-                inspect_id : _data.id,
-                inspect_type : _data.type,
+            })
+            .then( () => $('#<?= $_btnReminder ?>').removeClass('d-none'));
 
-              })
-              .then( () => $('#<?= $_btnTask ?>').removeClass('d-none'));
+          }
 
-            }
+          if ( !!window._cms_.property.taskButton) {
+            _cms_.property.taskButton({
+              button : '#<?= $_btnTask ?>',
+              person : person,
+              property_id : _data.property_id,
+              inspect_id : _data.id,
+              inspect_type : _data.type,
+
+            })
+            .then( () => $('#<?= $_btnTask ?>').removeClass('d-none'));
 
           }
 
         }
 
-      })
-      .on( 'submit', function( e) {
-        let _form = $(this);
-        let _data = _form.serializeFormJSON();
-        // let _modalBody = $('.modal-body', _form);
+      }
 
-        _.post({
-          url : _.url('<?= $this->route ?>'),
-          data : _data,
+    })
+    .on( 'submit', function( e) {
+      let _form = $(this);
+      let _data = _form.serializeFormJSON();
+      // let _modalBody = $('.modal-body', _form);
 
-        }).then( d => {
-          if ( 'ack' == d.response) {
-            $('#<?= $_modal ?>').trigger('success');
+      _.post({
+        url : _.url('<?= $this->route ?>'),
+        data : _data,
 
-          }
-          else {
-            _.growl( d);
+      }).then( d => {
+        if ( 'ack' == d.response) {
+          $('#<?= $_modal ?>').trigger('success');
 
-          }
+        }
+        else {
+          _.growl( d);
 
-          $('#<?= $_modal ?>').modal('hide');
+        }
 
-        });
-
-        return false;
+        $('#<?= $_modal ?>').modal('hide');
 
       });
 
-      $('#<?= $_form ?>').trigger( 'property-id-change');
+      return false;
 
     });
+
+    $('#<?= $_form ?>').trigger( 'property-id-change');
+
+    $(document).ready( () => {});
 
   })( _brayworth_);
   </script>
