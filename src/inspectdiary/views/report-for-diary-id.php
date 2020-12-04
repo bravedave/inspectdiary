@@ -565,7 +565,19 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
       }));
 
-      _context.open( e);
+      // console.log( this);
+      let target = $(this);
+      let offsets = target.offset();
+      let _e = {
+        pageX : offsets.left,
+        pageY : offsets.top + target.outerHeight(),
+        target : e.target
+
+      };
+
+      // console.log( _e, target.outerHeight());
+
+      _context.open( _e);
 
     };
 

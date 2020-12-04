@@ -296,7 +296,6 @@ $dto = $this->data->dto;  ?>
         $('input[name="person_id"]', '#<?= $_form ?>').val( 0);
         $('.fa', this).removeClass( 'fa-chain').addClass( 'fa-chain-broken');
 
-
       })
 
       $('input[name="name"]', '#<?= $_form ?>').autofill({
@@ -310,9 +309,38 @@ $dto = $this->data->dto;  ?>
           $('input[name="property2sell"]', '#<?= $_form ?>').val( o.property2sell);
           $('#<?= $_LinkedContactControl ?> .fa').removeClass( 'fa-chain-broken').addClass( 'fa-chain');
 
+          $('input[name="mobile"]', '#<?= $_form ?>').autofill('destroy');
+
         },
 
       });
+
+      (() => {
+        let id = $('input[name="person_id"]', '#<?= $_form ?>').val();
+        if ( Number( id) > 0 ) return;
+
+        $('input[name="mobile"]', '#<?= $_form ?>').autofill({
+          autoFocus: false,
+          source: _.search.inspectdiary_people,
+          select: ( e, ui) => {
+            let o = ui.item;
+            $('input[name="person_id"]', '#<?= $_form ?>').val( o.id);
+            $('input[name="mobile"]', '#<?= $_form ?>').val( o.mobile).trigger('change');
+            $('input[name="email"]', '#<?= $_form ?>').val( o.email);
+            $('input[name="property2sell"]', '#<?= $_form ?>').val( o.property2sell);
+            $('#<?= $_LinkedContactControl ?> .fa').removeClass( 'fa-chain-broken').addClass( 'fa-chain');
+
+            if ( '' == $('input[name="name"]', '#<?= $_form ?>').val()) {
+              $('input[name="name"]', '#<?= $_form ?>').val( o.name).trigger('change');
+
+            }
+            $('input[name="mobile"]', '#<?= $_form ?>').autofill('destroy');
+
+          },
+
+        });
+
+      })();
 
       $('button[sendsms]', '#<?= $_form ?>')
       .addClass( 'pointer')
