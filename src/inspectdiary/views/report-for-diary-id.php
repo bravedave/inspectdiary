@@ -241,6 +241,14 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
         }
 
+        _context.append( $('<a href="#">change inspection</a>').on( 'click', function( e) {
+          e.stopPropagation();e.preventDefault();
+
+          _row.trigger('change-inspection');
+          _context.close();
+
+        }));
+
         _context.append( $('<a href="#">view '+_data.name+'</a>').on( 'click', function( e) {
           e.stopPropagation();e.preventDefault();
 
@@ -290,25 +298,23 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
       _row
       .addClass( 'pointer')
-      .on( 'person-edit', function(e) {
-        let _row = $(this);
-        let _data = _row.data();
+      .on( 'change-inspection', function( e) {
+        e.stopPropagation();
 
-        // console.log( _data);
-
-        _.get.modal( _.url('<?= config::$INSPECTDIARY_ROUTE_PEOPLE ?>/edit/' + _data.person_id))
-        .then( m => m.on( 'success', e => $(document).trigger( 'refresh-inspects')));
-
-      })
-      .on( 'view', function( e) {
         let _me = $(this);
         let _data = _me.data();
 
-        // console.log( _data);
-
-        $(document).trigger( 'view-inspection', _data.id);
+        $(document).trigger( 'change-inspection-of-inspect', _data.id);
 
       })
+      .on( 'click', function( e) {
+        e.stopPropagation();
+
+        let _me = $(this);
+        _me.trigger( 'view');
+
+      })
+      .on( 'contextmenu', contextMenu)
       .on( 'email', function( e) {
         let _me = $(this);
         let _data = _me.data();
@@ -320,6 +326,16 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
           subject : <?= json_encode( $this->data->dto->address_street) ?>
 
         });
+
+      })
+      .on( 'person-edit', function(e) {
+        let _row = $(this);
+        let _data = _row.data();
+
+        // console.log( _data);
+
+        _.get.modal( _.url('<?= config::$INSPECTDIARY_ROUTE_PEOPLE ?>/edit/' + _data.person_id))
+        .then( m => m.on( 'success', e => $(document).trigger( 'refresh-inspects')));
 
       })
       .on( 'sms', function( e) {
@@ -395,14 +411,15 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
         })
 
       })
-      .on( 'click', function( e) {
-        e.stopPropagation();
-
+      .on( 'view', function( e) {
         let _me = $(this);
-        _me.trigger( 'view');
+        let _data = _me.data();
 
-      })
-      .on( 'contextmenu', contextMenu);
+        // console.log( _data);
+
+        $(document).trigger( 'view-inspection', _data.id);
+
+      });
 
     });
 

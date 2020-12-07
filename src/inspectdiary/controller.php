@@ -101,7 +101,22 @@ class controller extends \Controller {
 	protected function postHandler() {
     $action = $this->getPost('action');
 
-		if ( 'email-sent' == $action) {
+		if ( 'change-inspection-of-inspect' == $action) {
+      if ( $id = $this->getPost('id')) {
+        $a = [
+          'inspect_diary_id' => $this->getPost('inspect_diary_id')
+
+        ];
+
+        $dao = new dao\inspect;
+        $dao->UpdateByID( $a, $id);
+
+        Json::ack( $action);
+
+      } else { Json::nak( $action); }
+
+    }
+		elseif ( 'email-sent' == $action) {
       if ( $id = (int)$this->getPost('id')) {
         $dao = new dao\inspect;
         if ( $dto = $dao->getByID( $id)) {
@@ -507,6 +522,34 @@ class controller extends \Controller {
     }
 
   */
+
+	public function changeInspectionofInspect( $id = 0) {
+
+    $dao = new dao\inspect;
+		if ( $id = (int)$id) {
+      if ( $dto = $dao->getByID( $id)) {
+        $dto = $dao->getDetail( $dto);
+        if ( $dto->inspect_diary_id) {
+          $dao = new dao\inspect_diary;
+          if ( $dtoID = $dao->getByID( $dto->inspect_diary_id)) {
+            $this->data = (object)[
+              'title' => $this->title = 'Change Inspection',
+              'dto' => $dto,
+              'inspects' => $dao->getInspectsForDate( $dtoID->date)
+
+            ];
+
+            $this->load('change-Inspection-of-Inspect');
+
+          } else { $this->load('inspect-diary-not-found'); }
+
+        } else { $this->load('inspect-diary-not-found'); }
+
+      } else { $this->load('inspect-not-found'); }
+
+    } else { $this->load('inspect-not-found'); }
+
+  }
 
 	public function edit( $id = 0) {
 		$this->data = (object)[

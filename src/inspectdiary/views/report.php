@@ -247,7 +247,7 @@ $_candidate = strings::rand();
                   ?>
                 </div>
 
-                <div class="col text-center"><?= $dto->inspections ?></div>
+                <div class="col text-center" inspections><?= $dto->inspections ?></div>
 
               </div>
 
@@ -454,6 +454,19 @@ $_candidate = strings::rand();
   .on( 'candidate-saving-error', e => resetSaveState().then( icon => icon.addClass('text-danger fa-times')))
   .on( 'candidate-unsaved', e => resetSaveState().then( icon => icon.addClass('fa-minus text-warning')))
   .on( 'add-inspection', e => $('#<?= $_candidate ?>').trigger('add-inspection'))
+  .on( 'change-inspection-of-inspect', function( e, id) {
+    e.stopPropagation();
+
+    _.get.modal( _.url( '<?= $this->route ?>/changeInspectionofInspect/' + id))
+    .then( modal => modal.on( 'success', e => {
+      $('#<?= $_candidates ?>content').trigger('refresh');
+
+      $('div[data-role="item"]', '#<?= $_uid ?>RentalDiary')
+      .each( ( i, row) => $('[inspections]', row).addClass( 'text-warning'));
+
+    }));
+
+  })
   .on( 'edit-inspection-by-id', (e, id) => {
     $('#<?= $_report ?>').collapse('show');
 
@@ -685,7 +698,7 @@ $_candidate = strings::rand();
             }
 
             // $('[data-field]', _me).each( (i, el) => console.log( $(el).data('field')));
-            // console.log( d.data);
+            console.log( d.data);
             _me.removeClass( 'bg-warning');
 
           }

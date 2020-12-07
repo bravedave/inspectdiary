@@ -231,6 +231,33 @@ class inspect_diary extends _dao {
 
 	}
 
+	public function getInspectsForDate( string $date) : array {
+		$sql = sprintf(
+			'SELECT
+				i.`id`,
+				i.`date`,
+				i.`time`,
+				i.`type`,
+				i.`property_id`,
+				p.`address_street`
+			FROM
+				`inspect_diary` i
+				LEFT JOIN `properties` p on p.`id` = i.`property_id`
+			WHERE
+				`date` = "%s" AND `type` = "OH Inspect"',
+			$date
+
+		);
+
+		if ( $res = $this->Result( $sql)) {
+			return $res->dtoSet();
+
+		}
+
+		return [];
+
+	}
+
 	public function getRange( $from, $to) : array {
 		$sql = sprintf(
 			'SELECT
