@@ -511,29 +511,32 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
             let _row = $(row);
             let _data = _row.data();
 
-            let parms = {
-              person : () => {
-                return {
-                  id : _data.person_id,
-                  name : _data.name
+            if ( 'no' == _data.has_reminder) {
+              let parms = {
+                person : () => {
+                  return {
+                    id : _data.person_id,
+                    name : _data.name
 
-                };
+                  };
 
-              },
-              property_id: <?= (int)$this->data->dto->property_id ?>,
-              inspect_id: _data.id,
-              inspect_type : 'Inspect' == _data.type ? 'insp' : 'oh',
+                },
+                property_id: <?= (int)$this->data->dto->property_id ?>,
+                inspect_id: _data.id,
+                inspect_type : 'Inspect' == _data.type ? 'insp' : 'oh',
+
+              }
+
+              c++;
+
+              _cms_.property.reminderAuto( parms)
+              .then( d => {
+                _row.addClass( 'text-warning');
+                f();
+
+              });
 
             }
-
-            c++;
-
-            _cms_.property.reminderAuto( parms)
-            .then( d => {
-              _row.addClass( 'text-warning');
-              f();
-
-            });
 
           });
 
