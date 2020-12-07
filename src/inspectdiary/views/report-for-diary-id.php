@@ -506,6 +506,8 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
             if ( 0 == c) $(document).trigger( 'refresh-inspects');
 
           };
+
+          let iSet = 0;
           $('>[data-id]', this).each( (i, row) => {
 
             let _row = $(row);
@@ -528,6 +530,7 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
               }
 
               c++;
+              iSet ++;
 
               _cms_.property.reminderAuto( parms)
               .then( d => {
@@ -539,6 +542,11 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
             }
 
           });
+
+          if ( 0 == iSet) {
+            _.get.modal( _.url( '<?= $this->route ?>/noreminderstoset'));
+
+          }
 
           return;
 

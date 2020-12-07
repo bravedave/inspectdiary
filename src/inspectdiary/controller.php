@@ -653,6 +653,11 @@ class controller extends \Controller {
 
   }
 
+  public function noreminderstoset() {
+    $this->load( 'no-reminders-to-set');
+
+  }
+
   public function nosmstosend() {
     $this->load( 'no-sms-to-send');
 
