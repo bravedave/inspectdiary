@@ -460,11 +460,34 @@ $_candidate = strings::rand();
     _.get.modal( _.url( '<?= $this->route ?>/changeInspectionofInspect/' + id))
     .then( modal => modal.on( 'success', e => {
       $('#<?= $_candidates ?>content').trigger('refresh');
+      $(document).trigger('invalidate-counts');
 
-      $('div[data-role="item"]', '#<?= $_uid ?>RentalDiary')
-      .each( ( i, row) => $('[inspections]', row).addClass( 'text-warning'));
 
     }));
+
+  })
+  .on( 'delete-inspection-confirmed', function( e, id) {
+    e.stopPropagation();
+
+    _.post({
+      url : _.url('<?= $this->route ?>'),
+      data : {
+        action : 'inspection-delete',
+        id : id
+      },
+
+    }).then( d => {
+      if ( 'ack' == d.response) {
+        $('#<?= $_candidates ?>content').trigger('refresh');
+        $(document).trigger('invalidate-counts');
+
+      }
+      else {
+        _.growl( d);
+
+      }
+
+    });
 
   })
   .on( 'edit-inspection-by-id', (e, id) => {
@@ -484,6 +507,11 @@ $_candidate = strings::rand();
       }
 
     });
+
+  })
+  .on( 'invalidate-counts', ( e) => {
+    $('div[data-role="item"]', '#<?= $_uid ?>RentalDiary')
+    .each( ( i, row) => $('[inspections]', row).addClass( 'text-warning'));
 
   })
   .on( 'view-inspection', (e,id) => $('#<?= $_candidates ?>content').trigger('view-inspection', id))

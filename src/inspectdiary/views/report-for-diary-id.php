@@ -249,6 +249,14 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
         }));
 
+        _context.append( $('<a href="#"><i class="fa fa-trash"></i>delete</a>').on( 'click', function( e) {
+          e.stopPropagation();e.preventDefault();
+
+          _row.trigger('delete-inspection');
+          _context.close();
+
+        }));
+
         _context.append( $('<a href="#">view '+_data.name+'</a>').on( 'click', function( e) {
           e.stopPropagation();e.preventDefault();
 
@@ -315,6 +323,28 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
       })
       .on( 'contextmenu', contextMenu)
+      .on( 'delete-inspection', function( e) {
+        e.stopPropagation();
+
+        let _me = $(this);
+        let _data = _me.data();
+
+				_.ask({
+					headClass: 'text-white bg-danger',
+					text: 'Are you sure ?',
+					title: 'Confirm Delete',
+					buttons : {
+						yes : function(e) {
+							$(this).modal('hide');
+              $(document).trigger( 'delete-inspection-confirmed', _data.id);
+
+						}
+
+					}
+
+				});
+
+      })
       .on( 'email', function( e) {
         let _me = $(this);
         let _data = _me.data();

@@ -391,6 +391,15 @@ class controller extends \Controller {
       }
 
     }
+    elseif ( 'inspection-delete' == $action) {
+      if ( $id = (int)$this->getPost('id')) {
+        $dao = new dao\inspect;
+        $dao->delete( $id);
+        Json::ack( $action);
+
+      } else { Json::nak( $action); }
+
+    }
     elseif ( 'inspection-save' == $action) {
       $a = [
         'type' => $this->getPost('type'),
