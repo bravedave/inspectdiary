@@ -11,11 +11,17 @@
 namespace inspectdiary;
 
 use currentUser;
-use strings;	?>
+use strings; ?>
 
-<div class="nav flex-column">
-	<div class="nav-item">
-		<div class="nav-link">
+<div class="row mt-4">
+  <div class="offset-md-2 col-md-8">
+    <div class="alert alert-warning alert-dismissible fade show">
+      <p><strong>caution!</strong> This work is NOT fully compatible with inspect<sup>v1</sup></p>
+
+      <p>Missing data is populated by running the <em>inspect diary</em> report -
+      so normally should not be a problem, but if you use the mobile inspect App
+      without running the report, data will not appear</p>
+
 			<div class="form-check">
 				<input type="checkbox" class="form-check-input" name="use-this-interfacce"
 					<?php if ( !currentUser::option( 'inspect-interface')) print 'checked'; ?>
@@ -29,9 +35,13 @@ use strings;	?>
 
 			</div>
 
-		</div>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
 
-	</div>
+    </div>
+
+  </div>
 
 </div>
 <script>
@@ -47,7 +57,11 @@ use strings;	?>
 
 			},
 
-		}).then( d => _.growl( d));
+		}).then( d => {
+      _.growl( d);
+      _me.closest('.alert').alert('close');
+
+    });
 
 	});
 

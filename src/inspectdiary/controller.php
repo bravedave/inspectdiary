@@ -61,22 +61,35 @@ class controller extends \Controller {
 
 		//~ $this->data = $dao->getAll();
 		$this->data = $dao->getFiltered( $filter, $seed);
-		// \sys::dump( $this->data);
+    // \sys::dump( $this->data);
 
-    // 'primary' => 'bs-report',
+
+    $primary = [ self::inspectdiary_modal_interface ? 'report-modal' : 'report' ];
+    $secondary = [ 'index'];
+
+    if ( currentUser::option( 'inspect-interface-modern')) {
+      /**
+       * cleanup old key
+       */
+      currentUser::option( 'inspect-interface-modern','');
+
+    }
+
+    if ( 'legacy' == currentUser::option( 'inspect-interface')) {
+      $primary[] = 'interface-warning';
+
+    }
+    else {
+      $secondary[] = 'index-default-interface';
+
+    }
 
     $this->render([
       'title' => $this->title = 'Inspect Home : ' . $this->data->scope,
-      'primary' => self::inspectdiary_modal_interface ? 'report-modal' : 'report',
-			'secondary' => [
-        'index',
-        'index-default-interface'
-      ]
+      'primary' => $primary,
+			'secondary' => $secondary
 
     ]);
-
-
-    // 'scripts' => [ url::tostring('inspect/jsd?v=' . jslib::jsd_timestamp())]
 
   }
 
@@ -488,8 +501,8 @@ class controller extends \Controller {
 			} else { Json::nak( $action); }
 
     }
-    elseif ( 'set-inspect-interface-modern' == $action) {
-			currentUser::option( 'inspect-interface-modern', $this->getPost('value'));
+    elseif ( 'set-inspect-interface' == $action) {
+			currentUser::option( 'inspect-interface', $this->getPost('value'));
       Json::ack( $action);
 
     }
