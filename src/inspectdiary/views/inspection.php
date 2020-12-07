@@ -23,255 +23,44 @@ $dto = $this->data->dto;  ?>
   <input type="hidden" name="property_id" value="<?= $dto->property_id ?>">
   <input type="hidden" name="inspect_diary_id" value="<?= $dto->inspect_diary_id ?>">
 
-  <div class="modal fade" tabindex="-1" role="dialog" id="<?= $_modal = strings::rand() ?>" aria-labelledby="<?= $_modal ?>Label" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header bg-secondary text-white py-2 pl-2">
-          <h5 class="modal-title" id="<?= $_modal ?>Label"><?= $dto->address_street ?></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+  <div class="collapse" id="<?= $_collapseDocs = strings::rand() ?>">
+    <div class="container-fluid mb-2 border-bottom">
+      <div class="row">
+        <div class="col">
+          <h6 class="mt-1 mb-0">Library</h6>
 
         </div>
 
-        <div class="modal-body px-2">
-
-          <div class="collapse" id="<?= $_collapseDocs = strings::rand() ?>">
-            <div class="container-fluid mb-2 border-bottom">
-              <div class="row">
-                <div class="col">
-                  <h6 class="mt-1 mb-0">Library</h6>
-
-                </div>
-
-                <div class="col-auto">
-                  <button type="button" class='close' data-toggle="collapse" data-target="#<?= $_collapseDocs ?>">&times;</button>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="row">
-              <div class="col" id="<?= $_collapseDocs ?>content">&nbsp;</div>
-
-            </div>
-
-          </div>
-
-          <div class="form-row row mb-2"><!-- name -->
-            <label class="d-none d-md-block col-md-3 col-form-label" for="<?= $_uid = strings::rand() ?>" >Contact</label>
-
-            <div class="col">
-              <div class="input-group">
-                <input type="text" name="name" class="form-control" placeholder="name" autocomplete="off"
-                  id="<?= $_uid ?>"
-                  value="<?= $dto->name ?>">
-
-                <div class="input-group-append" id="<?= $_LinkedContactControl = strings::rand() ?>">
-                  <div class="input-group-text">
-                    <i class="fa <?=  $dto->person_id ? 'fa-chain' : 'fa-chain-broken' ?>"></i>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="form-row row mb-2"><!-- mobile -->
-            <div class="offset-md-3 col">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <i class="fa fa-mobile"></i>
-                  </div>
-
-
-                </div>
-
-                <input type="text" name="mobile" class="form-control" placeholder="phone" autocomplete="off"
-                  value="<?= $dto->mobile ?>">
-
-                <div class="input-group-append">
-                  <button type="button" class="btn input-group-text d-none" sendsms>
-                    <i class="fa fa-commenting-o"></i>
-
-                  </button>
-
-                </div>
-
-                <div class="input-group-append" >
-                  <button type="button" class="btn input-group-text d-none" phonecall>
-                    <i class="fa fa-phone"></i>
-
-                  </button>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="form-row row mb-2"><!-- email -->
-            <div class="offset-md-3 col">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">@</div>
-
-                </div>
-
-                <input type="text" name="email" class="form-control" placeholder="@" autocomplete="off"
-                  value="<?= $dto->email ?>">
-
-                <div class="input-group-append">
-                  <button type="button" class="btn input-group-text d-none" sendemail>
-                    <i class="fa fa-envelope-o"></i>
-
-                  </button>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="form-row row mb-2"><!-- property2sell -->
-            <label class="col-md-3 col-form-label d-none d-md-block" for="<?= $_uid = strings::rand() ?>">Property to Sell</label>
-
-            <div class="col">
-              <div class="input-group">
-                <div class="input-group-prepend d-md-none">
-                  <div class="input-group-text">p2s</div>
-                </div>
-
-                <input type="text" name="property2sell" class="form-control" placeholder="p2s"
-                  id="<?= $_uid ?>"
-                  value="<?= $dto->property2sell ?>">
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="form-row row mb-2"><!-- comment -->
-            <label class="col-md-3 col-form-label pb-0" for="<?= $_comment = strings::rand() ?>">Comment</label>
-
-            <div class="col">
-              <textarea name="comment" class="form-control" placeholder="comment"
-                id="<?= $_comment ?>"><?= $dto->comment ?></textarea>
-
-            </div>
-
-          </div>
-
-          <div class="form-row row mb-2"><!-- notes -->
-            <label class="col-md-3 col-form-label pb-0" for="<?= $_notes = strings::rand() ?>">Notes</label>
-
-            <div class="col">
-              <textarea name="notes" class="form-control" placeholder="notes"
-                id="<?= $_notes ?>"><?= $dto->notes ?></textarea>
-
-            </div>
-
-          </div>
-
-          <div class="form-row row mb-2"><!-- tasks -->
-            <label class="col-md-3 col-form-label pb-0" for="<?= $_tasks = strings::rand() ?>">Tasks</label>
-
-            <div class="col">
-              <textarea name="tasks" class="form-control" placeholder="tasks"
-                id="<?= $_tasks ?>"><?= $dto->tasks ?></textarea>
-
-            </div>
-
-          </div>
-
-          <div class="form-row row"><!-- fu_buyer / fu_neighbour / fu_interested_party / fu_nsl -->
-            <div class="offset-md-3 col text-center"><!-- fu_buyer -->
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" name="fu_buyer" value="yes"
-                  <?php if ( 'yes' == $dto->fu_buyer) print 'checked' ?>
-                  id="<?= $uid = strings::rand() ?>">
-
-                <label class="form-check-label" for="<?= $uid ?>">
-                  buy
-
-                </label>
-
-              </div>
-
-            </div>
-
-            <div class="col text-center"><!-- fu_neighbour -->
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" name="fu_neighbour" value="yes"
-                  <?php if ( 'yes' == $dto->fu_neighbour) print 'checked' ?>
-                  id="<?= $uid = strings::rand() ?>">
-
-                <label class="form-check-label" for="<?= $uid ?>">
-                  nbr
-
-                </label>
-
-              </div>
-
-            </div>
-
-            <div class="col text-center"><!-- fu_interested_party -->
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" name="fu_interested_party" value="yes"
-                  <?php if ( 'yes' == $dto->fu_interested_party) print 'checked' ?>
-                  id="<?= $uid = strings::rand() ?>">
-
-                <label class="form-check-label" for="<?= $uid ?>">
-                  ip
-
-                </label>
-
-              </div>
-
-            </div>
-
-            <div class="col text-center"><!-- fu_nsl -->
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" name="fu_nsl" value="yes"
-                  <?php if ( 'yes' == $dto->fu_nsl) print 'checked' ?>
-                  id="<?= $uid = strings::rand() ?>">
-
-                <label class="form-check-label" for="<?= $uid ?>">
-                  nsl
-
-                </label>
-
-              </div>
-
-            </div>
-
-          </div>
+        <div class="col-auto">
+          <button type="button" class='close' data-toggle="collapse" data-target="#<?= $_collapseDocs ?>">&times;</button>
 
         </div>
 
-        <div class="modal-footer px-2">
-          <div class="btn-group mr-auto" role="group">
-            <button type="button" class="btn btn-secondary d-none" id="<?= $_btnReminder = strings::rand() ?>"><i class="fa fa-fw fa-bell-o"></i>remind</button>
-            <button type="button" class="btn btn-secondary d-none" id="<?= $_btnTask = strings::rand() ?>"><i class="fa fa-fw fa-tasks"></i>task</button>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col" id="<?= $_collapseDocs ?>content">&nbsp;</div>
+
+    </div>
+
+  </div>
+
+  <div class="form-row row mb-2"><!-- name -->
+    <label class="d-none d-md-block col-md-3 col-form-label" for="<?= $_uid = strings::rand() ?>" >Contact</label>
+
+    <div class="col">
+      <div class="input-group">
+        <input type="text" name="name" class="form-control" placeholder="name" autocomplete="off"
+          id="<?= $_uid ?>"
+          value="<?= $dto->name ?>">
+
+        <div class="input-group-append" id="<?= $_LinkedContactControl = strings::rand() ?>">
+          <div class="input-group-text">
+            <i class="fa <?=  $dto->person_id ? 'fa-chain' : 'fa-chain-broken' ?>"></i>
 
           </div>
-
-          <button type="button" class="btn btn-secondary d-none" data-toggle="collapse"
-            id="<?= $_docs_Button = strings::rand() ?>" data-target="#<?= $_collapseDocs ?>">docs</button>
-          <!-- button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button -->
-          <button type="submit" class="btn btn-primary">Save</button>
 
         </div>
 
@@ -280,20 +69,197 @@ $dto = $this->data->dto;  ?>
     </div>
 
   </div>
+
+  <div class="form-row row mb-2"><!-- mobile -->
+    <div class="offset-md-3 col">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-mobile"></i>
+          </div>
+
+
+        </div>
+
+        <input type="text" name="mobile" class="form-control" placeholder="phone" autocomplete="off"
+          value="<?= $dto->mobile ?>">
+
+        <div class="input-group-append">
+          <button type="button" class="btn input-group-text d-none" sendsms>
+            <i class="fa fa-commenting-o"></i>
+
+          </button>
+
+        </div>
+
+        <div class="input-group-append" >
+          <button type="button" class="btn input-group-text d-none" phonecall>
+            <i class="fa fa-phone"></i>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="form-row row mb-2"><!-- email -->
+    <div class="offset-md-3 col">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">@</div>
+
+        </div>
+
+        <input type="text" name="email" class="form-control" placeholder="@" autocomplete="off"
+          value="<?= $dto->email ?>">
+
+        <div class="input-group-append">
+          <button type="button" class="btn input-group-text d-none" sendemail>
+            <i class="fa fa-envelope-o"></i>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="form-row row mb-2"><!-- property2sell -->
+    <label class="col-md-3 col-form-label d-none d-md-block" for="<?= $_uid = strings::rand() ?>">Property to Sell</label>
+
+    <div class="col">
+      <div class="input-group">
+        <div class="input-group-prepend d-md-none">
+          <div class="input-group-text">p2s</div>
+        </div>
+
+        <input type="text" name="property2sell" class="form-control" placeholder="p2s"
+          id="<?= $_uid ?>"
+          value="<?= $dto->property2sell ?>">
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="form-row row mb-2"><!-- comment -->
+    <label class="col-md-3 col-form-label pb-0" for="<?= $_comment = strings::rand() ?>">Comment</label>
+
+    <div class="col">
+      <textarea name="comment" class="form-control" placeholder="comment"
+        id="<?= $_comment ?>"><?= $dto->comment ?></textarea>
+
+    </div>
+
+  </div>
+
+  <div class="form-row row mb-2"><!-- notes -->
+    <label class="col-md-3 col-form-label pb-0" for="<?= $_notes = strings::rand() ?>">Notes</label>
+
+    <div class="col">
+      <textarea name="notes" class="form-control" placeholder="notes"
+        id="<?= $_notes ?>"><?= $dto->notes ?></textarea>
+
+    </div>
+
+  </div>
+
+  <div class="form-row row mb-2"><!-- tasks -->
+    <label class="col-md-3 col-form-label pb-0" for="<?= $_tasks = strings::rand() ?>">Tasks</label>
+
+    <div class="col">
+      <textarea name="tasks" class="form-control" placeholder="tasks"
+        id="<?= $_tasks ?>"><?= $dto->tasks ?></textarea>
+
+    </div>
+
+  </div>
+
+  <div class="form-row row"><!-- fu_buyer / fu_neighbour / fu_interested_party / fu_nsl -->
+    <div class="offset-md-3 col text-center"><!-- fu_buyer -->
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" name="fu_buyer" value="yes"
+          <?php if ( 'yes' == $dto->fu_buyer) print 'checked' ?>
+          id="<?= $uid = strings::rand() ?>">
+
+        <label class="form-check-label" for="<?= $uid ?>">
+          buy
+
+        </label>
+
+      </div>
+
+    </div>
+
+    <div class="col text-center"><!-- fu_neighbour -->
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" name="fu_neighbour" value="yes"
+          <?php if ( 'yes' == $dto->fu_neighbour) print 'checked' ?>
+          id="<?= $uid = strings::rand() ?>">
+
+        <label class="form-check-label" for="<?= $uid ?>">
+          nbr
+
+        </label>
+
+      </div>
+
+    </div>
+
+    <div class="col text-center"><!-- fu_interested_party -->
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" name="fu_interested_party" value="yes"
+          <?php if ( 'yes' == $dto->fu_interested_party) print 'checked' ?>
+          id="<?= $uid = strings::rand() ?>">
+
+        <label class="form-check-label" for="<?= $uid ?>">
+          ip
+
+        </label>
+
+      </div>
+
+    </div>
+
+    <div class="col text-center"><!-- fu_nsl -->
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" name="fu_nsl" value="yes"
+          <?php if ( 'yes' == $dto->fu_nsl) print 'checked' ?>
+          id="<?= $uid = strings::rand() ?>">
+
+        <label class="form-check-label" for="<?= $uid ?>">
+          nsl
+
+        </label>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="modal-footer px-2">
+    <div class="btn-group mr-auto" role="group">
+      <button type="button" class="btn btn-secondary d-none" id="<?= $_btnReminder = strings::rand() ?>"><i class="fa fa-fw fa-bell-o"></i>remind</button>
+      <button type="button" class="btn btn-secondary d-none" id="<?= $_btnTask = strings::rand() ?>"><i class="fa fa-fw fa-tasks"></i>task</button>
+
+    </div>
+
+    <button type="button" class="btn btn-secondary d-none" data-toggle="collapse"
+      id="<?= $_docs_Button = strings::rand() ?>" data-target="#<?= $_collapseDocs ?>">docs</button>
+
+  </div>
+
   <script>
   ( _ => {
-    $('#<?= $_modal ?>').on( 'shown.bs.modal', e => {
-      <?php if ( !$dto->person_id) { ?>
-        $('input[name="name"]', '#<?= $_form ?>').focus();
-
-      <?php } ?>
-
-      $('#<?= $_comment ?>').trigger('resize');
-      $('#<?= $_notes ?>').trigger('resize');
-      $('#<?= $_tasks ?>').trigger('resize');
-
-    });
-
     $('#<?= $_LinkedContactControl ?>')
     .addClass( 'pointer')
     .on( 'click', function( e) {
@@ -526,10 +492,12 @@ $dto = $this->data->dto;  ?>
       }
 
     })
-    .on( 'submit', function( e) {
+    .on( 'save', function( e) {
       let _form = $(this);
       let _data = _form.serializeFormJSON();
       // let _modalBody = $('.modal-body', _form);
+
+      $(document).trigger('candidate-saving');
 
       _.post({
         url : _.url('<?= $this->route ?>'),
@@ -537,25 +505,39 @@ $dto = $this->data->dto;  ?>
 
       }).then( d => {
         if ( 'ack' == d.response) {
-          $('#<?= $_modal ?>').trigger('success');
+          $('input[name="id"]', '#<?= $_form ?>').val( d.id);
+          $(document).trigger('candidate-saved');
 
         }
         else {
-          _.growl( d);
+          $(document).trigger('candidate-saving-error');
 
         }
 
-        $('#<?= $_modal ?>').modal('hide');
-
       });
 
+    })
+    .on( 'submit', function( e) {
       return false;
 
     });
 
     $('#<?= $_form ?>').trigger( 'property-id-change');
 
-    $(document).ready( () => {});
+    $('input, textarea, select', '#<?= $_form ?>').on( 'change', e => $('#<?= $_form ?>').trigger( 'save'));
+
+    <?php
+      if ( !$dto->id) {
+        print '$(document).ready( () => $(document).trigger(\'candidate-unsaved\'));';
+
+      }
+
+      if ( !$dto->person_id) {
+        printf( '$(document).ready( () => $(\'input[name="name"]\', \'#%s\').focus());', $_form);
+
+      }
+
+    ?>
 
   })( _brayworth_);
   </script>

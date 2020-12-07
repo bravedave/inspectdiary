@@ -20,6 +20,8 @@ use strings;
 class controller extends \Controller {
   protected $viewPath = __DIR__ . '/views/';
 
+  const inspectdiary_modal_interface = false;
+
   protected function _index() {
 
 		$dao = new dao\inspect_diary;
@@ -65,7 +67,7 @@ class controller extends \Controller {
 
     $this->render([
       'title' => $this->title = 'Inspect Home : ' . $this->data->scope,
-      'primary' => 'report',
+      'primary' => self::inspectdiary_modal_interface ? 'report-modal' : 'report',
 			'secondary' => [
         'index',
         'index-default-interface'
@@ -576,7 +578,7 @@ class controller extends \Controller {
 
     $this->data->dto = $dao->getDetail($this->data->dto);
 
-    $this->load( 'inspection');
+    $this->load( self::inspectdiary_modal_interface ? 'inspection-modal' : 'inspection');
 
   }
 

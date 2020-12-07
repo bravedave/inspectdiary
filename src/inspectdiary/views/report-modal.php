@@ -14,48 +14,21 @@ use dvc\icon;
 use strings;
 
 $_report = strings::rand();
-$_candidates = strings::rand();
-$_candidate = strings::rand();
 
 ?>
 
 <div id="<?= $_collapse = strings::rand() ?>">
-  <div class="collapse" id="<?= $_candidate ?>" data-parent="#<?= $_collapse ?>">
+  <div class="collapse" id="<?= $_inspection = strings::rand() ?>" data-parent="#<?= $_collapse ?>">
     <div style="margin-left: -15px; margin-right: -15px;">
       <nav class="navbar navbar-light bg-light" style="padding-left: 15px; padding-right: 15px;">
         <div class="d-flex flex-fill">
-          <div class="navbar-brand mr-auto" id="<?= $_title = strings::rand() ?>-candidate">Candidate</div>
-          <div class="btn btn-light pt-2 pb-0" aria-label="Close" data-toggle="collapse"
-            id="<?= $_candidate ?>-save-status"><i class="fa"></i></div>
-
-          <button type="button" class="btn btn-light"
+          <div class="navbar-brand" id="<?= $_title = strings::rand() ?>">Inspection</div>
+          <button type="button" class="btn btn-light ml-auto"
             title="add inspection"
-            id="<?= $_addInspection = strings::rand() ?>-candidate"><?= icon::get( icon::person_plus ) ?></button>
-          <button type="button" class="btn btn-light" aria-label="Close" data-toggle="collapse"
-            id="<?= $_candidate ?>-goto-list"><?= icon::get( icon::list ) ?></button>
-
-        </div>
-
-      </nav>
-
-    </div>
-
-    <div id="<?= $_candidate ?>content" class="pt-1"></div>
-
-  </div>
-
-  <div class="collapse" id="<?= $_candidates ?>" data-parent="#<?= $_collapse ?>">
-    <div style="margin-left: -15px; margin-right: -15px;">
-      <nav class="navbar navbar-light bg-light" style="padding-left: 15px; padding-right: 15px;">
-        <div class="d-flex flex-fill">
-          <div class="navbar-brand mr-auto" id="<?= $_title ?>-candidates">Inspection</div>
-          <button type="button" class="btn btn-light"
-            title="add inspection"
-            id="<?= $_addInspection ?>-candidates"><?= icon::get( icon::person_plus ) ?></button>
+            id="<?= $_addInspection = strings::rand() ?>"><?= icon::get( icon::person_plus ) ?></button>
           <button type="button" class="btn btn-light d-none" aria-label="context menu"
             id="<?= $_context = strings::rand() ?>"><?= icon::get( icon::menu_up ) ?></button>
-          <button type="button" class="btn btn-light" aria-label="Close" data-toggle="collapse"
-            data-target="#<?= $_report ?>"><?= icon::get( icon::x ) ?></button>
+          <button type="button" class="btn btn-light" aria-label="Close" data-toggle="collapse" data-target="#<?= $_report ?>"><?= icon::get( icon::x ) ?></button>
 
         </div>
 
@@ -63,7 +36,7 @@ $_candidate = strings::rand();
 
     </div>
 
-    <div id="<?= $_candidates ?>content"></div>
+    <div id="<?= $_inspection ?>content"></div>
 
   </div>
 
@@ -189,7 +162,6 @@ $_candidate = strings::rand();
             data-id="<?= $dto->id ?>"
             data-property_id="<?= $dto->property_id ?>"
             data-address_street=<?= json_encode( $dto->address_street, JSON_UNESCAPED_SLASHES) ?>
-            data-short_time="<?= strings::AMPM( $dto->time) ?>"
             data-person_id="<?= $dto->contact_id ?>"
             data-inspect_id="<?= $dto->inspect_id ?>"
             data-inspections="<?= $dto->inspections ?>"
@@ -302,77 +274,15 @@ $_candidate = strings::rand();
     let _el = $(e.target);
     let id = _el.attr('id');
 
-    if ( '<?= $_candidates ?>' == id) {
-      $('#<?= $_candidates ?>content').html('');
+    if ( '<?= $_inspection ?>' == id) {
+      $('#<?= $_inspection ?>content').html('');
       $('#<?= $_context ?>').addClass( 'd-none').off( 'click');
 
     }
 
   });
 
-  $('#<?= $_candidate ?>-goto-list').on( 'click', function( e) {
-    e.stopPropagation();e.preventDefault();
-
-    $('#<?= $_candidates ?>content').trigger( 'refresh');
-    $('#<?= $_candidates ?>').collapse( 'show');
-
-  });
-
-  $('#<?= $_candidate ?>')
-  .on( 'add-inspection', function(e) {
-    e.stopPropagation();
-
-    let _me = $(this);
-    _me.collapse( 'show');
-
-    let inspectionID = $('#<?= $_candidates ?>content').data( 'id');
-
-    $('#<?= $_candidate ?>content')
-    .data( 'inspect_diary_id', inspectionID)
-    .trigger( 'add-inspection');
-
-  })
-  .on( 'load-candidate', function(e) {
-    let _me = $(this);
-    let _data = _me.data();
-
-    _me.collapse( 'show');
-
-    $('#<?= $_candidate ?>content')
-    .data( 'id', _me.id)
-    .trigger( 'refresh');
-
-  });
-
-  $('#<?= $_candidate ?>content')
-  .on( 'add-inspection', function(e) {
-    e.stopPropagation();
-
-    console.log('content > add-inspection');
-
-    let _me = $(this);
-    let _data = _me.data();
-
-    _me.html('<div class="d-flex"><div class="spinner-border mx-auto my-5" role="status"><span class="sr-only">Loading...</span></div></div>');
-
-    _.get( _.url( '<?= $this->route ?>/inspection/?idid=' + _data.inspect_diary_id))
-    .then( html => _me.html( html));
-
-  })
-  .on( 'refresh', function(e) {
-    e.stopPropagation();
-
-    let _me = $(this);
-    let _data = _me.data();
-
-    _me.html('<div class="d-flex"><div class="spinner-border mx-auto my-5" role="status"><span class="sr-only">Loading...</span></div></div>');
-
-    _.get( _.url( '<?= $this->route ?>/inspection/' + _data.id))
-    .then( html => _me.html( html));
-
-  });
-
-  $('#<?= $_candidates ?>content')
+  $('#<?= $_inspection ?>content')
   .on( 'refresh', function(e) {
 
     let _me = $(this);
@@ -384,7 +294,7 @@ $_candidate = strings::rand();
     .then( html => _me.html( html));
 
   })
-  .on( 'add-inspection-deprecated', function(e) {
+  .on( 'add-inspection', function(e) {
     e.stopPropagation();
 
     let _me = $(this);
@@ -400,10 +310,6 @@ $_candidate = strings::rand();
   })
   .on( 'view-inspection', function(e, id) {
     e.stopPropagation();
-
-    $('#<?= $_candidate ?>content').data( 'id', id);
-    $('#<?= $_candidate ?>content').trigger( 'load-candidate');
-    return;
 
     let _me = $(this);
     // let _data = _me.data();
@@ -430,30 +336,14 @@ $_candidate = strings::rand();
 
   });
 
-  $('#<?= $_addInspection ?>-candidate, #<?= $_addInspection ?>-candidates').on( 'click', e => {
+  $('#<?= $_addInspection ?>').on( 'click', e => {
     e.stopPropagation();
-    $('#<?= $_candidate ?>').trigger('add-inspection');
+    $('#<?= $_inspection ?>content').trigger('add-inspection');
 
   });
 
-  let resetSaveState = () => {
-    return new Promise( resolve => {
-      let icon = $('#<?= $_candidate ?>-save-status > .fa');
-
-      icon.attr('class', 'fa');
-
-      resolve( icon);
-
-    });
-
-  };
-
   $(document)
-  .on( 'candidate-saved', e => resetSaveState().then( icon => icon.addClass('text-success fa-check')))
-  .on( 'candidate-saving', e => resetSaveState().then( icon => icon.addClass('fa-spinner fa-spin')))
-  .on( 'candidate-saving-error', e => resetSaveState().then( icon => icon.addClass('text-danger fa-times')))
-  .on( 'candidate-unsaved', e => resetSaveState().then( icon => icon.addClass('fa-minus text-warning')))
-  .on( 'add-inspection', e => $('#<?= $_candidate ?>').trigger('add-inspection'))
+  .on( 'add-inspection', e => $('#<?= $_inspection ?>content').trigger('add-inspection'))
   .on( 'edit-inspection-by-id', (e, id) => {
     $('#<?= $_report ?>').collapse('show');
 
@@ -473,17 +363,16 @@ $_candidate = strings::rand();
     });
 
   })
-  .on( 'view-inspection', (e,id) => $('#<?= $_candidates ?>content').trigger('view-inspection', id))
+  .on( 'view-inspection', (e,id) => $('#<?= $_inspection ?>content').trigger('view-inspection', id))
   .on( 'load-inspects', ( e, data) => {
 
-    // console.log( data);
-    $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( data.address_street + ', ' + data.short_time);
+    $('#<?= $_title ?>').html( data.address_street);
 
-    $('#<?= $_candidates ?>content').data( 'id', data.id).trigger( 'refresh');
-    $('#<?= $_candidates ?>').collapse('show');
+    $('#<?= $_inspection ?>content').data( 'id', data.id).trigger( 'refresh');
+    $('#<?= $_inspection ?>').collapse('show');
 
   })
-  .on( 'refresh-inspects', ( e) => $('#<?= $_candidates ?>content').trigger( 'refresh'))
+  .on( 'refresh-inspects', ( e) => $('#<?= $_inspection ?>content').trigger( 'refresh'))
   .on( 'set-inspection-context', ( e, context) => {
     $('#<?= $_context ?>')
     .removeClass( 'd-none')
@@ -662,7 +551,6 @@ $_candidate = strings::rand();
           if ( 'ack' == d.response) {
             _me.data('property_id', d.data.property_id);
             _me.data('address_street', d.data.address_street);
-            _me.data('short_time', d.data.shorttime);
             _me.data('person_id', d.data.contact_id);
             _me.data('inspect_id', d.data.inspect_id);
             _me.data('type', d.data.type);
