@@ -567,12 +567,17 @@ class controller extends \Controller {
     $dao = new dao\inspect;
 		if ( $id = (int)$id) {
       if ( $dto = $dao->getByID( $id)) {
-        $this->data->dto = $dto;
+        $this->data->dto = $dao->getDetail( $dto);
 
       }
+
     }
     else {
-      $this->data->dto->inspect_diary_id = (int)$this->getParam( 'idid');
+      if ( $idid = (int)$this->getParam( 'idid')) {
+        $this->data->dto->inspect_diary_id = $idid;
+        $this->data->dto = $dao->getDetail( $this->data->dto);
+
+      }
 
     }
 

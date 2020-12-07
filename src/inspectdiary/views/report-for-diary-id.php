@@ -604,12 +604,13 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
     .on( 'submit', function( e) {
       let _form = $(this);
       let _data = _form.serializeFormJSON();
-      let _modalBody = $('.modal-body', _form);
 
       // console.table( _data);
 
       return false;
+
     });
+
   });
   </script>
 </form>
