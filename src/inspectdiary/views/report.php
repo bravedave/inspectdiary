@@ -292,19 +292,35 @@ $_candidate = strings::rand();
     let id = _el.attr('id');
 
     if ( '<?= $_candidates ?>' == id) {
-      $('#<?= $_candidates ?>content').html('');
-      $('#<?= $_context ?>').addClass( 'd-none').off( 'click');
-      // console.log( 'remove people content');
+      setTimeout(() => {
+        $('#<?= $_candidates ?>content').html('');
+        $('#<?= $_context ?>').addClass( 'd-none').off( 'click');
+        // console.log( 'remove people content');
+
+      }, 50);
 
     }
     else if ( '<?= $_candidate ?>' == id) {
-      $('#<?= $_candidate ?>content').html('');
-      $('#<?= $_contextCandidate ?>').addClass( 'd-none').off( 'click');
-      // console.log( 'remove candidate content');
+      setTimeout(() => {
+        $('#<?= $_candidate ?>content').html('');
+        $('#<?= $_contextCandidate ?>').addClass( 'd-none').off( 'click');
+        // console.log( 'remove candidate content');
+
+      }, 50);
 
     }
 
   });
+
+  let resetSaveState = () => {
+    return new Promise( resolve => {
+      let el = $('#<?= $_candidate ?> .navbar');
+      el.removeClass('border-primary border-warning border-danger border-success');
+      resolve( el);
+
+    });
+
+  };
 
   window.documentsButton = () => $('#<?= $_docsButton ?>');
 
@@ -340,6 +356,7 @@ $_candidate = strings::rand();
     let _me = $(this);
     let _data = _me.data();
 
+    resetSaveState();
     _me.collapse( 'show');
 
     $('#<?= $_candidate ?>content')
@@ -352,12 +369,12 @@ $_candidate = strings::rand();
   .on( 'add-inspection', function(e) {
     e.stopPropagation();
 
-    console.log('content > add-inspection');
+    // console.log('content > add-inspection');
 
     let _me = $(this);
     let _data = _me.data();
 
-    _me.html('<div class="d-flex"><div class="spinner-border mx-auto my-5" role="status"><span class="sr-only">Loading...</span></div></div>');
+    _me.append('<div class="bg-white d-flex position-absolute w-100" style="top: 56px;left: 0;z-index: 1000;height: calc(100%);opacity: .5;"><div class="spinner-border mx-auto my-5" role="status"><span class="sr-only">Loading...</span></div></div>');
 
     _.get( _.url( '<?= $this->route ?>/inspection/?idid=' + _data.inspect_diary_id))
     .then( html => _me.html( html));
@@ -388,48 +405,11 @@ $_candidate = strings::rand();
     .then( html => _me.html( html));
 
   })
-  .on( 'add-inspection-deprecated', function(e) {
-    e.stopPropagation();
-
-    let _me = $(this);
-    let _data = _me.data();
-
-    // console.log(_data);
-    let url = _.url( '<?= $this->route ?>/inspection/?idid=' + _data.id);
-    // console.log( url);
-
-    _.get.modal( url)
-    .then( modal => modal.on( 'success', e => _me.trigger( 'refresh')));
-
-  })
   .on( 'view-inspection', function(e, id) {
     e.stopPropagation();
 
     $('#<?= $_candidate ?>content').data( 'id', id);
     $('#<?= $_candidate ?>content').trigger( 'load-candidate');
-    return;
-
-    let _me = $(this);
-    // let _data = _me.data();
-
-    let url = _.url( '<?= $this->route ?>/inspection/' + id);
-    // console.log( url);
-
-    _.get.modal( url)
-    .then( modal => {
-      modal.on( 'success', e => _me.trigger( 'refresh'))
-
-      let form = modal.closest( 'form');
-      if ( form.length > 0) {
-        let fld = $( 'input[name="inspect_diary_id"]', form);
-        if ( fld.length > 0) {
-          _me.data('id', fld.val());
-
-        }
-
-      }
-
-    });
 
   });
 
@@ -440,16 +420,6 @@ $_candidate = strings::rand();
     $('#<?= $_candidate ?>').trigger('add-inspection');
 
   });
-
-  let resetSaveState = () => {
-    return new Promise( resolve => {
-      let el = $('#<?= $_candidate ?> .navbar');
-      el.removeClass('border-primary border-warning border-danger border-success');
-      resolve( el);
-
-    });
-
-  };
 
   window.confirmDeleteAction = () => {
     return new Promise( resolve => {
@@ -497,6 +467,16 @@ $_candidate = strings::rand();
 
   };
 
+  window.refreshPeople = () => $('#<?= $_candidates ?>content').trigger('refresh');
+
+  window.setPeopleContext = context => {
+    $('#<?= $_context ?>')
+    .removeClass( 'd-none')
+    .off( 'click')
+    .on( 'click', context);
+
+  };
+
   window.setPersonContext = context => {
     $('#<?= $_contextCandidate ?>')
     .removeClass( 'd-none')
@@ -504,8 +484,6 @@ $_candidate = strings::rand();
     .on( 'click', context);
 
   };
-
-  window.refreshPeople = () => $('#<?= $_candidates ?>content').trigger('refresh');
 
   $(document)
   .on( 'candidate-saved', e => resetSaveState().then( el => el.addClass('border-success')))
@@ -560,13 +538,6 @@ $_candidate = strings::rand();
 
   })
   .on( 'refresh-inspects', ( e) => $('#<?= $_candidates ?>content').trigger( 'refresh'))
-  .on( 'set-people-context', ( e, context) => {
-    $('#<?= $_context ?>')
-    .removeClass( 'd-none')
-    .off( 'click')
-    .on( 'click', context);
-
-  })
   .ready( () => {
     $('div[data-role="item"]', '#<?= $_uid ?>RentalDiary').each( ( i, row) => {
       let _row = $(row);

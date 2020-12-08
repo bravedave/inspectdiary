@@ -22,7 +22,11 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
     @media screen and ( max-width: 767px) {
       body > .navbar,
       [data-role="content-secondary"]
-      { display : none };
+      {
+        transition: opacity .30s linear;
+        display : none;
+
+      };
 
     }
   </style>
@@ -636,7 +640,7 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
     };
 
     $('#<?= $_headline ?>').on( 'contextmenu', headlineContext);
-    $(document).trigger( 'set-people-context', headlineContext);
+    setPeopleContext( headlineContext);
 
   }))( _brayworth_);
 </script>

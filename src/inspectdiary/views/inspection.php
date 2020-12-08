@@ -19,7 +19,10 @@ $dto = $this->data->dto;  ?>
   @media screen and ( max-width: 767px) {
     body > .navbar,
     [data-role="content-secondary"]
-    { display : none };
+    {
+      transition: opacity .30s linear;
+      display : none;
+    };
 
   }
 </style>
@@ -502,7 +505,6 @@ $dto = $this->data->dto;  ?>
     <?php
       if ( !$dto->id) {
         print '$(document).ready( () => $(document).trigger(\'candidate-unsaved\'));';
-        print 'console.log(\'candidate-unsaved\');';
 
       }
 
