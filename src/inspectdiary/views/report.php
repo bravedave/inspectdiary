@@ -342,14 +342,22 @@ $_candidate = strings::rand();
   .on( 'add-inspection', function(e) {
     e.stopPropagation();
 
-    let _me = $(this);
-    _me.collapse( 'show');
+    let type = $('#<?= $_candidates ?>content').data('type');
+    if ( 'Inspect' == String( type)) {
+      _.get.modal( _.url( '<?= $this->route ?>/noinspectoninspect'));
 
-    let inspectionID = $('#<?= $_candidates ?>content').data( 'id');
+    }
+    else {
 
-    $('#<?= $_candidate ?>content')
-    .data( 'inspect_diary_id', inspectionID)
-    .trigger( 'add-inspection');
+      let inspectionID = $('#<?= $_candidates ?>content').data('id');
+
+      $(this).collapse( 'show');
+
+      $('#<?= $_candidate ?>content')
+      .data( 'inspect_diary_id', inspectionID)
+      .trigger( 'add-inspection');
+
+    }
 
   })
   .on( 'load-candidate', function(e) {
@@ -360,7 +368,7 @@ $_candidate = strings::rand();
     _me.collapse( 'show');
 
     $('#<?= $_candidate ?>content')
-    .data( 'id', _me.id)
+    .data('id', _me.id)
     .trigger( 'refresh');
 
   });
@@ -368,8 +376,6 @@ $_candidate = strings::rand();
   $('#<?= $_candidate ?>content')
   .on( 'add-inspection', function(e) {
     e.stopPropagation();
-
-    // console.log('content > add-inspection');
 
     let _me = $(this);
     let _data = _me.data();
@@ -408,7 +414,7 @@ $_candidate = strings::rand();
   .on( 'view-inspection', function(e, id) {
     e.stopPropagation();
 
-    $('#<?= $_candidate ?>content').data( 'id', id);
+    $('#<?= $_candidate ?>content').data('id', id);
     $('#<?= $_candidate ?>content').trigger( 'load-candidate');
 
   });
@@ -485,6 +491,8 @@ $_candidate = strings::rand();
 
   };
 
+  window.viewInspection = id => $('#<?= $_candidates ?>content').trigger('view-inspection', id);
+
   $(document)
   .on( 'candidate-saved', e => resetSaveState().then( el => el.addClass('border-success')))
   .on( 'candidate-saving', e => resetSaveState().then( el => el.addClass('border-primary')))
@@ -527,23 +535,43 @@ $_candidate = strings::rand();
     .each( ( i, row) => $('[inspections]', row).addClass( 'text-warning'));
 
   })
-  .on( 'view-inspection', (e,id) => $('#<?= $_candidates ?>content').trigger('view-inspection', id))
   .on( 'load-inspects', ( e, data) => {
 
     // console.log( data);
     $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( data.pretty_street + ', ' + data.short_time);
 
-    $('#<?= $_candidates ?>content').data( 'id', data.id).trigger( 'refresh');
+    $('#<?= $_candidates ?>content')
+    .data('id', data.id)
+    .data('type', data.type)
+    .trigger( 'refresh');
+
     $('#<?= $_candidates ?>').collapse('show');
 
   })
   .on( 'refresh-inspects', ( e) => $('#<?= $_candidates ?>content').trigger( 'refresh'))
   .ready( () => {
     $('div[data-role="item"]', '#<?= $_uid ?>RentalDiary').each( ( i, row) => {
-      let _row = $(row);
-      // let _data = _row.data();
 
-      let contextMenu = function( e) {
+      $(row)
+      .addClass('pointer')
+      .on( 'click', function( e) {
+        e.stopPropagation();e.preventDefault();
+
+        let _me = $(this);
+        let _data = _me.data();
+
+        if ( _data.inspect_id > 0) {
+          _me.trigger( 'view-inspection');
+
+        }
+        else {
+          $(document).trigger( 'load-inspects', _data);
+
+        }
+        // console.log( _data);
+
+      })
+      .on( 'contextmenu', function( e) {
         if ( e.shiftKey)
           return;
 
@@ -557,22 +585,29 @@ $_candidate = strings::rand();
 
         if ( 'Inspect' == _data.type) {
           if ( _data.inspect_id > 0) {
-            _context.append( $('<a class="font-weight-bold" href="#">inspection</a>').on( 'click', function( e) {
-              e.stopPropagation();e.preventDefault();
+            _context.append(
+              $('<a class="font-weight-bold" href="#">inspection</a>')
+              .on( 'click', e => {
+                e.stopPropagation();e.preventDefault();
+                _context.close();
 
-              _context.close();
-              $(document).trigger( 'view-inspection', _data.inspect_id);
+                _me.trigger( 'view-inspection');
 
-            }));
+              })
+
+            );
 
           }
           else {
-            _context.append( $('<a class="font-weight-bold text-danger" href="#">inspection not found</a>').on( 'click', function( e) {
-              e.stopPropagation();e.preventDefault();
+            _context.append(
+              $('<a class="font-weight-bold text-danger" href="#">inspection not found</a>')
+              .on( 'click', e => {
+                e.stopPropagation();e.preventDefault();
+                _context.close();
 
-              _context.close();
+              })
 
-            }));
+            );
 
           }
 
@@ -618,27 +653,7 @@ $_candidate = strings::rand();
 
         _context.open( e);
 
-      };
-
-      let click = function( e) {
-        e.stopPropagation();e.preventDefault();
-
-        let _me = $(this);
-        let _data = _me.data();
-
-        if ( _data.inspect_id > 0) {
-          $(document).trigger( 'view-inspection', _data.inspect_id);
-
-        }
-        else {
-          $(document).trigger( 'load-inspects', _data);
-
-        }
-        // console.log( _data);
-
-      }
-
-      _row
+      })
       .on( 'delete', function(e) {
         let _me = $(this);
 
@@ -747,9 +762,21 @@ $_candidate = strings::rand();
         _me.addClass( 'bg-warning');
 
       })
-      .addClass('pointer')
-      .on( 'click', click)
-      .on( 'contextmenu', contextMenu);
+      .on( 'view-inspection', function(e) {
+        e.stopPropagation();
+
+        let _me = $(this);
+        let _data = _me.data();
+
+        $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( _data.pretty_street + ', ' + _data.short_time);
+
+        $('#<?= $_candidates ?>content')
+        .data('id', _data.id)
+        .data('type', _data.type);
+
+        $('#<?= $_candidates ?>content').trigger('view-inspection', _data.inspect_id);
+
+      });
 
     });
 

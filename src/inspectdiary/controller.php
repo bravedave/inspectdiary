@@ -674,6 +674,11 @@ class controller extends \Controller {
 
   }
 
+  public function noinspectoninspect() {
+    $this->load( 'no-inspect-on-inspect');
+
+  }
+
   public function noreminderstoset() {
     $this->load( 'no-reminders-to-set');
 

@@ -447,7 +447,7 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
         // console.log( _data);
 
-        $(document).trigger( 'view-inspection', _data.id);
+        viewInspection( _data.id);
 
       });
 
@@ -623,19 +623,24 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
       }));
 
-      // console.log( this);
-      let target = $(this);
-      let offsets = target.offset();
-      let _e = {
-        pageX : offsets.left,
-        pageY : offsets.top + target.outerHeight(),
-        target : e.target
+      if ( /button/i.test( String( this.tagName))) {
+        let target = $(this);
+        let offsets = target.offset();
+        let _e = {
+          pageX : offsets.left,
+          pageY : offsets.top + target.outerHeight(),
+          target : e.target
 
-      };
+        };
 
-      // console.log( _e, target.outerHeight());
+        _context.open( _e);
 
-      _context.open( _e);
+      }
+      else {
+        _context.open( e);
+
+      }
+
 
     };
 
@@ -644,31 +649,3 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
   }))( _brayworth_);
 </script>
-
-<div class="row">
-  <div class="col">
-    <?php
-    //  \sys::dump( $this->data, null, false) ?>
-
-  </div>
-
-</div>
-
-<form id="<?= $_form = strings::rand() ?>" autocomplete="off">
-  <script>
-  $(document).ready( () => {
-
-    $('#<?= $_form ?>')
-    .on( 'submit', function( e) {
-      let _form = $(this);
-      let _data = _form.serializeFormJSON();
-
-      // console.table( _data);
-
-      return false;
-
-    });
-
-  });
-  </script>
-</form>
