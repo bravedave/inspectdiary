@@ -21,7 +21,7 @@
     "bravedave/sms": "*"
   },
   "require-dev" : {
-    "twbs/bootstrap": "<6.0"
+    "twbs/bootstrap": "<5.0"
 
   },
   "autoload": {

@@ -15,6 +15,15 @@ use strings;
 
 $dto = $this->data->dto;  ?>
 
+<style>
+  @media screen and ( max-width: 767px) {
+    body > .navbar,
+    [data-role="content-secondary"]
+    { display : none };
+
+  }
+</style>
+
 <form id="<?= $_form = strings::rand() ?>" autocomplete="off">
   <input type="hidden" name="action" value="inspection-save">
   <input type="hidden" name="id" value="<?= $dto->id ?>">
@@ -23,7 +32,7 @@ $dto = $this->data->dto;  ?>
   <input type="hidden" name="property_id" value="<?= $dto->property_id ?>">
   <input type="hidden" name="inspect_diary_id" value="<?= $dto->inspect_diary_id ?>">
 
-  <div class="collapse" id="<?= $_collapseDocs = strings::rand() ?>">
+  <div class="collapse fade" id="<?= $_collapseDocs = strings::rand() ?>">
     <div class="container-fluid mb-2 border-bottom">
       <div class="row">
         <div class="col">
@@ -253,9 +262,6 @@ $dto = $this->data->dto;  ?>
 
     </div>
 
-    <button type="button" class="btn btn-secondary d-none" data-toggle="collapse"
-      id="<?= $_docs_Button = strings::rand() ?>" data-target="#<?= $_collapseDocs ?>">docs</button>
-
   </div>
 
   <script>
@@ -268,7 +274,9 @@ $dto = $this->data->dto;  ?>
       $('input[name="person_id"]', '#<?= $_form ?>').val( 0);
       $('.fa', this).removeClass( 'fa-chain').addClass( 'fa-chain-broken');
 
-    })
+    });
+
+    documentsButton().attr( 'data-target', '#<?= $_collapseDocs ?>');
 
     $('input[name="name"]', '#<?= $_form ?>').autofill({
       autoFocus: false,
@@ -426,7 +434,7 @@ $dto = $this->data->dto;  ?>
       let _form = $(this);
       let _data = _form.serializeFormJSON();
 
-      $('#<?= $_docs_Button ?>').addClass('d-none');
+      documentsButton().addClass('d-none');
 
       if ( parseInt( _data.property_id) < 1) return;
 
@@ -457,7 +465,7 @@ $dto = $this->data->dto;  ?>
               inspect_type : _data.type,
 
             })
-            .then( () => $('#<?= $_docs_Button ?>').removeClass('d-none'));
+            .then( () => documentsButton().removeClass('d-none'));
 
           }
 
@@ -538,6 +546,65 @@ $dto = $this->data->dto;  ?>
       }
 
     ?>
+
+
+    let contextMenu = function( e) {
+      if ( e.shiftKey)
+        return;
+
+      e.stopPropagation();e.preventDefault();
+
+      _.hideContexts();
+
+      let _context = _.context();
+      let id = Number( $('input[name="id"]', '#<?= $_form ?>').val());
+
+      if ( id > 0) {
+        _context.append(
+          $('<a href="#"><i class="fa fa-trash"></i>delete</a>').on( 'click', function( e) {
+            e.stopPropagation();e.preventDefault();
+
+            _context.close();
+
+            confirmDeleteAction().then( () => {
+              deleteInspection( id).then( response => {
+                gotoPeopleList();
+                $(document).trigger('invalidate-counts');
+
+              });
+
+            });
+
+          })
+
+        );
+
+      }
+      else {
+        _context.append(
+          $('<a href="#" class="disabled"><i class="fa fa-trash"></i>delete</a>').on( 'click', function( e) {
+            e.stopPropagation();e.preventDefault();
+
+          })
+
+        );
+
+      }
+
+      let target = $(this);
+      let offsets = target.offset();
+      let _e = {
+        pageX : offsets.left,
+        pageY : offsets.top + target.outerHeight(),
+        target : e.target
+
+      };
+
+      _context.open( _e);
+
+    };
+
+    setPersonContext( contextMenu);
 
   })( _brayworth_);
   </script>

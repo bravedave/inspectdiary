@@ -354,7 +354,7 @@ $_report = strings::rand();
 
   })
   .on( 'refresh-inspects', ( e) => $('#<?= $_inspection ?>content').trigger( 'refresh'))
-  .on( 'set-inspection-context', ( e, context) => {
+  .on( 'set-people-context', ( e, context) => {
     $('#<?= $_context ?>')
     .removeClass( 'd-none')
     .off( 'click')

@@ -22,14 +22,15 @@ $_candidate = strings::rand();
 <div id="<?= $_collapse = strings::rand() ?>">
   <div class="collapse" id="<?= $_candidate ?>" data-parent="#<?= $_collapse ?>">
     <div style="margin-left: -15px; margin-right: -15px;">
-      <nav class="navbar navbar-light bg-light" style="padding-left: 15px; padding-right: 15px;">
+      <nav class="navbar navbar-light bg-light border-bottom border-3" style="padding-left: 15px; padding-right: 15px;">
         <div class="d-flex flex-fill">
-          <div class="navbar-brand mr-auto" id="<?= $_title = strings::rand() ?>-candidate">Candidate</div>
-          <div class="btn btn-light pt-2 pb-0" aria-label="Close" data-toggle="collapse"
-            id="<?= $_candidate ?>-save-status"><i class="fa"></i></div>
+          <div class="navbar-brand mr-auto text-truncate" id="<?= $_title = strings::rand() ?>-candidate">Candidate</div>
 
-          <button type="button" class="btn btn-light"
-            title="add inspection"
+          <button type="button" class="btn btn-light d-none" data-toggle="collapse"
+            id="<?= $_docsButton = strings::rand() ?>"><?= icon::get( icon::documents ) ?><span class="d-none d-md-inline">Docs</span></button>
+          <button type="button" class="btn btn-light d-none" aria-label="context menu"
+            id="<?= $_contextCandidate = strings::rand() ?>"><?= icon::get( icon::menu_up ) ?></button>
+          <button type="button" class="btn btn-light" title="add inspection"
             id="<?= $_addInspection = strings::rand() ?>-candidate"><?= icon::get( icon::person_plus ) ?></button>
           <button type="button" class="btn btn-light" aria-label="Close" data-toggle="collapse"
             id="<?= $_candidate ?>-goto-list"><?= icon::get( icon::list ) ?></button>
@@ -49,11 +50,11 @@ $_candidate = strings::rand();
       <nav class="navbar navbar-light bg-light" style="padding-left: 15px; padding-right: 15px;">
         <div class="d-flex flex-fill">
           <div class="navbar-brand mr-auto" id="<?= $_title ?>-candidates">Inspection</div>
+          <button type="button" class="btn btn-light d-none" aria-label="context menu"
+            id="<?= $_context = strings::rand() ?>"><?= icon::get( icon::menu_up ) ?></button>
           <button type="button" class="btn btn-light"
             title="add inspection"
             id="<?= $_addInspection ?>-candidates"><?= icon::get( icon::person_plus ) ?></button>
-          <button type="button" class="btn btn-light d-none" aria-label="context menu"
-            id="<?= $_context = strings::rand() ?>"><?= icon::get( icon::menu_up ) ?></button>
           <button type="button" class="btn btn-light" aria-label="Close" data-toggle="collapse"
             data-target="#<?= $_report ?>"><?= icon::get( icon::x ) ?></button>
 
@@ -286,16 +287,31 @@ $_candidate = strings::rand();
     if ( '<?= $_candidates ?>' == id) {
       $('#<?= $_candidates ?>content').html('');
       $('#<?= $_context ?>').addClass( 'd-none').off( 'click');
+      console.log( 'remove people content');
+
+    }
+    else if ( '<?= $_candidate ?>' == id) {
+      $('#<?= $_candidate ?>content').html('');
+      $('#<?= $_contextCandidate ?>').addClass( 'd-none').off( 'click');
+      console.log( 'remove candidate content');
 
     }
 
   });
 
-  $('#<?= $_candidate ?>-goto-list').on( 'click', function( e) {
-    e.stopPropagation();e.preventDefault();
+  window.documentsButton = () => $('#<?= $_docsButton ?>');
 
+  window.gotoPeopleList = () => {
     $('#<?= $_candidates ?>content').trigger( 'refresh');
     $('#<?= $_candidates ?>').collapse( 'show');
+
+
+  };
+
+  $('#<?= $_candidate ?>-goto-list').on( 'click', function( e) {
+    e.stopPropagation();
+    _.hideContexts();
+    gotoPeopleList();
 
   });
 
@@ -419,21 +435,75 @@ $_candidate = strings::rand();
 
   let resetSaveState = () => {
     return new Promise( resolve => {
-      let icon = $('#<?= $_candidate ?>-save-status > .fa');
-
-      icon.attr('class', 'fa');
-
-      resolve( icon);
+      let el = $('#<?= $_candidate ?> .navbar');
+      el.removeClass('border-primary border-warning border-danger border-success');
+      resolve( el);
 
     });
 
   };
 
+  window.confirmDeleteAction = () => {
+    return new Promise( resolve => {
+      _.ask({
+        headClass: 'text-white bg-danger',
+        text: 'Are you sure ?',
+        title: 'Confirm Delete',
+        buttons : {
+          yes : function(e) {
+            $(this).modal('hide');
+            resolve();
+
+          }
+
+        }
+
+      });
+
+    });
+
+  };
+
+  window.deleteInspection = id => {
+    return new Promise( resolve => {
+      _.post({
+        url : _.url('<?= $this->route ?>'),
+        data : {
+          action : 'inspection-delete',
+          id : id
+        },
+
+      }).then( d => {
+        if ( 'ack' == d.response) {
+          resolve();
+
+        }
+        else {
+          _.growl( d);
+
+        }
+
+      });
+
+    });
+
+  };
+
+  window.setPersonContext = context => {
+    $('#<?= $_contextCandidate ?>')
+    .removeClass( 'd-none')
+    .off( 'click')
+    .on( 'click', context);
+
+  };
+
+  window.refreshPeople = () => $('#<?= $_candidates ?>content').trigger('refresh');
+
   $(document)
-  .on( 'candidate-saved', e => resetSaveState().then( icon => icon.addClass('text-success fa-check')))
-  .on( 'candidate-saving', e => resetSaveState().then( icon => icon.addClass('fa-spinner fa-spin')))
-  .on( 'candidate-saving-error', e => resetSaveState().then( icon => icon.addClass('text-danger fa-times')))
-  .on( 'candidate-unsaved', e => resetSaveState().then( icon => icon.addClass('fa-minus text-warning')))
+  .on( 'candidate-saved', e => resetSaveState().then( el => el.addClass('border-success')))
+  .on( 'candidate-saving', e => resetSaveState().then( el => el.addClass('border-primary')))
+  .on( 'candidate-saving-error', e => resetSaveState().then( el => el.addClass('border-danger')))
+  .on( 'candidate-unsaved', e => resetSaveState().then( el => el.addClass('border-warning')))
   .on( 'add-inspection', e => $('#<?= $_candidate ?>').trigger('add-inspection'))
   .on( 'change-inspection-of-inspect', function( e, id) {
     e.stopPropagation();
@@ -445,30 +515,6 @@ $_candidate = strings::rand();
 
 
     }));
-
-  })
-  .on( 'delete-inspection-confirmed', function( e, id) {
-    e.stopPropagation();
-
-    _.post({
-      url : _.url('<?= $this->route ?>'),
-      data : {
-        action : 'inspection-delete',
-        id : id
-      },
-
-    }).then( d => {
-      if ( 'ack' == d.response) {
-        $('#<?= $_candidates ?>content').trigger('refresh');
-        $(document).trigger('invalidate-counts');
-
-      }
-      else {
-        _.growl( d);
-
-      }
-
-    });
 
   })
   .on( 'edit-inspection-by-id', (e, id) => {
@@ -506,7 +552,7 @@ $_candidate = strings::rand();
 
   })
   .on( 'refresh-inspects', ( e) => $('#<?= $_candidates ?>content').trigger( 'refresh'))
-  .on( 'set-inspection-context', ( e, context) => {
+  .on( 'set-people-context', ( e, context) => {
     $('#<?= $_context ?>')
     .removeClass( 'd-none')
     .off( 'click')
@@ -524,11 +570,11 @@ $_candidate = strings::rand();
 
         e.stopPropagation();e.preventDefault();
 
-        _brayworth_.hideContexts();
+        _.hideContexts();
 
         let _me = $(this);
         let _data = _me.data();
-        let _context = _brayworth_.context();
+        let _context = _.context();
 
         if ( 'Inspect' == _data.type) {
           if ( _data.inspect_id > 0) {

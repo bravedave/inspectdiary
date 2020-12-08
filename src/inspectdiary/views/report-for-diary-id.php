@@ -318,6 +318,8 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
       .on( 'click', function( e) {
         e.stopPropagation();
 
+        _.hideContexts();
+
         let _me = $(this);
         _me.trigger( 'view');
 
@@ -329,20 +331,14 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
         let _me = $(this);
         let _data = _me.data();
 
-				_.ask({
-					headClass: 'text-white bg-danger',
-					text: 'Are you sure ?',
-					title: 'Confirm Delete',
-					buttons : {
-						yes : function(e) {
-							$(this).modal('hide');
-              $(document).trigger( 'delete-inspection-confirmed', _data.id);
+				confirmDeleteAction().then( () => {
+          deleteInspection( _data.id).then( response => {
+            refreshPeople();
+            $(document).trigger('invalidate-counts');
 
-						}
+          });
 
-					}
-
-				});
+        });
 
       })
       .on( 'email', function( e) {
@@ -640,7 +636,7 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
     };
 
     $('#<?= $_headline ?>').on( 'contextmenu', headlineContext);
-    $(document).trigger( 'set-inspection-context', headlineContext);
+    $(document).trigger( 'set-people-context', headlineContext);
 
   }))( _brayworth_);
 </script>
