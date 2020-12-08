@@ -18,13 +18,19 @@ $_candidates = strings::rand();
 $_candidate = strings::rand();
 
 ?>
+<style>
+  @media screen and ( max-width: 767px) {
+    .navbar-inspect { max-width: 70%; font-size: 1rem; padding-top: .5rem;}
+
+  }
+</style>
 
 <div id="<?= $_collapse = strings::rand() ?>">
   <div class="collapse" id="<?= $_candidate ?>" data-parent="#<?= $_collapse ?>">
     <div style="margin-left: -15px; margin-right: -15px;">
       <nav class="navbar navbar-light bg-light border-bottom border-3" style="padding-left: 15px; padding-right: 15px;">
         <div class="d-flex flex-fill">
-          <div class="navbar-brand mr-auto text-truncate" id="<?= $_title = strings::rand() ?>-candidate">Candidate</div>
+          <div class="navbar-inspect navbar-brand mr-auto text-truncate" id="<?= $_title = strings::rand() ?>-candidate">Candidate</div>
 
           <button type="button" class="btn btn-light d-none" data-toggle="collapse"
             id="<?= $_docsButton = strings::rand() ?>"><?= icon::get( icon::documents ) ?><span class="d-none d-md-inline">Docs</span></button>
@@ -49,7 +55,7 @@ $_candidate = strings::rand();
     <div style="margin-left: -15px; margin-right: -15px;">
       <nav class="navbar navbar-light bg-light" style="padding-left: 15px; padding-right: 15px;">
         <div class="d-flex flex-fill">
-          <div class="navbar-brand mr-auto" id="<?= $_title ?>-candidates">Inspection</div>
+          <div class="navbar-inspect navbar-brand mr-auto" id="<?= $_title ?>-candidates">Inspection</div>
           <button type="button" class="btn btn-light d-none" aria-label="context menu"
             id="<?= $_context = strings::rand() ?>"><?= icon::get( icon::menu_up ) ?></button>
           <button type="button" class="btn btn-light"
@@ -190,6 +196,7 @@ $_candidate = strings::rand();
             data-id="<?= $dto->id ?>"
             data-property_id="<?= $dto->property_id ?>"
             data-address_street=<?= json_encode( $dto->address_street, JSON_UNESCAPED_SLASHES) ?>
+            data-pretty_street=<?= json_encode( strings::GoodStreetString( $dto->address_street), JSON_UNESCAPED_SLASHES) ?>
             data-short_time="<?= strings::AMPM( $dto->time) ?>"
             data-person_id="<?= $dto->contact_id ?>"
             data-inspect_id="<?= $dto->inspect_id ?>"
@@ -545,7 +552,7 @@ $_candidate = strings::rand();
   .on( 'load-inspects', ( e, data) => {
 
     // console.log( data);
-    $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( data.address_street + ', ' + data.short_time);
+    $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( data.pretty_street + ', ' + data.short_time);
 
     $('#<?= $_candidates ?>content').data( 'id', data.id).trigger( 'refresh');
     $('#<?= $_candidates ?>').collapse('show');
@@ -730,6 +737,7 @@ $_candidate = strings::rand();
           if ( 'ack' == d.response) {
             _me.data('property_id', d.data.property_id);
             _me.data('address_street', d.data.address_street);
+            _me.data('pretty_street', d.data.pretty_street);
             _me.data('short_time', d.data.shorttime);
             _me.data('person_id', d.data.contact_id);
             _me.data('inspect_id', d.data.inspect_id);

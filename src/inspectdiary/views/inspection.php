@@ -257,7 +257,6 @@ $dto = $this->data->dto;  ?>
 
   <div class="modal-footer px-2">
     <div class="btn-group mr-auto" role="group">
-      <button type="button" class="btn btn-secondary d-none" id="<?= $_btnReminder = strings::rand() ?>"><i class="fa fa-fw fa-bell-o"></i>remind</button>
       <button type="button" class="btn btn-secondary d-none" id="<?= $_btnTask = strings::rand() ?>"><i class="fa fa-fw fa-tasks"></i>task</button>
 
     </div>
@@ -469,19 +468,6 @@ $dto = $this->data->dto;  ?>
 
           }
 
-          if ( !!window._cms_.property.reminderButton) {
-            _cms_.property.reminderButton({
-              button : '#<?= $_btnReminder ?>',
-              person : person,
-              property_id : _data.property_id,
-              inspect_id : _data.id,
-              inspect_type : _data.type,
-
-            })
-            .then( () => $('#<?= $_btnReminder ?>').removeClass('d-none'));
-
-          }
-
           if ( !!window._cms_.property.taskButton) {
             _cms_.property.taskButton({
               button : '#<?= $_btnTask ?>',
@@ -559,6 +545,28 @@ $dto = $this->data->dto;  ?>
       let _context = _.context();
       let id = Number( $('input[name="id"]', '#<?= $_form ?>').val());
 
+      if ( !!window._cms_) {
+        if ( !!window._cms_.property) {
+          if ( !!window._cms_.property.reminderButton) {
+            let ctrl = $('<a href="#" class="text-muted"><i class="fa fa-fw fa-bell-o"></i>Reminder</a>');
+            ctrl.on( 'click', e => _context.close());
+
+            _cms_.property.reminderButton({
+              button : ctrl,
+              person : person,
+              property_id : _data.property_id,
+              inspect_id : _data.id,
+              inspect_type : _data.type,
+
+            })
+            .then( () => _context.append( ctrl));
+
+          }
+
+        }
+
+      }
+
       if ( id > 0) {
         _context.append(
           $('<a href="#"><i class="fa fa-trash"></i>delete</a>').on( 'click', function( e) {
@@ -582,7 +590,7 @@ $dto = $this->data->dto;  ?>
       }
       else {
         _context.append(
-          $('<a href="#" class="disabled"><i class="fa fa-trash"></i>delete</a>').on( 'click', function( e) {
+          $('<a href="#" class="text-muted"><i class="fa fa-trash"></i>delete</a>').on( 'click', function( e) {
             e.stopPropagation();e.preventDefault();
 
           })

@@ -11,7 +11,6 @@
 <style>
 @media screen and (max-width: 767px) {
   .navbar-brand {max-width: 70%;}
-  .navbar-brand { font-size: 1rem; padding-top: .5rem;}
 }
 @media screen and (min-width: 768px) {
   .navbar-brand {min-width: 30%;}

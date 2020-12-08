@@ -167,6 +167,7 @@ class controller extends \Controller {
           $dto = $dao->getDetail( $dto);
           $dto->shortdate = strings::asShortDate( $dto->date);
           $dto->shorttime = strings::AMPM( $dto->time);
+          $dto->pretty_street = strings::GoodStreetString( $dto->address_street);
 
           Json::ack( $action)
             ->add( 'data', $dto);
