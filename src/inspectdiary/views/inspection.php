@@ -547,6 +547,10 @@ $dto = $this->data->dto;  ?>
 
       if ( !!window._cms_) {
         if ( !!window._cms_.property) {
+
+          let _form = $(this);
+          let _data = _form.serializeFormJSON();
+
           if ( !!window._cms_.property.reminderButton) {
             let ctrl = $('<a href="#" class="text-muted"><i class="fa fa-fw fa-bell-o"></i>Reminder</a>');
             ctrl.on( 'click', e => _context.close());

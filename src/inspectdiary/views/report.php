@@ -33,7 +33,7 @@ $_candidate = strings::rand();
           <div class="navbar-inspect navbar-brand mr-auto text-truncate" id="<?= $_title = strings::rand() ?>-candidate">Candidate</div>
 
           <button type="button" class="btn btn-light d-none" data-toggle="collapse"
-            id="<?= $_docsButton = strings::rand() ?>"><?= icon::get( icon::documents ) ?><span class="d-none d-md-inline">Docs</span></button>
+            id="<?= $_docsButton = strings::rand() ?>"><?= icon::get( icon::documents ) ?><span class="d-none d-md-inline">docs</span></button>
           <button type="button" class="btn btn-light d-none" aria-label="context menu"
             id="<?= $_contextCandidate = strings::rand() ?>"><?= icon::get( icon::menu_up ) ?></button>
           <button type="button" class="btn btn-light" title="add inspection"
@@ -436,6 +436,8 @@ $_candidate = strings::rand();
 
   $('#<?= $_addInspection ?>-candidate, #<?= $_addInspection ?>-candidates').on( 'click', e => {
     e.stopPropagation();
+    _.hideContexts();
+
     $('#<?= $_candidate ?>').trigger('add-inspection');
 
   });
