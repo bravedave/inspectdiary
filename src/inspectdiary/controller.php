@@ -20,8 +20,6 @@ use strings;
 class controller extends \Controller {
   protected $viewPath = __DIR__ . '/views/';
 
-  const inspectdiary_modal_interface = false;
-
   protected function _index() {
 
 		$dao = new dao\inspect_diary;
@@ -64,7 +62,7 @@ class controller extends \Controller {
     // \sys::dump( $this->data);
 
 
-    $primary = [ self::inspectdiary_modal_interface ? 'modal/report' : 'report' ];
+    $primary = [ 'report' ];
     $secondary = [ 'index'];
 
     if ( currentUser::option( 'inspect-interface-modern')) {
@@ -649,7 +647,7 @@ class controller extends \Controller {
 
     $this->data->dto = $dao->getDetail($this->data->dto);
 
-    $this->load( self::inspectdiary_modal_interface ? 'modal/inspection' : 'inspection');
+    $this->load( 'inspection');
 
   }
 
