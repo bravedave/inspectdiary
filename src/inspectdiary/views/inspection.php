@@ -547,6 +547,7 @@ $dto = $this->data->dto;  ?>
 
       if ( !!window._cms_) {
         if ( !!window._cms_.property) {
+          console.log( '!window._cms_.property');
 
           let _form = $(this);
           let _data = _form.serializeFormJSON();
@@ -566,6 +567,10 @@ $dto = $this->data->dto;  ?>
             .then( () => _context.append( ctrl));
 
           }
+
+        }
+        else {
+          console.log( '!window._cms_.property');
 
         }
 

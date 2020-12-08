@@ -294,13 +294,13 @@ $_candidate = strings::rand();
     if ( '<?= $_candidates ?>' == id) {
       $('#<?= $_candidates ?>content').html('');
       $('#<?= $_context ?>').addClass( 'd-none').off( 'click');
-      console.log( 'remove people content');
+      // console.log( 'remove people content');
 
     }
     else if ( '<?= $_candidate ?>' == id) {
       $('#<?= $_candidate ?>content').html('');
       $('#<?= $_contextCandidate ?>').addClass( 'd-none').off( 'click');
-      console.log( 'remove candidate content');
+      // console.log( 'remove candidate content');
 
     }
 
@@ -428,7 +428,6 @@ $_candidate = strings::rand();
         }
 
       }
-
 
     });
 
