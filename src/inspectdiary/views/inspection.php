@@ -255,14 +255,6 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
-  <div class="modal-footer px-2">
-    <div class="btn-group mr-auto" role="group">
-      <button type="button" class="btn btn-secondary d-none" id="<?= $_btnTask = strings::rand() ?>"><i class="fa fa-fw fa-tasks"></i>task</button>
-
-    </div>
-
-  </div>
-
   <script>
   ( _ => {
     $('#<?= $_LinkedContactControl ?>')
@@ -468,19 +460,6 @@ $dto = $this->data->dto;  ?>
 
           }
 
-          if ( !!window._cms_.property.taskButton) {
-            _cms_.property.taskButton({
-              button : '#<?= $_btnTask ?>',
-              person : thisPerson,
-              property_id : _data.property_id,
-              inspect_id : _data.id,
-              inspect_type : _data.type,
-
-            })
-            .then( () => $('#<?= $_btnTask ?>').removeClass('d-none'));
-
-          }
-
         }
 
       }
@@ -553,7 +532,7 @@ $dto = $this->data->dto;  ?>
           let _data = _form.serializeFormJSON();
 
           if ( !!window._cms_.property.reminderButton) {
-            let ctrl = $('<a href="#" class="text-muted"><i class="fa fa-fw fa-bell-o"></i>Reminder</a>');
+            let ctrl = $('<a href="#"><i class="fa fa-fw fa-bell-o"></i>Reminder</a>');
             ctrl.on( 'click', e => _context.close());
 
             _cms_.property.reminderButton({
@@ -564,7 +543,26 @@ $dto = $this->data->dto;  ?>
               inspect_type : _data.type,
 
             })
-            .then( () => _context.append( ctrl));
+            .then( () => {});
+
+            _context.append( ctrl);
+
+          }
+
+          if ( !!window._cms_.property.taskButton) {
+            let ctrl = $('<a href="#"><i class="fa fa-fw fa-tasks"></i>Task</a>');
+            ctrl.on( 'click', e => _context.close());
+
+            _cms_.property.taskButton({
+              button : ctrl,
+              person : thisPerson,
+              property_id : _data.property_id,
+              inspect_id : _data.id,
+              inspect_type : _data.type,
+
+            })
+            .then( () => {});
+            _context.append( ctrl);
 
           }
 
@@ -575,6 +573,8 @@ $dto = $this->data->dto;  ?>
         // }
 
       }
+
+      if ( _context.length > 0) _context.append( '<hr>');
 
       if ( id > 0) {
         _context.append(
