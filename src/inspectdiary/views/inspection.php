@@ -428,6 +428,22 @@ $dto = $this->data->dto;  ?>
     })
     .trigger('change');
 
+    let thisPerson = () => {
+      let _form = $('#<?= $_form ?>');  // the latest
+      let _data = _form.serializeFormJSON();
+
+      let r = {
+        id : _data.person_id,
+        name : _data.name,
+        email : _data.email,
+        mobile : _data.mobile,
+
+      };
+
+      return r;
+
+    };
+
     $('#<?= $_form ?>')
     .on( 'property-id-change', function( e) {
       let _form = $(this);
@@ -439,27 +455,11 @@ $dto = $this->data->dto;  ?>
 
       if ( !!window._cms_) {
         if ( !!window._cms_.property) {
-          let person = () => {
-            let _form = $('#<?= $_form ?>');  // the latest
-            let _data = _form.serializeFormJSON();
-
-            let r = {
-              id : _data.person_id,
-              name : _data.name,
-              email : _data.email,
-              mobile : _data.mobile,
-
-            };
-
-            return r;
-
-          };
-
           if ( !!window._cms_.property.extensions) {
             _cms_.property.extensions({
               host : '#<?= $_collapseDocs ?>content',
               inspect_id : _data.id,
-              person : person,
+              person : thisPerson,
               property_id : _data.property_id,
               inspect_type : _data.type,
 
@@ -471,7 +471,7 @@ $dto = $this->data->dto;  ?>
           if ( !!window._cms_.property.taskButton) {
             _cms_.property.taskButton({
               button : '#<?= $_btnTask ?>',
-              person : person,
+              person : thisPerson,
               property_id : _data.property_id,
               inspect_id : _data.id,
               inspect_type : _data.type,
@@ -553,7 +553,7 @@ $dto = $this->data->dto;  ?>
 
             _cms_.property.reminderButton({
               button : ctrl,
-              person : person,
+              person : thisPerson,
               property_id : _data.property_id,
               inspect_id : _data.id,
               inspect_type : _data.type,
