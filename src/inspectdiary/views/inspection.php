@@ -502,6 +502,7 @@ $dto = $this->data->dto;  ?>
     <?php
       if ( !$dto->id) {
         print '$(document).ready( () => $(document).trigger(\'candidate-unsaved\'));';
+        print 'console.log(\'candidate-unsaved\');';
 
       }
 
@@ -511,7 +512,6 @@ $dto = $this->data->dto;  ?>
       }
 
     ?>
-
 
     let contextMenu = function( e) {
       if ( e.shiftKey)
