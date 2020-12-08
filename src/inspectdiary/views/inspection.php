@@ -547,9 +547,9 @@ $dto = $this->data->dto;  ?>
 
       if ( !!window._cms_) {
         if ( !!window._cms_.property) {
-          console.log( '!window._cms_.property');
+          // console.log( 'window._cms_.property');
 
-          let _form = $(this);
+          let _form = $('#<?= $_form ?>');
           let _data = _form.serializeFormJSON();
 
           if ( !!window._cms_.property.reminderButton) {
@@ -569,10 +569,10 @@ $dto = $this->data->dto;  ?>
           }
 
         }
-        else {
-          console.log( '!window._cms_.property');
+        // else {
+        //   console.log( '!window._cms_.property');
 
-        }
+        // }
 
       }
 
