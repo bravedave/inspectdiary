@@ -108,8 +108,8 @@ class controller extends \Controller {
     parent::before();
 
     if ( \class_exists('cms\theme')) {
-      $this->theme['navbar'] = cms\theme::navbar();
-      $this->theme['navbutton'] = cms\theme::navbutton();
+      $this->theme['navbar'] = \cms\theme::navbar();
+      $this->theme['navbutton'] = \cms\theme::navbutton();
 
     }
 
