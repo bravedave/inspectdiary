@@ -21,7 +21,7 @@ class controller extends \Controller {
   protected $viewPath = __DIR__ . '/views/';
 
   protected $theme = [
-    'navbar' => 'bg-primary navbar-dark',
+    'navbar' => 'navbar navbar-dark bg-primary',
     'navbutton' => 'btn-primary',
 
   ];
@@ -108,7 +108,7 @@ class controller extends \Controller {
     parent::before();
 
     if ( \class_exists('cms\theme')) {
-      $this->theme['navbar'] = \cms\theme::navbar();
+      $this->theme['navbar'] = \cms\theme::navbar(['defaults' => 'navbar', 'sticky' => '']);
       $this->theme['navbutton'] = \cms\theme::navbutton();
 
     }
