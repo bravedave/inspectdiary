@@ -20,6 +20,18 @@ use strings;
 class controller extends \Controller {
   protected $viewPath = __DIR__ . '/views/';
 
+  protected $theme = [
+    'navbar' => 'bg-primary navbar-dark',
+    'navbutton' => 'btn-primary',
+
+  ];
+
+  // protected $theme = [
+  //   'navbar' => 'bg-light navbar-light',
+  //   'navbutton' => 'btn-light',
+
+  // ];
+
   protected function _index() {
 
 		$dao = new dao\inspect_diary;
@@ -93,7 +105,13 @@ class controller extends \Controller {
 
 	protected function before() {
 		config::inspectdiary_checkdatabase();
-		parent::before();
+    parent::before();
+
+    if ( \class_exists('cms\theme')) {
+      $this->theme['navbar'] = cms\theme::navbar();
+      $this->theme['navbutton'] = cms\theme::navbutton();
+
+    }
 
   }
 

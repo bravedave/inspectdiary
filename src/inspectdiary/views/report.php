@@ -20,57 +20,52 @@ $_candidate = strings::rand();
 ?>
 <style>
   @media screen and ( max-width: 767px) {
-    .navbar-inspect { max-width: 70%; font-size: 1rem; padding-top: .5rem;}
+    .xnavbar-wrapper { margin-left: -15px; margin-right: -15px; }
+    .navbar-brand { max-width: 70%; font-size: 1rem; padding-top: .5rem;}
 
   }
 </style>
 
-<div id="<?= $_collapse = strings::rand() ?>">
+<div id="<?= $_collapse = strings::rand() ?>" style="margin-left: -15px; margin-right: -15px;">
   <div class="collapse" id="<?= $_candidate ?>" data-parent="#<?= $_collapse ?>">
-    <div style="margin-left: -15px; margin-right: -15px;">
-      <nav class="navbar navbar-light bg-light border-bottom border-3" style="padding-left: 15px; padding-right: 15px;">
-        <div class="d-flex flex-fill">
-          <div class="navbar-inspect navbar-brand mr-auto text-truncate" id="<?= $_title = strings::rand() ?>-candidate">Candidate</div>
+    <nav class="navbar <?= $this->theme['navbar'] ?> border-bottom border-3" style="padding-left: 15px; padding-right: 15px;">
+      <div class="d-flex flex-fill">
+        <div class="navbar-brand mr-auto text-truncate" id="<?= $_title = strings::rand() ?>-candidate">Candidate</div>
 
-          <button type="button" class="btn btn-light d-none" data-toggle="collapse"
-            id="<?= $_docsButton = strings::rand() ?>"><?= icon::get( icon::documents ) ?><span class="d-none d-md-inline">docs</span></button>
-          <button type="button" class="btn btn-light d-none" aria-label="context menu"
-            id="<?= $_contextCandidate = strings::rand() ?>"><?= icon::get( icon::menu_up ) ?></button>
-          <button type="button" class="btn btn-light" title="add inspection"
-            id="<?= $_addInspection = strings::rand() ?>-candidate"><?= icon::get( icon::person_plus ) ?></button>
-          <button type="button" class="btn btn-light" aria-label="Close" data-toggle="collapse"
-            id="<?= $_candidate ?>-goto-list"><?= icon::get( icon::list ) ?></button>
+        <button type="button" class="btn <?= $this->theme['navbutton'] ?> d-none" data-toggle="collapse"
+          id="<?= $_docsButton = strings::rand() ?>"><?= icon::get( icon::documents ) ?><span class="d-none d-md-inline">docs</span></button>
+        <button type="button" class="btn <?= $this->theme['navbutton'] ?> d-none" aria-label="context menu"
+          id="<?= $_contextCandidate = strings::rand() ?>"><?= icon::get( icon::menu_up ) ?></button>
+        <button type="button" class="btn <?= $this->theme['navbutton'] ?>" title="add inspection"
+          id="<?= $_addInspection = strings::rand() ?>-candidate"><?= icon::get( icon::person_plus ) ?></button>
+        <button type="button" class="btn <?= $this->theme['navbutton'] ?>" aria-label="Close" data-toggle="collapse"
+          id="<?= $_candidate ?>-goto-list"><?= icon::get( icon::list ) ?></button>
 
-        </div>
+      </div>
 
-      </nav>
+    </nav>
 
-    </div>
-
-    <div id="<?= $_candidate ?>content" class="pt-1"></div>
+    <div id="<?= $_candidate ?>content" class="container-fluid pt-1"></div>
 
   </div>
 
   <div class="collapse" id="<?= $_candidates ?>" data-parent="#<?= $_collapse ?>">
-    <div style="margin-left: -15px; margin-right: -15px;">
-      <nav class="navbar navbar-light bg-light" style="padding-left: 15px; padding-right: 15px;">
-        <div class="d-flex flex-fill">
-          <div class="navbar-inspect navbar-brand mr-auto" id="<?= $_title ?>-candidates">Inspection</div>
-          <button type="button" class="btn btn-light d-none" aria-label="context menu"
-            id="<?= $_context = strings::rand() ?>"><?= icon::get( icon::menu_up ) ?></button>
-          <button type="button" class="btn btn-light"
-            title="add inspection"
-            id="<?= $_addInspection ?>-candidates"><?= icon::get( icon::person_plus ) ?></button>
-          <button type="button" class="btn btn-light" aria-label="Close" data-toggle="collapse"
-            data-target="#<?= $_report ?>"><?= icon::get( icon::x ) ?></button>
+    <nav class="navbar <?= $this->theme['navbar'] ?>" style="padding-left: 15px; padding-right: 15px;">
+      <div class="d-flex flex-fill">
+        <div class="navbar-brand mr-auto" id="<?= $_title ?>-candidates">Inspection</div>
+        <button type="button" class="btn <?= $this->theme['navbutton'] ?> d-none" aria-label="context menu"
+          id="<?= $_context = strings::rand() ?>"><?= icon::get( icon::menu_up ) ?></button>
+        <button type="button" class="btn <?= $this->theme['navbutton'] ?>"
+          title="add inspection"
+          id="<?= $_addInspection ?>-candidates"><?= icon::get( icon::person_plus ) ?></button>
+        <button type="button" class="btn <?= $this->theme['navbutton'] ?>" aria-label="Close" data-toggle="collapse"
+          data-target="#<?= $_report ?>"><?= icon::get( icon::x ) ?></button>
 
-        </div>
+      </div>
 
-      </nav>
+    </nav>
 
-    </div>
-
-    <div id="<?= $_candidates ?>content"></div>
+    <div id="<?= $_candidates ?>content" class="container-fluid"></div>
 
   </div>
 
@@ -166,109 +161,112 @@ $_candidate = strings::rand();
 
     <?php } ?>
 
-    <div class="row" id="<?= $_uid ?>RentalDiary">
-      <div class="col">
-        <div class="row bg-light border-bottom">
-          <div class="d-none d-md-block col-1 text-center">
-            <i class="fa fa-calendar-plus-o" data-role="new-inspect-diary-control" title="add new"></i>
+    <div class="container-fluid">
+      <div class="row" id="<?= $_uid ?>RentalDiary">
+        <div class="col">
+          <div class="row bg-light border-bottom">
+            <div class="d-none d-md-block col-1 text-center">
+              <i class="fa fa-calendar-plus-o" data-role="new-inspect-diary-control" title="add new"></i>
 
-          </div>
-          <div class="col-3">date</div>
-          <div class="col">address</div>
-          <div class="col-2">
-            <div class="row">
-              <div class="col text-center">type</div>
-              <div class="col d-none d-md-block text-center">no.</div>
+            </div>
+            <div class="col-3">date</div>
+            <div class="col">address</div>
+            <div class="col-2">
+              <div class="row">
+                <div class="col text-center">type</div>
+                <div class="col d-none d-md-block text-center">no.</div>
+
+              </div>
 
             </div>
 
+            <div class="col d-none d-md-block">person</div>
+
           </div>
 
-          <div class="col d-none d-md-block">person</div>
+          <?php
+            $i = 0;
+            foreach ( $this->data->data as $dto) {	?>
+            <div class="row py-1 border-bottom"
+              data-role="item"
+              data-id="<?= $dto->id ?>"
+              data-property_id="<?= $dto->property_id ?>"
+              data-address_street=<?= json_encode( $dto->address_street, JSON_UNESCAPED_SLASHES) ?>
+              data-pretty_street=<?= json_encode( strings::GoodStreetString( $dto->address_street), JSON_UNESCAPED_SLASHES) ?>
+              data-short_time="<?= strings::AMPM( $dto->time) ?>"
+              data-person_id="<?= $dto->contact_id ?>"
+              data-inspect_id="<?= $dto->inspect_id ?>"
+              data-inspections="<?= $dto->inspections ?>"
+              data-type="<?= $dto->type ?>">
+
+              <div class="d-none d-md-block col-1 text-center small"><?= ++$i ?></div>
+              <div class="col-3">
+                <div class="row">
+                  <div class="col-md-6 pr-1" data-field="date">
+                    <?= strings::asShortDate( $dto->date) ?>
+
+                  </div>
+                  <div class="col-md-6 pr-1" data-field="time"><?= strings::AMPM( $dto->time) ?></div>
+
+                </div>
+
+              </div>
+
+              <div class="col-7 col-md-3">
+                <div class="row">
+                  <div class="col">
+                    <div class="" data-field="street">
+                      <?= $dto->address_street ?>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="row d-md-none">
+                  <div class="col text-muted">
+                    <div class="text-truncate" data-field="contact_name">
+                      <?php  if ( $dto->type == 'Inspect') print $dto->contact_name; ?>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="col-2"><!-- type -->
+                <div class="row">
+                  <div class="col text-center" data-field="type">
+                    <?php
+                      if ( 'OH Inspect' == $dto->type)
+                        print 'OH';
+                      elseif ( 'Inspect' == $dto->type)
+                        print 'Insp';
+                      else
+                        print $dto->type;
+
+                    ?>
+                  </div>
+
+                  <div class="col text-center" inspections><?= $dto->inspections ?></div>
+
+                </div>
+
+              </div>
+
+              <div class="d-none d-md-block col text-truncate"><?php
+                if ( $dto->type == 'Inspect') print $dto->contact_name;
+
+              ?></div>
+
+            </div>
+          <?php
+            }	// foreach ( $this->data as $dto)	?>
 
         </div>
-
-        <?php
-          $i = 0;
-          foreach ( $this->data->data as $dto) {	?>
-          <div class="row py-1 border-bottom"
-            data-role="item"
-            data-id="<?= $dto->id ?>"
-            data-property_id="<?= $dto->property_id ?>"
-            data-address_street=<?= json_encode( $dto->address_street, JSON_UNESCAPED_SLASHES) ?>
-            data-pretty_street=<?= json_encode( strings::GoodStreetString( $dto->address_street), JSON_UNESCAPED_SLASHES) ?>
-            data-short_time="<?= strings::AMPM( $dto->time) ?>"
-            data-person_id="<?= $dto->contact_id ?>"
-            data-inspect_id="<?= $dto->inspect_id ?>"
-            data-inspections="<?= $dto->inspections ?>"
-            data-type="<?= $dto->type ?>">
-
-            <div class="d-none d-md-block col-1 text-center small"><?= ++$i ?></div>
-            <div class="col-3">
-              <div class="row">
-                <div class="col-md-6 pr-1" data-field="date">
-                  <?= strings::asShortDate( $dto->date) ?>
-
-                </div>
-                <div class="col-md-6 pr-1" data-field="time"><?= strings::AMPM( $dto->time) ?></div>
-
-              </div>
-
-            </div>
-
-            <div class="col-7 col-md-3">
-              <div class="row">
-                <div class="col">
-                  <div class="" data-field="street">
-                    <?= $dto->address_street ?>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div class="row d-md-none">
-                <div class="col text-muted">
-                  <div class="text-truncate" data-field="contact_name">
-                    <?php  if ( $dto->type == 'Inspect') print $dto->contact_name; ?>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="col-2"><!-- type -->
-              <div class="row">
-                <div class="col text-center" data-field="type">
-                  <?php
-                    if ( 'OH Inspect' == $dto->type)
-                      print 'OH';
-                    elseif ( 'Inspect' == $dto->type)
-                      print 'Insp';
-                    else
-                      print $dto->type;
-
-                  ?>
-                </div>
-
-                <div class="col text-center" inspections><?= $dto->inspections ?></div>
-
-              </div>
-
-            </div>
-
-            <div class="d-none d-md-block col text-truncate"><?php
-              if ( $dto->type == 'Inspect') print $dto->contact_name;
-
-            ?></div>
-
-          </div>
-        <?php
-          }	// foreach ( $this->data as $dto)	?>
 
       </div>
 

@@ -16,7 +16,7 @@
   .navbar-brand {min-width: 30%;}
 }
 </style>
-<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top" role="navigation" >
+<nav class="navbar navbar-expand-md navbar-dark bg-primary sticky-top" role="navigation" >
 	<div class="container-fluid">
     <div class="navbar-brand text-truncate"><?= $this->data->title	?></div>
 
