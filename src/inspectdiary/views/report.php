@@ -19,8 +19,12 @@ $_candidate = strings::rand();
 
 ?>
 <style>
+  .border-1 { border-width: .1rem!important; }
+  .border-2 { border-width: .2rem!important; }
+  .border-3 { border-width: .3rem!important; }
+  .border-4 { border-width: .4rem!important; }
+
   @media screen and ( max-width: 767px) {
-    .xnavbar-wrapper { margin-left: -15px; margin-right: -15px; }
     .navbar-brand { max-width: 70%; font-size: 1rem; padding-top: .5rem;}
 
   }
@@ -28,7 +32,7 @@ $_candidate = strings::rand();
 
 <div id="<?= $_collapse = strings::rand() ?>" style="margin-left: -15px; margin-right: -15px;">
   <div class="collapse" id="<?= $_candidate ?>" data-parent="#<?= $_collapse ?>">
-    <nav class="<?= $this->theme['navbar'] ?> border-bottom border-3" style="padding-left: 15px; padding-right: 15px;">
+    <nav class="<?= $this->theme['navbar'] ?> border-bottom border-3 py-1" style="padding-left: 15px; padding-right: 15px;">
       <div class="d-flex flex-fill">
         <div class="navbar-brand mr-auto text-truncate" id="<?= $_title = strings::rand() ?>-candidate">Candidate</div>
 
@@ -50,7 +54,7 @@ $_candidate = strings::rand();
   </div>
 
   <div class="collapse" id="<?= $_candidates ?>" data-parent="#<?= $_collapse ?>">
-    <nav class="<?= $this->theme['navbar'] ?>" style="padding-left: 15px; padding-right: 15px;">
+    <nav class="<?= $this->theme['navbar'] ?> py-1" style="padding-left: 15px; padding-right: 15px;">
       <div class="d-flex flex-fill">
         <div class="navbar-brand mr-auto" id="<?= $_title ?>-candidates">Inspection</div>
         <button type="button" class="btn <?= $this->theme['navbutton'] ?> d-none" aria-label="context menu"
