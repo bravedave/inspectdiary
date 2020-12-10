@@ -197,7 +197,7 @@ $_candidate = strings::rand();
               data-property_id="<?= $dto->property_id ?>"
               data-address_street=<?= json_encode( $dto->address_street, JSON_UNESCAPED_SLASHES) ?>
               data-pretty_street=<?= json_encode( strings::GoodStreetString( $dto->address_street), JSON_UNESCAPED_SLASHES) ?>
-              data-short_time="<?= strings::AMPM( $dto->time) ?>"
+              data-short_time="<?= rtrim( strings::AMPM( $dto->time), 'm') ?>"
               data-person_id="<?= $dto->contact_id ?>"
               data-inspect_id="<?= $dto->inspect_id ?>"
               data-inspections="<?= $dto->inspections ?>"
@@ -210,7 +210,7 @@ $_candidate = strings::rand();
                     <?= strings::asShortDate( $dto->date) ?>
 
                   </div>
-                  <div class="col-md-6 pr-1" data-field="time"><?= strings::AMPM( $dto->time) ?></div>
+                  <div class="col-md-6 pr-1" data-field="time"><?= rtrim( strings::AMPM( $dto->time), 'm') ?></div>
 
                 </div>
 
