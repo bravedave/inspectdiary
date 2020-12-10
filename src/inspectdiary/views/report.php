@@ -540,7 +540,7 @@ $_candidate = strings::rand();
   .on( 'load-inspects', ( e, data) => {
 
     // console.log( data);
-    $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( data.pretty_street + ' ' + data.short_time);
+    $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( data.pretty_street + '&nbsp;&nbsp;' + data.short_time);
 
     $('#<?= $_candidates ?>content')
     .data('id', data.id)
@@ -770,7 +770,7 @@ $_candidate = strings::rand();
         let _me = $(this);
         let _data = _me.data();
 
-        $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( _data.pretty_street + ' ' + _data.short_time);
+        $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( _data.pretty_street + '&nbsp;&nbsp;' + _data.short_time);
 
         $('#<?= $_candidates ?>content')
         .data('id', _data.id)
