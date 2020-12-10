@@ -25,7 +25,7 @@ $_candidate = strings::rand();
   .border-4 { border-width: .4rem!important; }
 
   @media screen and ( max-width: 767px) {
-    .navbar-brand { max-width: 65%; font-size: 1rem; padding-top: .5rem;}
+    .navbar-brand { max-width: 55%; font-size: 1rem; padding-top: .5rem;}
 
   }
 </style>
