@@ -56,7 +56,7 @@ $_candidate = strings::rand();
   <div class="collapse" id="<?= $_candidates ?>" data-parent="#<?= $_collapse ?>">
     <nav class="<?= $this->theme['navbar'] ?> py-1" style="padding-left: 15px; padding-right: 15px;">
       <div class="d-flex flex-fill">
-        <div class="navbar-brand mr-auto" id="<?= $_title ?>-candidates">Inspection</div>
+        <div class="navbar-brand mr-auto text-truncate" id="<?= $_title ?>-candidates">Inspection</div>
         <button type="button" class="btn <?= $this->theme['navbutton'] ?> d-none" aria-label="context menu"
           id="<?= $_context = strings::rand() ?>"><?= icon::get( icon::menu_up ) ?></button>
         <button type="button" class="btn <?= $this->theme['navbutton'] ?>"
@@ -540,7 +540,7 @@ $_candidate = strings::rand();
   .on( 'load-inspects', ( e, data) => {
 
     // console.log( data);
-    $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( data.pretty_street + '&nbsp;&nbsp;' + data.short_time);
+    $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( data.pretty_street + ' ' + data.short_time);
 
     $('#<?= $_candidates ?>content')
     .data('id', data.id)
@@ -770,7 +770,7 @@ $_candidate = strings::rand();
         let _me = $(this);
         let _data = _me.data();
 
-        $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( _data.pretty_street + '&nbsp;&nbsp;' + _data.short_time);
+        $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( _data.pretty_street + ' ' + _data.short_time);
 
         $('#<?= $_candidates ?>content')
         .data('id', _data.id)
