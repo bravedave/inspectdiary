@@ -78,6 +78,7 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
     }
 
     $emailConflict = $dto->people_email != '' && strtolower( trim( $dto->email)) != strtolower( trim( $dto->people_email));
+    $ip = 'yes' == $dto->fu_interested_party;
 		?>
 
     <div class="form-row border-bottom"
@@ -89,7 +90,7 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
       data-email=<?= json_encode( $dto->email, JSON_UNESCAPED_SLASHES)?>
       data-fu_sms="<?= $dto->fu_sms ?>"
       data-has_reminder="<?= (int)$dto->reminder > 0 ? 'yes' : 'no' ?>">
-      <div class="col py-2"><?= $dto->name ?></div>
+      <div class="col py-2 <?php if ( $ip) print 'text-danger font-weight-bold'; ?>"><?= $dto->name ?></div>
       <div class="d-none d-lg-block col-8">
         <div class="form-row">
           <div class="col text-center py-2"><?php
