@@ -770,7 +770,7 @@ $_candidate = strings::rand();
         let _me = $(this);
         let _data = _me.data();
 
-        $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( _data.pretty_street + ', ' + _data.short_time);
+        $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( _data.pretty_street + ' ' + _data.short_time);
 
         $('#<?= $_candidates ?>content')
         .data('id', _data.id)
