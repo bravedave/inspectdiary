@@ -131,6 +131,8 @@ class inspect extends _dao {
 					}
 
 					if ( $_attachments) {
+						\sys::logger( sprintf('<%s> %s', count( $_attachments), __METHOD__));
+
 						$this->db->Update(
 							'_t',
 							[
@@ -151,7 +153,7 @@ class inspect extends _dao {
 					}
 
 				});
-				if ( $timer) \sys::logger( sprintf('<%s - extract atachments> %s', $timer->elapsed(), __METHOD__));
+				if ( $timer) \sys::logger( sprintf('<%s - extract attachments> %s', $timer->elapsed(), __METHOD__));
 
 			}
 
