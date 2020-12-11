@@ -60,7 +60,7 @@ class inspect extends _dao {
 
 	public function prendiIlDiario( int $inspectdiaryID) : array {
 		$timer = false;
-		$timer = new \timer;
+		// $timer = new \timer;
 
 		$sql = sprintf(
 			'SELECT
@@ -131,7 +131,7 @@ class inspect extends _dao {
 					}
 
 					if ( $_attachments) {
-						\sys::logger( sprintf('<%s> %s', count( $_attachments), __METHOD__));
+						// \sys::logger( sprintf('<%s> %s', count( $_attachments), __METHOD__));
 
 						$this->db->Update(
 							'_t',

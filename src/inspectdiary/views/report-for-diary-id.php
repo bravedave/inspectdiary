@@ -14,7 +14,7 @@ use dvc\icon;
 use strings;
 use sys;
 
-$offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
+$emailLog = sys::dbi()->table_exists( 'email_log'); ?>
 
 <div id="<?= $_wrapper = strings::rand() ?>">
 
@@ -44,9 +44,10 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
         <div class="col text-center" title="has task"><i class="fa fa-tasks"></i></div>
         <div class="col text-center" title="reminder"><i class="fa fa-bell-o"></i></div>
         <div class="col text-center" title="sms"><i class="fa fa-commenting"></i></div>
-        <?php if ( $offertobuy) { ?>
+        <?php if ( $emailLog) { ?>
+        <div class="col text-center" title="documents sent"><i class="fa fa-file-text-o"></i></div>
         <div class="col text-center" title="offer to buy">otb</div>
-        <?php } // if ( $offertobuy) ?>
+        <?php } // if ( $emailLog) ?>
         <div class="col text-center" title="new seller lead">nsl</div>
         <div class="col text-center" title="buyer">buy</div>
         <div class="col text-center" title="neighbour">nbr</div>
@@ -147,7 +148,13 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
           ?></div>
 
-          <?php if ( $offertobuy) {
+          <?php if ( $emailLog) {
+            printf(
+              '<div class="col text-center py-2">%s</div>',
+              $dto->attachment_count ? $dto->attachment_count : '&nbsp;'
+
+            );
+
             if ( strtotime( $dto->offer_to_buy) > 0) {
               printf(
                 '<div class="col d-none d-lg-block text-center py-2" title="%s">%s</div>',
@@ -162,7 +169,7 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
             }
 
-          } // if ( $offertobuy) ?>
+          } // if ( $emailLog) ?>
 
           <div class="col d-none d-lg-block text-center py-2"><?= $dto->fu_nsl ?></div>
           <div class="col d-none d-lg-block text-center py-2"><?= $dto->fu_buyer ?></div>
