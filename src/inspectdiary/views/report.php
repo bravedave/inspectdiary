@@ -16,6 +16,7 @@ use strings;
 $_report = strings::rand();
 $_candidates = strings::rand();
 $_candidate = strings::rand();
+$_propertyContact = strings::rand();
 
 ?>
 <style>
@@ -31,10 +32,26 @@ $_candidate = strings::rand();
 </style>
 
 <div id="<?= $_collapse = strings::rand() ?>" style="margin-left: -15px; margin-right: -15px;">
+  <div class="collapse" id="<?= $_propertyContact ?>" data-parent="#<?= $_collapse ?>">
+    <nav class="<?= $this->theme['navbar'] ?> py-1" style="padding-left: 15px; padding-right: 15px;">
+      <div class="d-flex flex-fill">
+        <div class="navbar-brand mr-auto text-truncate" id="<?= $_title = strings::rand() ?>-property-contact">Property Contact</div>
+
+        <button type="button" class="btn <?= $this->theme['navbutton'] ?>" aria-label="Close" data-toggle="collapse"
+          id="<?= $_propertyContact ?>-goto-list"><?= icon::get( icon::list ) ?></button>
+
+      </div>
+
+    </nav>
+
+    <div id="<?= $_propertyContact ?>content" class="container-fluid pt-1"></div>
+
+  </div>
+
   <div class="collapse" id="<?= $_candidate ?>" data-parent="#<?= $_collapse ?>">
     <nav class="<?= $this->theme['navbar'] ?> border-bottom border-3 py-1" style="padding-left: 15px; padding-right: 15px;">
       <div class="d-flex flex-fill">
-        <div class="navbar-brand mr-auto text-truncate" id="<?= $_title = strings::rand() ?>-candidate">Candidate</div>
+        <div class="navbar-brand mr-auto text-truncate" id="<?= $_title ?>-candidate">Candidate</div>
 
         <button type="button" class="btn <?= $this->theme['navbutton'] ?> d-none" data-toggle="collapse"
           id="<?= $_docsButton = strings::rand() ?>"><?= icon::get( icon::documents ) ?><span class="d-none d-md-inline">docs</span></button>
@@ -311,6 +328,14 @@ $_candidate = strings::rand();
       }, 50);
 
     }
+    else if ( '<?= $_propertyContact ?>' == id) {
+      setTimeout(() => {
+        $('#<?= $_propertyContact ?>content').html('');
+        // console.log( 'remove propertyContact content');
+
+      }, 50);
+
+    }
 
   });
 
@@ -333,10 +358,37 @@ $_candidate = strings::rand();
 
   };
 
-  $('#<?= $_candidate ?>-goto-list').on( 'click', function( e) {
+  $('#<?= $_candidate ?>-goto-list, #<?= $_propertyContact ?>-goto-list').on( 'click', function( e) {
     e.stopPropagation();
     _.hideContexts();
     gotoPeopleList();
+
+  });
+
+  $('#<?= $_propertyContact ?>content')
+  .on( 'refresh', function(e) {
+    e.stopPropagation();
+
+    let _me = $(this);
+    let _data = _me.data();
+
+    _me.html('<div class="d-flex"><div class="spinner-border mx-auto my-5" role="status"><span class="sr-only">Loading...</span></div></div>');
+
+    // console.log( ( _.url( '<?= $this->route ?>/propertycontact/' + _data.id)));
+
+    _.get( _.url( '<?= $this->route ?>/propertycontact/' + _data.id))
+    .then( html => _me.html( html));
+
+  });
+
+  $('#<?= $_propertyContact ?>')
+  .on( 'view-contact', function(e, id) {
+    e.stopPropagation();
+
+    let _me = $(this);
+    _me.collapse( 'show');
+    $('#<?= $_propertyContact ?>content').data('id', id);
+    $('#<?= $_propertyContact ?>content').trigger('refresh');
 
   });
 
@@ -493,6 +545,8 @@ $_candidate = strings::rand();
 
   };
 
+  window.viewPropertyContact = id => $('#<?= $_propertyContact ?>content').trigger('view-contact', id);
+
   window.viewInspection = id => $('#<?= $_candidates ?>content').trigger('view-inspection', id);
 
   $(document)
@@ -540,7 +594,7 @@ $_candidate = strings::rand();
   .on( 'load-inspects', ( e, data) => {
 
     // console.log( data);
-    $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( data.pretty_street + ' ' + data.short_time);
+    $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate, #<?= $_title ?>-property-contact').html( data.pretty_street + ' ' + data.short_time);
 
     $('#<?= $_candidates ?>content')
     .data('id', data.id)
@@ -646,6 +700,14 @@ $_candidate = strings::rand();
         }
 
         _context.append( '<hr>');
+        _context.append( $('<a href="#">view property</a>').on( 'click', function( e) {
+          e.stopPropagation();e.preventDefault();
+
+          _context.close();
+          _.get.modal( _.url('properties/edit/' + _data.property_id));
+
+        }));
+
         _context.append( $('<a href="#">close</a>').on( 'click', function( e) {
           e.stopPropagation();e.preventDefault();
 
@@ -770,7 +832,7 @@ $_candidate = strings::rand();
         let _me = $(this);
         let _data = _me.data();
 
-        $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate').html( _data.pretty_street + ' ' + _data.short_time);
+        $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate, #<?= $_title ?>-property-contact').html( _data.pretty_street + ' ' + _data.short_time);
 
         $('#<?= $_candidates ?>content')
         .data('id', _data.id)

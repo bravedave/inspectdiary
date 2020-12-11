@@ -186,6 +186,25 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
 
   <?php } ?>
 
+  <?php if ( $this->data->dto->property_contact_id) { ?>
+    <div class="form-row mt-5"
+      data-contact_id="<?= $this->data->dto->property_contact_id ?>"
+      data-inspect_diary_id="<?= $this->data->dto->id ?>">
+      <div class="col">
+        <div class="text-muted">Property Contact</div>
+        <?= $this->data->dto->property_contact_name ?>
+
+      </div>
+
+      <div class="col-auto" style="font-size: 2rem;">
+        <?= icon::get( icon::chevronRight ) ?>
+
+      </div>
+
+    </div>
+
+  <?php } ?>
+
 </div>
 <script>
   // window._cms_ = {
@@ -654,6 +673,26 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
 
     $('#<?= $_headline ?>').on( 'contextmenu', headlineContext);
     setPeopleContext( headlineContext);
+
+    $('#<?= $_wrapper ?> > [data-contact_id]').each( (i, row) => {
+      let _row = $(row);
+
+      _row
+      .addClass( 'pointer')
+      .on( 'click', function( e) {
+        e.stopPropagation();
+
+        _.hideContexts();
+
+        let _me = $(this);
+        let _data = _me.data();
+
+        viewPropertyContact( _data.inspect_diary_id);
+
+      });
+
+    });
+
 
   }))( _brayworth_);
 </script>

@@ -649,7 +649,7 @@ class controller extends \Controller {
     $dao = new dao\inspect;
 		if ( $id = (int)$id) {
       if ( $dto = $dao->getByID( $id)) {
-        $this->data->dto = $dao->getDetail( $dto);
+        $this->data->dto = $dto;
 
       }
 
@@ -657,14 +657,12 @@ class controller extends \Controller {
     else {
       if ( $idid = (int)$this->getParam( 'idid')) {
         $this->data->dto->inspect_diary_id = $idid;
-        $this->data->dto = $dao->getDetail( $this->data->dto);
 
       }
 
     }
 
     $this->data->dto = $dao->getDetail($this->data->dto);
-
     $this->load( 'inspection');
 
   }
@@ -790,6 +788,39 @@ class controller extends \Controller {
 
     // $this->load( 'dump'); return;
     $this->load( 'openThisWeek');
+
+  }
+
+  public function propertycontact( $id = 0) {
+    if ( $id = (int)$id) {
+
+      // \sys::logger( sprintf('<%s> %s', $id, __METHOD__));
+
+      $dao = new dao\inspect_diary;
+      if ( $dto = $dao->getByID( $id)) {
+
+        // \sys::logger( sprintf('<%s> %s', $dto->id, __METHOD__));
+
+        $dto = $dao->getDetail( $dto);
+        $this->data = (object)[
+          'title' => $this->title = 'Property Contact',
+          'dto' => $dto
+
+        ];
+
+        $this->load( 'property-contact');
+
+      }
+      else {
+        $this->load( 'inspection-not-found');
+
+      }
+
+    }
+    else {
+      $this->load( 'inspection-not-found');
+
+    }
 
   }
 

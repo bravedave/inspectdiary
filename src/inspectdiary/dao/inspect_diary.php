@@ -103,6 +103,24 @@ class inspect_diary extends _dao {
 			$dao = new properties;
 			if ( $_dto = $dao->getByID($dto->property_id)) {
 				$dto->address_street = $_dto->address_street;
+				$dto->property_contact_id = $_dto->people_id;
+
+				// \sys::logger( sprintf('<%s %s> %s', $_dto->people_id, $_dto->address_street, __METHOD__));
+
+			}
+
+		}
+
+		if ( $dto->property_contact_id) {
+
+			// \sys::logger( sprintf('<%s> %s', $dto->property_contact_id, __METHOD__));
+
+			$dao = new people;
+			if ( $_dto = $dao->getByID($dto->property_contact_id)) {
+				// \sys::logger( sprintf('<%s> %s', $_dto->name, __METHOD__));
+				$dto->property_contact_name = $_dto->name;
+				$dto->property_contact_mobile = $_dto->mobile;
+				$dto->property_contact_email = $_dto->email;
 
 			}
 
