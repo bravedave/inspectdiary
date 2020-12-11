@@ -36,9 +36,9 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
     <div class="col-8">
       <div class="form-row">
         <div class="col text-center" title="conflict"><i class="fa fa-exclamation"></i></div>
-        <div class="col text-center" title="has home address"><i class="fa fa-address-card-o"></i></div>
-        <div class="col text-center" title="has phone"><i class="fa fa-mobile"></i></div>
-        <div class="col text-center" title="has email"><i class="fa fa-at"></i></div>
+        <div class="col d-none d-xl-block text-center" title="has home address"><i class="fa fa-address-card-o"></i></div>
+        <div class="col d-none d-xl-block text-center" title="has phone"><i class="fa fa-mobile"></i></div>
+        <div class="col d-none d-xl-block text-center" title="has email"><i class="fa fa-at"></i></div>
         <div class="col text-center" title="has comment"><i class="fa fa-sticky-note-o"></i></div>
         <div class="col text-center" title="has info"><i class="fa fa-info-circle"></i></div>
         <div class="col text-center" title="has task"><i class="fa fa-tasks"></i></div>
@@ -46,14 +46,14 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
         <div class="col text-center" title="sms"><i class="fa fa-commenting"></i></div>
         <?php if ( $emailLog) { ?>
         <div class="col text-center" title="documents sent"><i class="fa fa-file-text-o"></i></div>
-        <div class="col text-center" title="offer to buy">otb</div>
+        <div class="col text-center text-truncate" title="offer to buy">otb</div>
         <?php } // if ( $emailLog) ?>
-        <div class="col text-center" title="new seller lead">nsl</div>
-        <div class="col text-center" title="buyer">buy</div>
-        <div class="col text-center" title="neighbour">nbr</div>
-        <div class="col text-center" title="interested party">ip</div>
-        <div class="col-2 text-center" title="updated">update</div>
-        <div class="col text-center" title="has info">user</div>
+        <div class="col text-center text-truncate" title="new seller lead">nsl</div>
+        <div class="col text-center text-truncate" title="buyer">buy</div>
+        <div class="col text-center text-truncate" title="neighbour">nbr</div>
+        <div class="col text-center text-truncate" title="interested party">ip</div>
+        <div class="col-2 text-center text-truncate" title="updated">update</div>
+        <div class="col d-none d-xl-block text-center text-truncate" title="has info">user</div>
 
       </div>
 
@@ -109,9 +109,9 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
             }
 
           ?></div>
-          <div class="col d-none d-lg-block text-center py-2"><?php if ( $dto->home_address) print strings::html_tick ?></div>
-          <div class="col d-none d-lg-block text-center py-2"><?php if ( strings::isPhone( $dto->mobile)) print strings::html_tick ?></div>
-          <div class="col d-none d-lg-block text-center py-2"><?php if ( strings::isEmail( $dto->email)) print strings::html_tick ?></div>
+          <div class="col d-none d-xl-block text-center py-2"><?php if ( $dto->home_address) print strings::html_tick ?></div>
+          <div class="col d-none d-xl-block text-center py-2"><?php if ( strings::isPhone( $dto->mobile)) print strings::html_tick ?></div>
+          <div class="col d-none d-xl-block text-center py-2"><?php if ( strings::isEmail( $dto->email)) print strings::html_tick ?></div>
           <div class="col text-center py-2"><?php if ( $dto->comment) print 'C' ?></div>
           <div class="col d-none d-lg-block text-center py-2"><?php if ( $dto->notes) print strings::html_tick ?></div>
           <div class="col d-none d-lg-block text-center py-2"><?php if ( $dto->tasks) print strings::html_tick ?></div>
@@ -176,7 +176,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
           <div class="col d-none d-lg-block text-center py-2"><?= $dto->fu_neighbour ?></div>
           <div class="col d-none d-lg-block text-center py-2"><?= $dto->fu_interested_party ?></div>
           <div class="col-2 d-none d-lg-block text-center py-2"><?= strings::asShortDate( $dto->updated) ?></div>
-          <div class="col d-none d-lg-block text-center"><?= \html::icon( $dto->user_name, $dto->user_name ) ?></div>
+          <div class="col d-none d-xl-block text-center"><?= \html::icon( $dto->user_name, $dto->user_name ) ?></div>
 
         </div>
 
