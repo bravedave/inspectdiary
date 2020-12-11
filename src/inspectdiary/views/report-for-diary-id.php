@@ -91,9 +91,9 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
       data-fu_sms="<?= $dto->fu_sms ?>"
       data-has_reminder="<?= (int)$dto->reminder > 0 ? 'yes' : 'no' ?>">
       <div class="col py-2 <?php if ( $ip) print 'text-danger font-weight-bold'; ?>"><?= $dto->name ?></div>
-      <div class="d-none d-lg-block col-8">
+      <div class="col-4 col-lg-8">
         <div class="form-row">
-          <div class="col text-center py-2"><?php
+          <div class="col d-none d-lg-block text-center py-2"><?php
             if ( $conflict) {
               print '<i class="fa fa-user text-warning" title="name conflict"></i>';
 
@@ -108,13 +108,13 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
             }
 
           ?></div>
-          <div class="col text-center py-2"><?php if ( $dto->home_address) print strings::html_tick ?></div>
-          <div class="col text-center py-2"><?php if ( strings::isPhone( $dto->mobile)) print strings::html_tick ?></div>
-          <div class="col text-center py-2"><?php if ( strings::isEmail( $dto->email)) print strings::html_tick ?></div>
-          <div class="col text-center py-2"><?php if ( $dto->comment) print strings::html_tick ?></div>
-          <div class="col text-center py-2"><?php if ( $dto->notes) print strings::html_tick ?></div>
-          <div class="col text-center py-2"><?php if ( $dto->tasks) print strings::html_tick ?></div>
-          <div class="col text-center py-2"><?php if ( (int)$dto->reminder > 0) print strings::html_tick ?></div>
+          <div class="col d-none d-lg-block text-center py-2"><?php if ( $dto->home_address) print strings::html_tick ?></div>
+          <div class="col d-none d-lg-block text-center py-2"><?php if ( strings::isPhone( $dto->mobile)) print strings::html_tick ?></div>
+          <div class="col d-none d-lg-block text-center py-2"><?php if ( strings::isEmail( $dto->email)) print strings::html_tick ?></div>
+          <div class="col text-center py-2"><?php if ( $dto->comment) print 'C' ?></div>
+          <div class="col d-none d-lg-block text-center py-2"><?php if ( $dto->notes) print strings::html_tick ?></div>
+          <div class="col d-none d-lg-block text-center py-2"><?php if ( $dto->tasks) print strings::html_tick ?></div>
+          <div class="col d-none d-lg-block text-center py-2"><?php if ( (int)$dto->reminder > 0) print strings::html_tick ?></div>
           <div class="col text-center py-2" sms><?php
             if ( $dto->fu_sms == 'com') {
               if ( $dto->fu_sms_bulk == 1)
@@ -150,7 +150,7 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
           <?php if ( $offertobuy) {
             if ( strtotime( $dto->offer_to_buy) > 0) {
               printf(
-                '<div class="col text-center py-2" title="%s">%s</div>',
+                '<div class="col d-none d-lg-block text-center py-2" title="%s">%s</div>',
                 strings::asLocalDate( $dto->offer_to_buy),
                 strings::html_tick
 
@@ -158,18 +158,18 @@ $offertobuy = sys::dbi()->table_exists( 'email_log'); ?>
 
             }
             else {
-              print '<div class="col"></div>';
+              print '<div class="col d-none d-lg-block"></div>';
 
             }
 
           } // if ( $offertobuy) ?>
 
-          <div class="col text-center py-2"><?= $dto->fu_nsl ?></div>
-          <div class="col text-center py-2"><?= $dto->fu_buyer ?></div>
-          <div class="col text-center py-2"><?= $dto->fu_neighbour ?></div>
-          <div class="col text-center py-2"><?= $dto->fu_interested_party ?></div>
-          <div class="col-2 text-center py-2"><?= strings::asShortDate( $dto->updated) ?></div>
-          <div class="col text-center"><?= \html::icon( $dto->user_name, $dto->user_name ) ?></div>
+          <div class="col d-none d-lg-block text-center py-2"><?= $dto->fu_nsl ?></div>
+          <div class="col d-none d-lg-block text-center py-2"><?= $dto->fu_buyer ?></div>
+          <div class="col d-none d-lg-block text-center py-2"><?= $dto->fu_neighbour ?></div>
+          <div class="col d-none d-lg-block text-center py-2"><?= $dto->fu_interested_party ?></div>
+          <div class="col-2 d-none d-lg-block text-center py-2"><?= strings::asShortDate( $dto->updated) ?></div>
+          <div class="col d-none d-lg-block text-center"><?= \html::icon( $dto->user_name, $dto->user_name ) ?></div>
 
         </div>
 
