@@ -53,7 +53,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
         <div class="col text-center text-truncate" title="neighbour">nbr</div>
         <div class="col text-center text-truncate" title="interested party">ip</div>
         <div class="col-2 text-center text-truncate" title="updated">update</div>
-        <div class="col d-none d-xl-block text-center text-truncate" title="has info">user</div>
+        <div class="col d-none d-xl-block text-center text-truncate" title="user">user</div>
 
       </div>
 

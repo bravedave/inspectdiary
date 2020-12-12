@@ -480,6 +480,15 @@ class controller extends \Controller {
 
       }
 
+      if ( $pid) {
+        $dao = new dao\people;
+        $dao->UpdateByID([
+          'property2sell' => $this->getPost('property2sell')
+
+        ], $pid);
+
+      }
+
       Json::ack( $action)
         ->add( 'id', $id);
 

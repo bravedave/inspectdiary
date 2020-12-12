@@ -278,10 +278,12 @@ $dto = $this->data->dto;  ?>
       select: ( e, ui) => {
         let o = ui.item;
         $('input[name="person_id"]', '#<?= $_form ?>').val( o.id);
-        $('input[name="mobile"]', '#<?= $_form ?>').val( o.mobile).trigger('change');
         $('input[name="email"]', '#<?= $_form ?>').val( o.email);
+        $('input[name="mobile"]', '#<?= $_form ?>').val( o.mobile);
         $('input[name="property2sell"]', '#<?= $_form ?>').val( o.property2sell);
         $('#<?= $_LinkedContactControl ?> .fa').removeClass( 'fa-chain-broken').addClass( 'fa-chain');
+
+        $('#<?= $_form ?>').trigger( 'save');
 
         $('input[name="mobile"]', '#<?= $_form ?>').autofill('destroy');
 
@@ -299,15 +301,18 @@ $dto = $this->data->dto;  ?>
         select: ( e, ui) => {
           let o = ui.item;
           $('input[name="person_id"]', '#<?= $_form ?>').val( o.id);
-          $('input[name="mobile"]', '#<?= $_form ?>').val( o.mobile).trigger('change');
           $('input[name="email"]', '#<?= $_form ?>').val( o.email);
+          $('input[name="mobile"]', '#<?= $_form ?>').val( o.mobile);
           $('input[name="property2sell"]', '#<?= $_form ?>').val( o.property2sell);
           $('#<?= $_LinkedContactControl ?> .fa').removeClass( 'fa-chain-broken').addClass( 'fa-chain');
 
           if ( '' == $('input[name="name"]', '#<?= $_form ?>').val()) {
-            $('input[name="name"]', '#<?= $_form ?>').val( o.name).trigger('change');
+            $('input[name="name"]', '#<?= $_form ?>').val( o.name);
 
           }
+
+          $('#<?= $_form ?>').trigger( 'save');
+
           $('input[name="mobile"]', '#<?= $_form ?>').autofill('destroy');
 
         },
@@ -412,7 +417,8 @@ $dto = $this->data->dto;  ?>
       let email = String( _me.val());
 
       if ( email.isEmail() && !!_.email.activate) {
-        _.get.sms.enabled().then( () => $('[sendemail]', grp).removeClass( 'd-none'));
+        // _.get.sms.enabled().then( () => $('[sendemail]', grp).removeClass( 'd-none'));
+        () => $('[sendemail]', grp).removeClass( 'd-none');
 
       }
       else {
@@ -472,6 +478,8 @@ $dto = $this->data->dto;  ?>
       let _form = $(this);
       let _data = _form.serializeFormJSON();
       // let _modalBody = $('.modal-body', _form);
+
+      // console.log( _data);
 
       $(document).trigger('candidate-saving');
 
