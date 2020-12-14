@@ -54,7 +54,7 @@ $_propertyContact = strings::rand();
         <div class="navbar-brand mr-auto text-truncate" id="<?= $_title ?>-candidate">Candidate</div>
 
         <button type="button" class="btn <?= $this->theme['navbutton'] ?> d-none" data-toggle="collapse"
-          id="<?= $_docsButton = strings::rand() ?>"><?= icon::get( icon::documents ) ?><span class="d-none d-md-inline">docs</span></button>
+          id="<?= $_docsButton = strings::rand() ?>"><i class="bi bi-files"></i><span class="d-none d-md-inline"> docs</span></button>
         <button type="button" class="btn <?= $this->theme['navbutton'] ?> d-none" aria-label="context menu"
           id="<?= $_contextCandidate = strings::rand() ?>"><?= icon::get( icon::menu_up ) ?></button>
         <button type="button" class="btn <?= $this->theme['navbutton'] ?>" title="add inspection"
