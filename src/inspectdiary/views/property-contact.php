@@ -138,7 +138,7 @@ $dto = $this->data->dto;  ?>
     fld = $('input[name="mobile"]', '#<?= $_form ?>');
     let mobile = fld.val();
 
-    if ( mobile.IsPhone()) {
+    if ( mobile.IsPhone() && _.browser.isPhone) {
       $('#<?= $_uidCall ?> >button')
       .on( 'click', e => {
         e.stopPropagation();
