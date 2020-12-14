@@ -314,6 +314,7 @@ class inspect_diary extends _dao {
 	public function statistics( $dto) : object {
 		$stats = (object)[
 			'visitors' => 0,
+			'visitors_requesting_documents' => 0,
 			'documents' => 0,
 			'ip' => 0,
 			'text' => ''
@@ -324,6 +325,10 @@ class inspect_diary extends _dao {
 		$_dtoSet = $_dao->prendiIlDiario($dto->id);
 		$stats->visitors = count( $_dtoSet);
 		foreach ($_dtoSet as $_dto) {
+			if ( $_dto->attachment_count) {
+				$stats->visitors_requesting_documents ++;
+
+			}
 			$stats->documents += $_dto->attachment_count;
 			if ( 'yes' == $_dto->fu_interested_party) {
 				$stats->ip ++;
@@ -334,10 +339,14 @@ class inspect_diary extends _dao {
 
 
 		$stats->text = sprintf(
-			"Visitors ......: %s\n" .
-			"Documents Sent : %s\n" .
-			"Interested ... : %s\n",
+			'<table style="width: auto;"><tbody>' .
+			'<tr><td style="padding: 4px 8px 4px 0;">Visitors</td><td style="padding: 4px 8px;">%s</td></tr>' .
+			'<tr><td style="padding: 4px 8px 4px 0;">Visitors Requesting Documents</td><td style="padding: 4px 8px;">%s</td></tr>' .
+			'<tr><td style="padding: 4px 8px 4px 0;">Documents Sent</td><td style="padding: 4px 8px;">%s</td></tr>' .
+			'<tr><td style="padding: 4px 8px 4px 0;">Interested</td><td style="padding: 4px 8px;">%s</td></tr>' .
+			'</tbody></table>',
 			$stats->visitors,
+			$stats->visitors_requesting_documents,
 			$stats->documents,
 			$stats->ip
 

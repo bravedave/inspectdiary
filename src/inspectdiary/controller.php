@@ -841,7 +841,7 @@ class controller extends \Controller {
 
         $dto = $dao->getDetail( $dto);
         $stats = $dao->statistics( $dto);
-        $text = sys::option( 'inspect-owner-report-template');
+        $text = strings::text2html( sys::option( 'inspect-owner-report-template'));
         $search = [
           '@{address}@',
           '@{stats}@',

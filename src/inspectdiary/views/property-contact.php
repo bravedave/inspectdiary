@@ -89,7 +89,7 @@ $dto = $this->data->dto;  ?>
         </div>
 
       </div>
-      <textarea rows="10" class="form-control text-monospace" readonly tabindex="-1" id="<?= $_uidReport = strings::rand() ?>"><?= $this->data->report ?></textarea>
+      <div class="border p-2" id="<?= $_uidReport = strings::rand() ?>"><?= $this->data->report ?></div>
 
     </div>
 
@@ -119,11 +119,12 @@ $dto = $this->data->dto;  ?>
       .on( 'click', e => {
         e.stopPropagation();
 
-        let message = String( $('#<?= $_uidReport ?>').val());
+        let message = String( $('#<?= $_uidReport ?>').html());
+        console.log( message);
         let j = {
           to : _.email.rfc922({ name: <?= \json_encode($dto->property_contact_name) ?>, email: email}),
           subject : <?= \json_encode( $dto->address_street) ?>,
-          message : message.toHtml(),
+          message : message,
 
         };
 
@@ -174,7 +175,8 @@ $dto = $this->data->dto;  ?>
 
         _.get.sms()
         .then( modal => {
-          $('textarea[name="message"]', modal).val($('#<?= $_uidReport ?>').val());
+          let txt = _.html2text( $('#<?= $_uidReport ?>').html());
+          $('textarea[name="message"]', modal).val( txt);
           modal.on( 'shown.bs.modal', e => $('textarea[name="message"]', modal).focus());
           modal.trigger('add.recipient', mobile);
 
