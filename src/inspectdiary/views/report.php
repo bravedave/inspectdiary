@@ -186,8 +186,8 @@ $_propertyContact = strings::rand();
       <div class="row" id="<?= $_uid ?>RentalDiary">
         <div class="col">
           <div class="row bg-light border-bottom">
-            <div class="d-none d-md-block col-1 text-center">
-              <i class="bi bi-calendar-plus" data-role="new-inspect-diary-control" title="add new"></i>
+            <div class="d-none d-md-block col-1 text-center small">
+              <?= count( $this->data->data) ?>
 
             </div>
             <div class="col-3">date</div>

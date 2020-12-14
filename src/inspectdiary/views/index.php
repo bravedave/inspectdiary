@@ -13,14 +13,6 @@ namespace inspectdiary;
 use dvc\icon;
 use strings;	?>
 
-<style>
-.icon {
-	font-size: 1.1rem;
-	line-height: 1rem;
-
-}
-</style>
-
 <ul class="nav flex-column">
 	<li><a href="<?php print self::$url ?>"><h6>Inspect Home</h6></a></li>
 	<?php	if ( isset( $this->data->seed)) {	?>
