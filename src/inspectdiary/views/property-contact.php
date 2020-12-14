@@ -127,7 +127,7 @@ $dto = $this->data->dto;  ?>
 
         };
 
-        console.log( j);
+        // console.log( j);
 
         _.email.activate(j);
 
