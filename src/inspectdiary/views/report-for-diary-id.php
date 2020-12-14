@@ -376,7 +376,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
         let _me = $(this);
         let _data = _me.data();
 
-        console.log( _data);
+        // console.log( _data);
 
         _.email.activate({
           to : _.email.rfc922(_data.email),

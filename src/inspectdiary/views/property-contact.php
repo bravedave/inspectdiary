@@ -119,10 +119,11 @@ $dto = $this->data->dto;  ?>
       .on( 'click', e => {
         e.stopPropagation();
 
+        let message = String( $('#<?= $_uidReport ?>').val());
         let j = {
           to : _.email.rfc922({ name: <?= \json_encode($dto->property_contact_name) ?>, email: email}),
           subject : <?= \json_encode( $dto->address_street) ?>,
-          message : $('#<?= $_uidReport ?>').val(),
+          message : message.toHtml(),
 
         };
 
