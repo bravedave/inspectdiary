@@ -15,8 +15,8 @@ use strings;	?>
 
 <ul class="nav flex-column mt-2">
 	<li class="nav-item h6 pl-3 my-0">Templates</li>
-	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_uidSMSTemplate = strings::rand() ?>"><i class="fa fa-fw fa-clone"></i>SMS</a></li>
-	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_uidOwnerReportTemplate = strings::rand() ?>"><i class="fa fa-fw fa-clone"></i>Owner Report</a></li>
+	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_uidSMSTemplate = strings::rand() ?>"><i class="bi bi-file-text"></i> SMS</a></li>
+	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_uidOwnerReportTemplate = strings::rand() ?>"><i class="bi bi-file-text"></i> Owner Report</a></li>
 
 </ul>
 <script>

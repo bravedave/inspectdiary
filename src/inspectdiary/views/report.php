@@ -187,7 +187,7 @@ $_propertyContact = strings::rand();
         <div class="col">
           <div class="row bg-light border-bottom">
             <div class="d-none d-md-block col-1 text-center">
-              <i class="fa fa-calendar-plus-o" data-role="new-inspect-diary-control" title="add new"></i>
+              <i class="bi bi-calendar-plus" data-role="new-inspect-diary-control" title="add new"></i>
 
             </div>
             <div class="col-3">date</div>

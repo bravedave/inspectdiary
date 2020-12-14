@@ -87,9 +87,9 @@ $dto = $this->data->dto;  ?>
       <div class="input-group">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <i class="bi bi-phone"></i>
-          </div>
+            <?= icon::get( icon::phone) ?>
 
+          </div>
 
         </div>
 
@@ -122,7 +122,7 @@ $dto = $this->data->dto;  ?>
     <div class="offset-md-3 col">
       <div class="input-group">
         <div class="input-group-prepend">
-          <div class="input-group-text">@</div>
+          <div class="input-group-text"><i class="bi bi-at"></i></div>
 
         </div>
 

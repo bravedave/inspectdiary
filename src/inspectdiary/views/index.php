@@ -19,7 +19,6 @@ use strings;	?>
 	line-height: 1rem;
 
 }
-.fa-fw { width: 1.25rem }
 </style>
 
 <ul class="nav flex-column">
@@ -53,8 +52,8 @@ use strings;	?>
 
 	<?php	}	// if ( isset( $this->data->seed)) {	?>
 
-	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_addNew = strings::rand() ?>"><i class="bt bi-plus"></i>Set New Inspect</a></li>
-	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_OpenThisWeek = strings::rand() ?>"><i class="bi bi-door-open"></i>Open This Week</a></li>
+	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_addNew = strings::rand() ?>"><i class="bt bi-plus"></i> Set New Inspect</a></li>
+	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_OpenThisWeek = strings::rand() ?>"><i class="bi bi-door-open"></i> Open This Week</a></li>
 
 </ul>
 <script>
