@@ -53,9 +53,8 @@ use strings;	?>
 
 	<?php	}	// if ( isset( $this->data->seed)) {	?>
 
-	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_addNew = strings::rand() ?>"><i class="icon"><?= icon::get( icon::plus) ?></i>Set New Inspect</a></li>
-	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_OpenThisWeek = strings::rand() ?>"><i class="fa fa-fw fa-opera"></i>Open This Week</a></li>
-	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_addSMSTemplate = strings::rand() ?>"><i class="fa fa-fw fa-clone"></i>SMS Template</a></li>
+	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_addNew = strings::rand() ?>"><i class="bt bi-plus"></i>Set New Inspect</a></li>
+	<li class="nav-item"><a class="nav-link" href="#" id="<?= $_OpenThisWeek = strings::rand() ?>"><i class="bi bi-door-open"></i>Open This Week</a></li>
 
 </ul>
 <script>
@@ -96,13 +95,6 @@ use strings;	?>
 			});
 
 		});
-
-	})
-
-	$('#<?= $_addSMSTemplate ?>').on( 'click', function( e) {
-		e.stopPropagation(); e.preventDefault();
-
-		_.get.modal( _.url( '<?= $this->route ?>/editSMSTemplate'));
 
 	})
 

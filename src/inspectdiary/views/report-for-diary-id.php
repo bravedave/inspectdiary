@@ -35,17 +35,17 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
     <div class="col">name</div>
     <div class="col-8">
       <div class="form-row">
-        <div class="col text-center" title="conflict"><i class="fa fa-exclamation"></i></div>
-        <div class="col d-none d-xl-block text-center" title="has home address"><i class="fa fa-address-card-o"></i></div>
-        <div class="col d-none d-xl-block text-center" title="has phone"><i class="fa fa-mobile"></i></div>
-        <div class="col d-none d-xl-block text-center" title="has email"><i class="fa fa-at"></i></div>
-        <div class="col text-center" title="has comment"><i class="fa fa-sticky-note-o"></i></div>
-        <div class="col text-center" title="has info"><i class="fa fa-info-circle"></i></div>
-        <div class="col text-center" title="has task"><i class="fa fa-tasks"></i></div>
-        <div class="col text-center" title="reminder"><i class="fa fa-bell-o"></i></div>
-        <div class="col text-center" title="sms"><i class="fa fa-commenting"></i></div>
+        <div class="col text-center" title="conflict"><i class="bi bi-exclamation"></i></div>
+        <div class="col d-none d-xl-block text-center" title="has home address"><i class="bi bi-person-lines-fill"></i></div>
+        <div class="col d-none d-xl-block text-center" title="has phone"><?= icon::get( icon::phone ) ?></div>
+        <div class="col d-none d-xl-block text-center" title="has email"><i class="bi bi-at"></i></div>
+        <div class="col text-center" title="has comment"><i class="bi bi-sticky"></i></div>
+        <div class="col text-center" title="has info"><i class="bi bi-info"></i></div>
+        <div class="col text-center" title="has task"><i class="bi bi-list-task"></i></div>
+        <div class="col text-center" title="reminder"><i class="bi bi-bell"></i></div>
+        <div class="col text-center" title="sms"><?= icon::get( icon::chat_dots_fill ) ?></div>
         <?php if ( $emailLog) { ?>
-        <div class="col text-center" title="documents sent"><i class="fa fa-file-text-o"></i></div>
+        <div class="col text-center" title="documents sent"><i class="bi bi-file-text"></i></div>
         <div class="col text-center text-truncate" title="offer to buy">otb</div>
         <?php } // if ( $emailLog) ?>
         <div class="col text-center text-truncate" title="new seller lead">nsl</div>
@@ -96,15 +96,15 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
         <div class="form-row">
           <div class="col d-none d-lg-block text-center py-2"><?php
             if ( $conflict) {
-              print '<i class="fa fa-user text-warning" title="name conflict"></i>';
+              print '<i class="bi bi-person-fill text-warning" title="name conflict"></i>';
 
             }
             elseif ( $mobileConflict) {
-              print '<i class="fa fa-mobile text-warning" title="mobile conflict"></i>';
+              print '<i class="bi bi-phone text-warning" title="mobile conflict"></i>';
 
             }
             elseif ( $emailConflict) {
-              print '<i class="fa fa-at text-warning" title="email conflict"></i>';
+              print '<i class="bi bi-at text-warning" title="email conflict"></i>';
 
             }
 
@@ -121,7 +121,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
               if ( $dto->fu_sms_bulk == 1)
                 print '&bull;';
               else
-                print '<i class="fa fa-star"></i>';
+                print '<i class="bi bi-star"></i>';
 
             }
             elseif ( $dto->fu_sms == 'yes') {
@@ -140,7 +140,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
 
               }
               else {
-                print '<i class="fa fa-triangle-exclamation"></i>';
+                print '<i class="bi bi-exclamation"></i>';
 
               }
 
@@ -251,7 +251,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
             ctrl.addClass('d-none');
             _.get.sms.enabled().then( () => ctrl.removeClass( 'd-none'));
 
-          })(_context.create( $('<a href="#"><i class="fa fa-commenting-o"></i>sms</a>').on( 'click', e => {
+          })(_context.create( $('<a href="#"><i class="bi bi-chat-dots"></i>sms</a>').on( 'click', e => {
             e.stopPropagation();e.preventDefault();
 
             _row.trigger('sms');
@@ -262,7 +262,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
         }
 
         if ( String( _data.email).isEmail() && !!_.email.activate) {
-          _context.append( $('<a href="#"><i class="fa fa-paper-plane-o"></i>email</a>').on( 'click', e => {
+          _context.append( $('<a href="#"><i class="bi bi-cursor"></i>email</a>').on( 'click', e => {
             e.stopPropagation();e.preventDefault();
 
             _row.trigger('email');
@@ -280,7 +280,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
 
         }));
 
-        _context.append( $('<a href="#"><i class="fa fa-trash"></i>delete</a>').on( 'click', function( e) {
+        _context.append( $('<a href="#"><i class="bi bi-trash"></i>delete</a>').on( 'click', function( e) {
           e.stopPropagation();e.preventDefault();
 
           _row.trigger('delete-inspection');
@@ -302,7 +302,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
             let ctrl = $('<a href="#">sms complete</a>');
 
             if ( 'com' == _data.fu_sms) {
-              ctrl.prepend( '<i class="fa fa-check"></i>')
+              ctrl.prepend( '<i class="bi bi-check"></i>')
               ctrl.on( 'click', function( e) {
                 e.stopPropagation();e.preventDefault();
 
@@ -442,7 +442,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
 
         }).then( d => {
           _.growl( d);
-          $('[sms]', _me).html( '<i class="fa fa-star"></i>');
+          $('[sms]', _me).html( '<i class="bi bi-star"></i>');
           _me.data('fu_sms', 'com');
 
         })
@@ -641,7 +641,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
 
       }));
 
-      _context.append( $('<a href="#"><i class="fa fa-pencil"></i>edit inspection</a>').on( 'click', function( e) {
+      _context.append( $('<a href="#"><i class="bi bi-pencil"></i>edit inspection</a>').on( 'click', function( e) {
         e.stopPropagation();e.preventDefault();
 
         _context.close();

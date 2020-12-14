@@ -680,7 +680,7 @@ $_propertyContact = strings::rand();
 
         }
 
-        _context.append( $('<a href="#"><i class="fa fa-pencil"></i>edit</a>').on( 'click', function( e) {
+        _context.append( $('<a href="#"><i class="bi bi-pencil"></i>edit</a>').on( 'click', function( e) {
           e.stopPropagation();e.preventDefault();
 
           _context.close();
@@ -689,7 +689,7 @@ $_propertyContact = strings::rand();
         }));
 
         if ( 'Inspect' == _data.type || 0 == Number( _data.inspections)) {
-          _context.append( $('<a href="#"><i class="fa fa-trash"></i>delete</a>').on( 'click', function( e) {
+          _context.append( $('<a href="#"><i class="bi bi-trash"></i>delete</a>').on( 'click', function( e) {
             e.stopPropagation();e.preventDefault();
 
             _context.close();

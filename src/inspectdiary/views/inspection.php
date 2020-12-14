@@ -70,7 +70,7 @@ $dto = $this->data->dto;  ?>
 
         <div class="input-group-append" id="<?= $_LinkedContactControl = strings::rand() ?>">
           <div class="input-group-text">
-            <i class="fa <?=  $dto->person_id ? 'fa-chain' : 'fa-chain-broken' ?>"></i>
+            <i class="bi bi-link text-<?=  $dto->person_id ? 'success' : 'danger' ?>"></i>
 
           </div>
 
@@ -87,7 +87,7 @@ $dto = $this->data->dto;  ?>
       <div class="input-group">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <i class="fa fa-mobile"></i>
+            <i class="bi bi-phone"></i>
           </div>
 
 
@@ -98,7 +98,7 @@ $dto = $this->data->dto;  ?>
 
         <div class="input-group-append">
           <button type="button" class="btn input-group-text d-none" sendsms>
-            <i class="fa fa-commenting-o"></i>
+            <i class="bi bi-chat-dots"></i>
 
           </button>
 
@@ -106,7 +106,7 @@ $dto = $this->data->dto;  ?>
 
         <div class="input-group-append" >
           <button type="button" class="btn input-group-text d-none" phonecall>
-            <i class="fa fa-phone"></i>
+            <i class="bi bi-telephone"></i>
 
           </button>
 
@@ -131,7 +131,7 @@ $dto = $this->data->dto;  ?>
 
         <div class="input-group-append">
           <button type="button" class="btn input-group-text d-none" sendemail>
-            <i class="fa fa-envelope-o"></i>
+            <i class="bi bi-cursor"></i>
 
           </button>
 
@@ -266,7 +266,7 @@ $dto = $this->data->dto;  ?>
       e.stopPropagation();
 
       $('input[name="person_id"]', '#<?= $_form ?>').val( 0);
-      $('.fa', this).removeClass( 'fa-chain').addClass( 'fa-chain-broken');
+      $('.bi', this).removeClass( 'text-success').addClass( 'text-danger');
 
     });
 
@@ -281,7 +281,7 @@ $dto = $this->data->dto;  ?>
         $('input[name="email"]', '#<?= $_form ?>').val( o.email);
         $('input[name="mobile"]', '#<?= $_form ?>').val( o.mobile);
         $('input[name="property2sell"]', '#<?= $_form ?>').val( o.property2sell);
-        $('#<?= $_LinkedContactControl ?> .fa').removeClass( 'fa-chain-broken').addClass( 'fa-chain');
+        $('#<?= $_LinkedContactControl ?> .bi').removeClass( 'text-danger').addClass( 'text-success');
 
         $('#<?= $_form ?>').trigger( 'save');
 
@@ -304,7 +304,7 @@ $dto = $this->data->dto;  ?>
           $('input[name="email"]', '#<?= $_form ?>').val( o.email);
           $('input[name="mobile"]', '#<?= $_form ?>').val( o.mobile);
           $('input[name="property2sell"]', '#<?= $_form ?>').val( o.property2sell);
-          $('#<?= $_LinkedContactControl ?> .fa').removeClass( 'fa-chain-broken').addClass( 'fa-chain');
+          $('#<?= $_LinkedContactControl ?> .bi').removeClass( 'text-danger').addClass( 'text-success');
 
           if ( '' == $('input[name="name"]', '#<?= $_form ?>').val()) {
             $('input[name="name"]', '#<?= $_form ?>').val( o.name);
@@ -542,7 +542,7 @@ $dto = $this->data->dto;  ?>
           let _data = _form.serializeFormJSON();
 
           if ( !!window._cms_.property.reminderButton) {
-            let ctrl = $('<a href="#"><i class="fa fa-fw fa-bell-o"></i>Reminder</a>');
+            let ctrl = $('<a href="#"><i class="bi bi-bell"></i>Reminder</a>');
             ctrl.on( 'click', e => _context.close());
 
             _cms_.property.reminderButton({
@@ -560,7 +560,7 @@ $dto = $this->data->dto;  ?>
           }
 
           if ( !!window._cms_.property.taskButton) {
-            let ctrl = $('<a href="#"><i class="fa fa-fw fa-tasks"></i>Task</a>');
+            let ctrl = $('<a href="#"><i class="bi bi-list-task"></i>Task</a>');
             ctrl.on( 'click', e => _context.close());
 
             _cms_.property.taskButton({
@@ -588,7 +588,7 @@ $dto = $this->data->dto;  ?>
 
       if ( id > 0) {
         _context.append(
-          $('<a href="#"><i class="fa fa-trash"></i>delete</a>').on( 'click', function( e) {
+          $('<a href="#"><i class="bi bi-trash"></i>delete</a>').on( 'click', function( e) {
             e.stopPropagation();e.preventDefault();
 
             _context.close();
@@ -609,7 +609,7 @@ $dto = $this->data->dto;  ?>
       }
       else {
         _context.append(
-          $('<a href="#" class="text-muted"><i class="fa fa-trash"></i>delete</a>').on( 'click', function( e) {
+          $('<a href="#" class="text-muted"><i class=bi bi-trash"></i>delete</a>').on( 'click', function( e) {
             e.stopPropagation();e.preventDefault();
 
           })

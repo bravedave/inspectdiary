@@ -16,6 +16,7 @@ use green;
 use Json;
 use Response;
 use strings;
+use sys;
 
 class controller extends \Controller {
   protected $viewPath = __DIR__ . '/views/';
@@ -75,7 +76,11 @@ class controller extends \Controller {
 
 
     $primary = [ 'report' ];
-    $secondary = [ 'index'];
+    $secondary = [
+      'index',
+      'index-templates'
+
+    ];
 
     if ( currentUser::option( 'inspect-interface-modern')) {
       /**
@@ -222,6 +227,13 @@ class controller extends \Controller {
 		elseif ( 'get-sms-template' == $action) {
       Json::ack( $action)
         ->add( 'data', currentUser::option( 'inspect-sms-template'));
+
+		}
+		elseif ( 'save-owner-report-template' == $action) {
+      $text = $this->getPost('text');
+      sys::option('inspect-owner-report-template', $text);
+
+      Json::ack( $action);
 
 		}
 		elseif ( 'save-sms-template' == $action) {
@@ -636,11 +648,28 @@ class controller extends \Controller {
 
   }
 
-  public function editSMSTemplate() {
+  public function editTemplate() {
+    $template = $this->getParam( 't');
+    if ( 'ownerreport' == $template) {
+      $action = 'save-owner-report-template';
+      $text = sys::option( 'inspect-owner-report-template');
+      $template = 'owner-report';
+      $title = $this->title = 'Owner Report Template';
+
+    }
+    else {
+      $action = 'save-sms-template';
+      $text = currentUser::option( 'inspect-sms-template');
+      $template = 'sms';
+      $title = $this->title = 'Edit SMS Template';
+
+    }
+
     $this->data = (object)[
-      'action' => 'save-sms-template',
-      'text' => currentUser::option( 'inspect-sms-template'),
-      'title' => $this->title = 'Edit SMS Template'
+      'action' => $action,
+      'text' => $text,
+      'template' => $template,
+      'title' => $title
 
     ];
 
@@ -811,9 +840,26 @@ class controller extends \Controller {
         // \sys::logger( sprintf('<%s> %s', $dto->id, __METHOD__));
 
         $dto = $dao->getDetail( $dto);
+        $stats = $dao->statistics( $dto);
+        $text = sys::option( 'inspect-owner-report-template');
+        $search = [
+          '@{address}@',
+          '@{stats}@',
+
+
+        ];
+
+        $replace = [
+          $dto->address_street,
+          $stats->text
+
+        ];
+
         $this->data = (object)[
           'title' => $this->title = 'Property Contact',
-          'dto' => $dto
+          'dto' => $dto,
+          'stats' => $stats,
+          'report' => preg_replace( $search, $replace, $text)
 
         ];
 

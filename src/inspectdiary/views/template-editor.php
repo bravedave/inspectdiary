@@ -33,6 +33,10 @@
 					<div class="row mt-2">
 						<div class="col">
 							<div>use <strong>{address}</strong> to represent the address</div>
+							<?php if ('owner-report' == $this->data->template) {	?>
+							<div>use <strong>{stats}</strong> for summary statistics</div>
+
+							<?php	}	?>
 
 						</div>
 

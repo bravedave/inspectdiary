@@ -311,6 +311,42 @@ class inspect_diary extends _dao {
 
 	}
 
+	public function statistics( $dto) : object {
+		$stats = (object)[
+			'visitors' => 0,
+			'documents' => 0,
+			'ip' => 0,
+			'text' => ''
+
+		];
+
+		$_dao = new inspect;
+		$_dtoSet = $_dao->prendiIlDiario($dto->id);
+		$stats->visitors = count( $_dtoSet);
+		foreach ($_dtoSet as $_dto) {
+			$stats->documents += $_dto->attachment_count;
+			if ( 'yes' == $_dto->fu_interested_party) {
+				$stats->ip ++;
+
+			}
+
+		}
+
+
+		$stats->text = sprintf(
+			"Visitors ......: %s\n" .
+			"Documents Sent : %s\n" .
+			"Interested ... : %s\n",
+			$stats->visitors,
+			$stats->documents,
+			$stats->ip
+
+		);
+
+		return $stats;
+
+	}
+
 	public function UpdateByID( $a, $id) {
 		$a['updated'] = self::dbTimeStamp();
 		return parent::UpdateByID( $a, $id);

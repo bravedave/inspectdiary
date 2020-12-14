@@ -73,12 +73,13 @@
               };
 
               foreach ($this->data->inspectdata['properties'] as $property) {
-                print '<tr>';
+                $_d = strtotime( $lastDate( $property, $this->data->inspectdata['lastweek']->data));
+
+                printf( '<tr data-date="%s">', date( 'Y-m-d H:i:s', $_d));
 
                 printf( '<td>%s</td>', $property->address_street);
                 printf( '<td class="text-center">%s</td>', $sprintV( $property, $this->data->inspectdata['lastweek']->data, ''));
 
-                $_d = strtotime( $lastDate( $property, $this->data->inspectdata['lastweek']->data));
                 // $_d = strtotime( 'this saturday', $_d);
                 printf(
                   '<td class="text-center" data-property_id="%s" data-date="%s" data-slot="thisweek">%s</td>',
@@ -149,7 +150,7 @@
       if ( '' == _td.html()) {
 
         let _data = _td.data();
-        let ctrl = $('<i class="fa fa-recycle text-muted pointer" title="rebook"></i>');
+        let ctrl = $('<i class="bi bi-arrow-clockwise pointer" title="rebook"></i>');
         ctrl.on( 'click', function( e) {
           e.stopPropagation();e.preventDefault();
 

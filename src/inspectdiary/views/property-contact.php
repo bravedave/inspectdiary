@@ -45,12 +45,12 @@ $dto = $this->data->dto;  ?>
           value="<?= $dto->property_contact_mobile ?>">
 
         <div class="input-group-append d-none" id="<?= $_uidCall = strings::rand() ?>">
-          <button type="button" class="btn input-group-text"><i class="fa fa-phone"></i></button>
+          <button type="button" class="btn input-group-text"><i class="bi bi-telephone"></i></button>
 
         </div>
 
         <div class="input-group-append d-none" id="<?= $_uidSMS = strings::rand() ?>">
-          <button type="button" class="btn input-group-text"><i class="fa fa-commenting-o"></i></button>
+          <button type="button" class="btn input-group-text"><i class="bi bi-chat-dots"></i></button>
 
         </div>
 
@@ -60,7 +60,7 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
-  <div class="row mb-2">
+  <div class="row mb-4">
     <div class="col">
       <div class="input-group">
 
@@ -68,11 +68,28 @@ $dto = $this->data->dto;  ?>
           value="<?= \htmlentities( $dto->property_contact_email) ?>">
 
         <div class="input-group-append d-none" id="<?= $_emailControl = strings::rand() ?>">
-          <button type="button" class="btn input-group-text"><i class="fa fa-paper-plane-o"></i></button>
+          <button type="button" class="btn input-group-text"><i class="bi bi-cursor"></i></button>
 
         </div>
 
       </div>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="d-flex">
+        <label>Owner Report</label>
+        <div class="btn-group ml-auto">
+          <button type="button" class="btn btn-outline-secondary d-none" id="<?= $_SMSReport = strings::rand() ?>"><i class="bi bi-chat-dots"></i></button>
+          <button type="button" class="btn btn-outline-secondary d-none" id="<?= $_emailReport = strings::rand() ?>"><i class="bi bi-cursor"></i></button>
+
+        </div>
+
+      </div>
+      <textarea rows="10" class="form-control text-monospace" readonly tabindex="-1" id="<?= $_uidReport = strings::rand() ?>"><?= $this->data->report ?></textarea>
 
     </div>
 
@@ -97,6 +114,24 @@ $dto = $this->data->dto;  ?>
       });
 
       $('#<?= $_emailControl ?>').removeClass( 'd-none');
+
+      $('#<?= $_emailReport ?>')
+      .on( 'click', e => {
+        e.stopPropagation();
+
+        let j = {
+          to : _.email.rfc922({ name: <?= \json_encode($dto->property_contact_name) ?>, email: email}),
+          subject : <?= \json_encode( $dto->address_street) ?>,
+          message : $('#<?= $_uidReport ?>').val(),
+
+        };
+
+        console.log( j);
+
+        _.email.activate(j);
+
+      })
+      .removeClass( 'd-none');
 
     }
 
@@ -131,6 +166,20 @@ $dto = $this->data->dto;  ?>
       });
 
       $('#<?= $_uidSMS ?>').removeClass( 'd-none');
+
+      $('#<?= $_SMSReport ?>')
+      .on( 'click', e => {
+        e.stopPropagation();
+
+        _.get.sms()
+        .then( modal => {
+          $('textarea[name="message"]', modal).val($('#<?= $_uidReport ?>').val());
+          modal.on( 'shown.bs.modal', e => $('textarea[name="message"]', modal).focus());
+          modal.trigger('add.recipient', mobile);
+
+        });
+
+      }).removeClass( 'd-none');
 
     }
 
