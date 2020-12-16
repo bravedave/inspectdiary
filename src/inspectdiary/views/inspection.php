@@ -270,7 +270,7 @@ $dto = $this->data->dto;  ?>
 
     });
 
-    documentsButton().attr( 'data-target', '#<?= $_collapseDocs ?>');
+    if ( !!window.documentsButton) documentsButton().attr( 'data-target', '#<?= $_collapseDocs ?>');
 
     $('input[name="name"]', '#<?= $_form ?>').autofill({
       autoFocus: false,
@@ -450,7 +450,7 @@ $dto = $this->data->dto;  ?>
       let _form = $(this);
       let _data = _form.serializeFormJSON();
 
-      documentsButton().addClass('d-none');
+      if ( !!window.documentsButton) documentsButton().addClass('d-none');
 
       if ( parseInt( _data.property_id) < 1) return;
 
