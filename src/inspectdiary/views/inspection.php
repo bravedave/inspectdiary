@@ -631,7 +631,7 @@ $dto = $this->data->dto;  ?>
 
     };
 
-    setPersonContext( contextMenu);
+    if ( !!window.setPersonContext) setPersonContext( contextMenu);
 
   })( _brayworth_);
   </script>
