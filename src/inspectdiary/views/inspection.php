@@ -31,8 +31,11 @@ $dto = $this->data->dto;  ?>
   <input type="hidden" name="action" value="inspection-save">
   <input type="hidden" name="id" value="<?= $dto->id ?>">
   <input type="hidden" name="type" value="<?= $dto->type ?>">
+  <input type="hidden" name="date" value="<?= $dto->date ?>">
+  <input type="hidden" name="inspect_time" value="<?= $dto->inspect_time ?>">
   <input type="hidden" name="person_id" value="<?= $dto->person_id ?>">
   <input type="hidden" name="property_id" value="<?= $dto->property_id ?>">
+  <input type="hidden" name="property_address" value="<?= $dto->address_street ?>">
   <input type="hidden" name="inspect_diary_id" value="<?= $dto->inspect_diary_id ?>">
 
   <div class="collapse fade" id="<?= $_collapseDocs = strings::rand() ?>">

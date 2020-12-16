@@ -23,6 +23,7 @@ class inspect extends _dao {
 			$dao = new inspect_diary;
 			if ( $_dto = $dao->getByID($dto->inspect_diary_id)) {
 				$dto->date = $_dto->date;
+				$dto->inspect_time = $_dto->time;
 				$dto->property_id = $_dto->property_id;
 				$dto->type = $_dto->type;
 

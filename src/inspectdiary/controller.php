@@ -687,6 +687,7 @@ class controller extends \Controller {
     $dao = new dao\inspect;
 		if ( $id = (int)$id) {
       if ( $dto = $dao->getByID( $id)) {
+        $this->data->title = $this->title = 'Edit Inspection';
         $this->data->dto = $dto;
 
       }
