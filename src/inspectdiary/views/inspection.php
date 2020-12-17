@@ -421,20 +421,20 @@ $dto = $this->data->dto;  ?>
 
       if ( email.isEmail()) {
         if (!!_.email.activate) {
-          () => $('[sendemail]', grp).removeClass( 'd-none');
-          console.log( 'email activated');
+          $('[sendemail]', grp).removeClass( 'd-none');
+          // console.log( 'email activated');
 
         }
         else {
           $('[sendemail]', grp).addClass( 'd-none');
-          console.log( 'email ok, but no mailer');
+          // console.log( 'email ok, but no mailer');
 
         }
 
       }
       else {
         $('[sendemail]', grp).addClass( 'd-none');
-        console.log( 'email not ok');
+        // console.log( 'email not ok');
 
       }
 
