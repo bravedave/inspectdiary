@@ -419,13 +419,22 @@ $dto = $this->data->dto;  ?>
       let grp = _me.closest('.input-group')
       let email = String( _me.val());
 
-      if ( email.isEmail() && !!_.email.activate) {
-        // _.get.sms.enabled().then( () => $('[sendemail]', grp).removeClass( 'd-none'));
-        () => $('[sendemail]', grp).removeClass( 'd-none');
+      if ( email.isEmail()) {
+        if (!!_.email.activate) {
+          () => $('[sendemail]', grp).removeClass( 'd-none');
+          console.log( 'email activated');
+
+        }
+        else {
+          $('[sendemail]', grp).addClass( 'd-none');
+          console.log( 'email ok, but no mailer');
+
+        }
 
       }
       else {
         $('[sendemail]', grp).addClass( 'd-none');
+        console.log( 'email not ok');
 
       }
 
