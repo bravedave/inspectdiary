@@ -469,7 +469,6 @@ $dto = $this->data->dto;  ?>
       if ( !!window._cms_) {
         if ( !!window._cms_.property) {
           if ( !!window._cms_.property.extensions) {
-            console.log( 'window._cms_.property.extensions');
             _cms_.property.extensions({
               host : '#<?= $_collapseDocs ?>content',
               inspect_id : _data.id,
