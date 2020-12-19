@@ -448,7 +448,7 @@ $dto = $this->data->dto;  ?>
       let r = {
         id : _data.person_id,
         name : _data.name,
-        email : _data.email,
+        email : String( _data.email).trim(),
         mobile : _data.mobile,
 
       };
@@ -489,6 +489,12 @@ $dto = $this->data->dto;  ?>
     .on( 'save', function( e) {
       let _form = $(this);
       let _data = _form.serializeFormJSON();
+
+      if ( _data.email != String( _data.email).trim()) {
+        _data.email = String( _data.email).trim();
+        $('input[name="email"]', '#<?= $_form ?>').val(_data.email);
+
+      }
       // let _modalBody = $('.modal-body', _form);
 
       // console.log( _data);
@@ -502,6 +508,7 @@ $dto = $this->data->dto;  ?>
       }).then( d => {
         if ( 'ack' == d.response) {
           $('input[name="id"]', '#<?= $_form ?>').val( d.id);
+          $('input[name="name"]', '#<?= $_form ?>').val( d.dto.name);
           $(document).trigger('candidate-saved');
 
         }

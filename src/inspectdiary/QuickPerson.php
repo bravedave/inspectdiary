@@ -217,7 +217,7 @@ abstract class QuickPerson {
 		if ( $debug) sys::logger( 'still in game :: ' . ( isset( $ret['errorText']) ? $ret['errorText'] : 'no error' ));
 
 		$aI = [
-			'name' => $ret['name'],
+			'name' => strings::SmartCase( $ret['name']),
 			'email' => $ret['email']
 
 		];
@@ -241,8 +241,7 @@ abstract class QuickPerson {
 		if ( isset( $a['address_state'] ) && trim( $a['address_state'])) $aI['address_state'] = (string)$a['address_state'];
 
 		$id = $dao->Insert( $aI);
-		//~ if ( $debug)
-		sys::logger( 'insert :: ' . (int)$id);
+		if ( $debug) \sys::logger( sprintf('<insert :: %s> %s', (int)$id, __METHOD__));
 
 		$dto = $dao->getByID( $id);
 		$dto->isNew = 1;

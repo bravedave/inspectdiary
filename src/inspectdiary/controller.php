@@ -470,6 +470,11 @@ class controller extends \Controller {
 
       );
 
+      if ( $a['name'] != $qp->name && strtolower( $a['name']) == strtolower( $qp->name)) {
+        $a['name'] = $qp->name;
+
+      }
+
       $pid = (int)$this->getPost('person_id');
       if ( !$pid) {
         if ( $qp->id) {
@@ -502,7 +507,8 @@ class controller extends \Controller {
       }
 
       Json::ack( $action)
-        ->add( 'id', $id);
+        ->add( 'id', $id)
+        ->add( 'dto', $qp);
 
       // $dbc->defineField('date', 'date');
       // $dbc->defineField('inspect_time', 'varchar', 10);
