@@ -447,7 +447,7 @@ class controller extends \Controller {
         'type' => $this->getPost('type'),
         'property_id' => $this->getPost('property_id'),
         'name' => $this->getPost('name'),
-        'mobile' => $this->getPost('mobile'),
+        'mobile' => strings::cleanPhoneString( $this->getPost('mobile')),
         'email' => $this->getPost('email'),
         'comment' => $this->getPost('comment'),
         'notes' => $this->getPost('notes'),

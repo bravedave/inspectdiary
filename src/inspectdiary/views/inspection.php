@@ -368,11 +368,14 @@ $dto = $this->data->dto;  ?>
       let tel = String( _me.val());
 
       if ( tel.IsMobilePhone()) {
+        _me.val( tel.AsMobilePhone());
+
         _.get.sms.enabled().then( () => $('[sendsms]', grp).removeClass( 'd-none'));
 
       }
       else {
         $('[sendsms]', grp).addClass( 'd-none');
+        if ( tel.IsPhone()) _me.val( tel.AsLocalPhone());
 
       }
 
