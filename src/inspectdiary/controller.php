@@ -198,6 +198,32 @@ class controller extends \Controller {
       } else { Json::nak( $action); }
 
     }
+    elseif ( 'get-person-by-id' == $action) {
+      /*
+        ( _ => {
+          _.post({
+            url : _.url('inspectdiary'),
+            data : {
+              action : 'get-person-by-id',
+              id : 1
+            },
+
+          }).then( d => console.log( d));
+
+        }) (_brayworth_);
+       */
+
+      if ( $id = (int)$this->getPost('id')) {
+        $dao = new dao\people;
+        if ( $dto = $dao->getByID( $id)) {
+          Json::ack( $action)
+            ->add( 'data', $dto);
+
+        } else { Json::nak( $action); }
+
+      } else { Json::nak( $action); }
+
+    }
     elseif ( 'get-property-by-id' == $action) {
       /*
         ( _ => {
@@ -508,7 +534,7 @@ class controller extends \Controller {
 
       Json::ack( $action)
         ->add( 'id', $id)
-        ->add( 'dto', $qp);
+        ->add( 'name', $a['name']);
 
       // $dbc->defineField('date', 'date');
       // $dbc->defineField('inspect_time', 'varchar', 10);
@@ -548,6 +574,22 @@ class controller extends \Controller {
     elseif ( 'set-inspect-interface' == $action) {
 			currentUser::option( 'inspect-interface', $this->getPost('value'));
       Json::ack( $action);
+
+    }
+    elseif ( 'update-person-name' == $action) {
+      if ( $id = (int)$this->getPost('id')) {
+        if ( $name = $this->getPost('name')) {
+          $dao = new dao\people;
+          $dao->UpdateByID([
+            'name' => $name
+
+          ], $id);
+
+          Json::ack( $action);
+
+        } else { Json::nak( $action); }
+
+      } else { Json::nak( $action); }
 
     }
     else {

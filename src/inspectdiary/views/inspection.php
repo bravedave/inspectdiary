@@ -85,6 +85,128 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
+  <div class="form-row row mb-2 d-none" id="<?= $_uid = strings::rand() ?>_row"><!-- confliction name -->
+    <label class="d-none d-md-block col-md-3 col-form-label font-italic" for="<?= $_uid ?>" >file name</label>
+
+    <div class="col">
+      <div class="input-group">
+        <input type="text" class="form-control bg-warning" readonly id="<?= $_uid ?>">
+
+        <div class="input-group-append" id="<?= $_UseNameControl = strings::rand() ?>">
+          <div class="input-group-text">
+            <i class="bi bi-chevron-double-up"></i>
+
+          </div>
+
+        </div>
+
+        <div class="input-group-append" id="<?= $_UpdatePerson = strings::rand() ?>">
+          <div class="input-group-text">
+            <i class="bi bi-chevron-double-down"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+  <script>
+  ( _ => {
+    $('#<?= $_UseNameControl ?>').on( 'click', function( e) {
+      e.stopPropagation();e.preventDefault();
+
+      $('input[name="name"]', '#<?= $_form ?>').val( $('#<?= $_uid ?>').val());
+
+      $('#<?= $_form ?>').trigger( 'save');
+
+    });
+
+    $('#<?= $_UpdatePerson ?>').on( 'click', function( e) {
+      e.stopPropagation();e.preventDefault();
+
+      let id = Number( $('input[name="person_id"]', '#<?= $_form ?>').val());
+      if ( id > 0) {
+        let name = String( $('input[name="name"]', '#<?= $_form ?>').val()).trim();
+        if ( '' == name) {
+          _.ask.alert({ title : 'Error', text : 'name cannot be empty'});
+
+        }
+        else {
+
+          _.post({
+            url : _.url('<?= $this->route ?>'),
+            data : {
+              action : 'update-person-name',
+              id : $('input[name="person_id"]', '#<?= $_form ?>').val(),
+              name : name
+
+            },
+
+          })
+          .then( d => {
+            _.growl( d);
+            $('#<?= $_form ?>').trigger( 'check-conflicts');
+
+          });
+
+        }
+
+      }
+      else {
+        _.ask.alert({ title : 'Error', text : 'invalid person'});
+
+      }
+
+    });
+
+    $('#<?= $_form ?>').on( 'check-conflicts', function(e) {
+      let _form = $(this);
+      let _data = _form.serializeFormJSON();
+
+      if ( Number( _data.person_id) > 0) {
+        _.post({
+          url : _.url('<?= $this->route ?>'),
+          data : {
+            id : _data.person_id,
+            action : 'get-person-by-id'
+
+          },
+
+        }).then( d => {
+          if ( 'ack' == d.response) {
+            $('#<?= $_uid ?>').val( d.data.name);
+
+            if ( String( d.data.name).toLowerCase() != String( _data.name).toLowerCase()) {
+              $('#<?= $_uid ?>_row').removeClass( 'd-none');
+
+            }
+            else {
+              $('#<?= $_uid ?>_row').addClass( 'd-none');
+
+            }
+
+          }
+          else {
+            _.growl( d);
+
+          }
+
+        });
+
+      }
+      else {
+        $('#<?= $_uid ?>_row').addClass( 'd-none');
+
+      }
+
+    });
+
+  }) (_brayworth_);
+  </script>
+
   <div class="form-row row mb-2"><!-- mobile -->
     <div class="offset-md-3 col">
       <div class="input-group">
@@ -411,7 +533,6 @@ $dto = $this->data->dto;  ?>
 
       }
 
-      console.log( ea);
       _.email.activate(ea);
 
     });
@@ -425,19 +546,16 @@ $dto = $this->data->dto;  ?>
       if ( email.isEmail()) {
         if (!!_.email.activate) {
           $('[sendemail]', grp).removeClass( 'd-none');
-          // console.log( 'email activated');
 
         }
         else {
           $('[sendemail]', grp).addClass( 'd-none');
-          // console.log( 'email ok, but no mailer');
 
         }
 
       }
       else {
         $('[sendemail]', grp).addClass( 'd-none');
-        // console.log( 'email not ok');
 
       }
 
@@ -498,9 +616,6 @@ $dto = $this->data->dto;  ?>
         $('input[name="email"]', '#<?= $_form ?>').val(_data.email);
 
       }
-      // let _modalBody = $('.modal-body', _form);
-
-      // console.log( _data);
 
       $(document).trigger('candidate-saving');
 
@@ -511,8 +626,9 @@ $dto = $this->data->dto;  ?>
       }).then( d => {
         if ( 'ack' == d.response) {
           $('input[name="id"]', '#<?= $_form ?>').val( d.id);
-          $('input[name="name"]', '#<?= $_form ?>').val( d.dto.name);
+          $('input[name="name"]', '#<?= $_form ?>').val( d.name);
           $(document).trigger('candidate-saved');
+          $('#<?= $_form ?>').trigger( 'check-conflicts');
 
         }
         else {
@@ -528,7 +644,9 @@ $dto = $this->data->dto;  ?>
 
     });
 
-    $('#<?= $_form ?>').trigger( 'property-id-change');
+    $('#<?= $_form ?>')
+    .trigger( 'property-id-change')
+    .trigger( 'check-conflicts');
 
     $('input, textarea, select', '#<?= $_form ?>').on( 'change', e => $('#<?= $_form ?>').trigger( 'save'));
 
@@ -558,7 +676,6 @@ $dto = $this->data->dto;  ?>
 
       if ( !!window._cms_) {
         if ( !!window._cms_.property) {
-          // console.log( 'window._cms_.property');
 
           let _form = $('#<?= $_form ?>');
           let _data = _form.serializeFormJSON();
@@ -599,10 +716,6 @@ $dto = $this->data->dto;  ?>
           }
 
         }
-        // else {
-        //   console.log( '!window._cms_.property');
-
-        // }
 
       }
 
