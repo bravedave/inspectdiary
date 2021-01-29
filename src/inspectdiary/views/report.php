@@ -226,7 +226,7 @@ $_propertyContact = strings::rand();
               data-inspections="<?= $dto->inspections ?>"
               data-type="<?= $dto->type ?>">
 
-              <div class="col-3 col-sm-2">
+              <div class="col-3">
                 <div class="row">
                   <div class="d-none d-md-block col-1 text-center small"><?= ++$i ?></div>
                   <div class="col-md-6 pr-1" data-field="date">
@@ -250,7 +250,7 @@ $_propertyContact = strings::rand();
 
               </div>
 
-              <div class="col-7 col-sm-8 col-md-3">
+              <div class="col-7 col-md-3">
                 <div class="row">
                   <div class="col">
                     <div class="" data-field="street">
