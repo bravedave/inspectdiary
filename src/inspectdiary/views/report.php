@@ -186,11 +186,17 @@ $_propertyContact = strings::rand();
       <div class="row" id="<?= $_uid ?>RentalDiary">
         <div class="col">
           <div class="row bg-light border-bottom">
-            <div class="d-none d-md-block col-1 text-center small">
-              <?= count( $this->data->data) ?>
+            <div class="col-3">
+              <div class="row">
+                <div class="d-none d-md-block col-1 text-center small">
+                  <?= count( $this->data->data) ?>
+                </div>
+
+                <div class="col">date</div>
+
+              </div>
 
             </div>
-            <div class="col-3">date</div>
             <div class="col">address</div>
             <div class="col-2">
               <div class="row">
@@ -220,14 +226,14 @@ $_propertyContact = strings::rand();
               data-inspections="<?= $dto->inspections ?>"
               data-type="<?= $dto->type ?>">
 
-              <div class="d-none d-md-block col-1 text-center small"><?= ++$i ?></div>
-              <div class="col-3">
+              <div class="col-3 col-sm-2">
                 <div class="row">
-                  <div class="col-md-6 pl-2 pr-1" data-field="date">
+              <div class="d-none d-md-block col-1 text-center small"><?= ++$i ?></div>
+                  <div class="col-md-6 pr-1" data-field="date">
                     <?= strings::asShortDate( $dto->date) ?>
 
                   </div>
-                  <div class="col-md-6 pr-1" data-field="time"><?php
+                  <div class="col-md text-right" data-field="time"><?php
                     $time = strings::AMPM( $dto->time);
                     if ( preg_match( '@[0-9][0-9]:00@', $dto->time)) {
                       print $time;
@@ -244,7 +250,7 @@ $_propertyContact = strings::rand();
 
               </div>
 
-              <div class="col-7 col-md-3">
+              <div class="col-7 col-sm-8 col-md-3">
                 <div class="row">
                   <div class="col">
                     <div class="" data-field="street">
