@@ -223,11 +223,22 @@ $_propertyContact = strings::rand();
               <div class="d-none d-md-block col-1 text-center small"><?= ++$i ?></div>
               <div class="col-3">
                 <div class="row">
-                  <div class="col-md-6 pr-1" data-field="date">
+                  <div class="col-md-6 pl-2 pr-1" data-field="date">
                     <?= strings::asShortDate( $dto->date) ?>
 
                   </div>
-                  <div class="col-md-6 pr-1" data-field="time"><?= rtrim( strings::AMPM( $dto->time), 'm') ?></div>
+                  <div class="col-md-6 pr-1" data-field="time"><?php
+                    $time = strings::AMPM( $dto->time);
+                    if ( preg_match( '@[0-9][0-9]:00@', $dto->time)) {
+                      print $time;
+
+                    }
+                    else {
+                      print preg_replace( '@(am|pm)$@i', '', $time);
+
+                    }
+
+                  ?></div>
 
                 </div>
 
@@ -237,7 +248,7 @@ $_propertyContact = strings::rand();
                 <div class="row">
                   <div class="col">
                     <div class="" data-field="street">
-                      <?= $dto->address_street ?>
+                      <?= strings::GoodStreetString( $dto->address_street) ?>
 
                     </div>
 
@@ -567,10 +578,26 @@ $_propertyContact = strings::rand();
     }));
 
   })
+  .on( 'delete-inspection-by-id', (e, id) => {
+    $('#<?= $_report ?>').collapse('show');
+
+    $('div[data-role="item"]', '#<?= $_uid ?>RentalDiary').each( ( i, row) => {
+      let _row = $(row);
+      let _data = _row.data();
+
+      if ( id == _data.id) {
+        _row.trigger('delete');
+
+        return false;
+
+      }
+
+    });
+
+  })
   .on( 'edit-inspection-by-id', (e, id) => {
     $('#<?= $_report ?>').collapse('show');
 
-    let found = false;
     $('div[data-role="item"]', '#<?= $_uid ?>RentalDiary').each( ( i, row) => {
       let _row = $(row);
       let _data = _row.data();
@@ -578,7 +605,6 @@ $_propertyContact = strings::rand();
       if ( id == _data.id) {
         _row.trigger('edit');
 
-        found = true;
         return false;
 
       }
@@ -721,8 +747,7 @@ $_propertyContact = strings::rand();
       .on( 'delete', function(e) {
         let _me = $(this);
 
-				_.ask({
-					headClass: 'text-white bg-danger',
+				_.ask.alert({
 					text: 'Are you sure ?',
 					title: 'Confirm Delete',
 					buttons : {
@@ -811,8 +836,6 @@ $_propertyContact = strings::rand();
 
             }
 
-            // $('[data-field]', _me).each( (i, el) => console.log( $(el).data('field')));
-            console.log( d.data);
             _me.removeClass( 'bg-warning');
 
           }

@@ -178,8 +178,14 @@ class inspect_diary extends _dao {
 				inspect i ON i.id = id.inspect_id
 			WHERE %s', $fields, $where);
 
-		if ( $debug) \sys::trace('inspect_diary->getFiltered :: logging SQL');
-		if ( $debug) \sys::logSQL( $sql);
+		// if ( $debug) \sys::trace('inspect_diary->getFiltered :: logging SQL');
+		if ( $debug) {
+			\sys::logger( sprintf('<%s> %s', $filter, date( 'c', $seed), __METHOD__));
+
+			\sys::logSQL( $sql);
+
+
+		}
 
 		$this->Q( 'DROP TABLE IF EXISTS _tmp');
 		$this->Q( 'DROP TABLE IF EXISTS _tmp2');

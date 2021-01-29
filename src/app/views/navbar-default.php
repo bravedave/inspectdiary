@@ -37,7 +37,7 @@
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link pb-0 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link pb-0 dropdown-toggle" href="#" id="navbarDropdown" role="button" aria-label="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <?= dvc\icon::get( dvc\icon::gear ) ?>
 
           </a>
@@ -59,6 +59,7 @@
         <li class="nav-item">
           <a class="nav-link" href="<?= strings::url() ?>">
             <?= dvc\icon::get( dvc\icon::house ) ?>
+            <span class="sr-only">home</span>
 
           </a>
 
@@ -67,6 +68,7 @@
         <li class="nav-item">
           <a class="nav-link" href="https://github.com/bravedave/">
             <?= dvc\icon::get( dvc\icon::github ) ?>
+            <span class="sr-only">github</span>
 
           </a>
 

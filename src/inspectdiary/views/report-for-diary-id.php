@@ -641,7 +641,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
 
       }));
 
-      _context.append( $('<a href="#"><i class="bi bi-pencil"></i>edit inspection</a>').on( 'click', function( e) {
+      _context.append( $('<a href="#"><i class="bi bi-pencil"></i>edit inspection</a>').on( 'click', e => {
         e.stopPropagation();e.preventDefault();
 
         _context.close();
@@ -649,6 +649,19 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
         $(document).trigger( 'edit-inspection-by-id', <?= $this->data->dto->id ?>);
 
       }));
+
+      <?php if ( !$this->data->dtoSet) {  ?>
+        _context.append( '<hr>');
+        _context.append( $('<a href="#"><i class="bi bi-trash"></i>delete inspection</a>').on( 'click', e => {
+          e.stopPropagation();e.preventDefault();
+
+          _context.close();
+
+          $(document).trigger( 'delete-inspection-by-id', <?= $this->data->dto->id ?>);
+
+        }));
+
+      <?php } // if ( !$this->data->dtoSet)  ?>
 
       if ( /button/i.test( String( this.tagName))) {
         let target = $(this);
@@ -692,7 +705,6 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
       });
 
     });
-
 
   }))( _brayworth_);
 </script>

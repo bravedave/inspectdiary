@@ -90,14 +90,14 @@ class controller extends \Controller {
 
     }
 
-    if ( 'legacy' == currentUser::option( 'inspect-interface')) {
-      $primary[] = 'interface-warning';
+    // if ( 'legacy' == currentUser::option( 'inspect-interface')) {
+    //   $primary[] = 'interface-warning';
 
-    }
-    else {
-      $secondary[] = 'index-default-interface';
+    // }
+    // else {
+    //   $secondary[] = 'index-default-interface';
 
-    }
+    // }
 
     $this->render([
       'title' => $this->title = 'Inspect Home : ' . $this->data->scope,
@@ -187,7 +187,15 @@ class controller extends \Controller {
 
           $dto = $dao->getDetail( $dto);
           $dto->shortdate = strings::asShortDate( $dto->date);
-          $dto->shorttime = rtrim( strings::AMPM( $dto->time), 'm');
+          $time = strings::AMPM( $dto->time);
+          if ( preg_match( '@[0-9][0-9]:00@', $dto->time)) {
+            $dto->shorttime = $time;
+
+          }
+          else {
+            $dto->shorttime = preg_replace( '@(am|pm)$@i', '', $time);
+
+          }
           $dto->pretty_street = strings::GoodStreetString( $dto->address_street);
 
           Json::ack( $action)
@@ -858,7 +866,7 @@ class controller extends \Controller {
       }
 
     }
-    reset( $d['properties']);
+    // reset( $d['properties']);
 
     if ( $secondPass) {
       \sys::logger( 'inspect_diary/opens :: second pass');

@@ -26,7 +26,7 @@
                 <th class="text-center">last week</th>
                 <th class="text-center">this week</th>
                 <th class="text-center">next week</th>
-                <th class="text-center"><?= strings::asLocalDate( $this->data->inspectdata['weekafternext']->seed); ?></th>
+                <th class="text-center">w/e <?= strings::asShortDate( $this->data->inspectdata['weekafternext']->seed); ?></th>
 
               </tr>
 
@@ -77,7 +77,7 @@
 
                 printf( '<tr data-date="%s">', date( 'Y-m-d H:i:s', $_d));
 
-                printf( '<td>%s</td>', $property->address_street);
+                printf( '<td>%s</td>', strings::GoodStreetString( $property->address_street));
                 printf( '<td class="text-center">%s</td>', $sprintV( $property, $this->data->inspectdata['lastweek']->data, ''));
 
                 // $_d = strtotime( 'this saturday', $_d);
@@ -129,7 +129,8 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-outline-secondary mr-auto" id="<?= $_uidNew = strings::rand() ?>"><i class="bi bi-plus"></i> new</button>
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">close</button>
           <button type="submit" class="btn btn-primary">Save</button>
 
         </div>
@@ -150,21 +151,34 @@
       if ( '' == _td.html()) {
 
         let _data = _td.data();
-        let ctrl = $('<i class="bi bi-arrow-clockwise pointer" title="rebook"></i>');
-        ctrl.on( 'click', function( e) {
-          e.stopPropagation();e.preventDefault();
+        let d = _.dayjs( _data.date);
+        if ( d.isValid() && d.unix() > _.dayjs().add(-1, 'month').unix()) {
+          let ctrl = $('<i class="bi bi-arrow-clockwise pointer" title="rebook"></i>');
+          ctrl.on( 'click', function( e) {
+            e.stopPropagation();e.preventDefault();
 
-          $('#<?= $_modal ?>')
-          .trigger('rebook', _data)
-          .modal('hide');
+            $('#<?= $_modal ?>')
+            .trigger('rebook', _data)
+            .modal('hide');
 
-        });
+          });
 
-        _td.append(ctrl);
+          _td.append(ctrl);
+
+        }
 
       }
 
     });
+
+    $('#<?= $_uidNew ?>').on( 'click', function( e) {
+      e.stopPropagation();e.preventDefault();
+
+      $('#<?= $_modal ?>')
+      .trigger('new')
+      .modal('hide');
+
+    })
 
     $('#<?= $_form ?>')
     .on( 'submit', function( e) {
