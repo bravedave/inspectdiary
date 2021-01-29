@@ -186,7 +186,7 @@ $_propertyContact = strings::rand();
       <div class="row" id="<?= $_uid ?>RentalDiary">
         <div class="col">
           <div class="row bg-light border-bottom">
-            <div class="col-3 col-sm-2">
+            <div class="col-3">
               <div class="row">
                 <div class="d-none d-md-block col-1 text-center small">
                   <?= count( $this->data->data) ?>
@@ -229,7 +229,7 @@ $_propertyContact = strings::rand();
               <div class="col-3">
                 <div class="row">
                   <div class="d-none d-md-block col-1 text-center small"><?= ++$i ?></div>
-                  <div class="col-md-6 pr-1" data-field="date">
+                  <div class="col-md pr-1" data-field="date">
                     <?= strings::asShortDate( $dto->date) ?>
 
                   </div>
