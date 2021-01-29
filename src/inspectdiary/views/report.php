@@ -228,12 +228,12 @@ $_propertyContact = strings::rand();
 
               <div class="col-3 col-sm-2">
                 <div class="row">
-              <div class="d-none d-md-block col-1 text-center small"><?= ++$i ?></div>
+                  <div class="d-none d-md-block col-1 text-center small"><?= ++$i ?></div>
                   <div class="col-md-6 pr-1" data-field="date">
                     <?= strings::asShortDate( $dto->date) ?>
 
                   </div>
-                  <div class="col-md text-right" data-field="time"><?php
+                  <div class="col-md text-right text-md-left" data-field="time"><?php
                     $time = strings::AMPM( $dto->time);
                     if ( preg_match( '@[0-9][0-9]:00@', $dto->time)) {
                       print $time;
