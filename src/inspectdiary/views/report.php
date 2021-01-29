@@ -186,7 +186,7 @@ $_propertyContact = strings::rand();
       <div class="row" id="<?= $_uid ?>RentalDiary">
         <div class="col">
           <div class="row bg-light border-bottom">
-            <div class="col-3">
+            <div class="col-3 col-sm-2">
               <div class="row">
                 <div class="d-none d-md-block col-1 text-center small">
                   <?= count( $this->data->data) ?>
