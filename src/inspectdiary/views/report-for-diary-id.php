@@ -94,7 +94,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
       <div class="col py-2 <?php if ( $ip) print 'text-danger font-weight-bold'; ?>"><?= $dto->name ?></div>
       <div class="col-4 col-lg-8">
         <div class="form-row">
-          <div class="col d-none d-lg-block text-center py-2"><?php
+          <div class="col d-none d-sm-block text-center py-2"><?php
             if ( $conflict) {
               print '<i class="bi bi-person-fill text-warning" title="name conflict"></i>';
 
@@ -157,9 +157,8 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
 
             if ( strtotime( $dto->offer_to_buy) > 0) {
               printf(
-                '<div class="col d-none d-sm-block text-center py-2" title="%s">%s</div>',
-                strings::asLocalDate( $dto->offer_to_buy),
-                strings::html_tick
+                '<div class="col d-none d-sm-block text-center py-2" title="%s">%s<i class="bi bi-patch-check"></i></div>',
+                strings::asLocalDate( $dto->offer_to_buy)
 
               );
 
