@@ -157,7 +157,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
 
             if ( strtotime( $dto->offer_to_buy) > 0) {
               printf(
-                '<div class="col d-none d-sm-block text-center py-2" title="%s">%s<i class="bi bi-patch-check"></i></div>',
+                '<div class="col d-none d-sm-block text-center py-2" title="%s"><i class="bi bi-patch-check"></i></div>',
                 strings::asLocalDate( $dto->offer_to_buy)
 
               );
