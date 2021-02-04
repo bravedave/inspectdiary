@@ -228,8 +228,8 @@ $_propertyContact = strings::rand();
 
               <div class="col-3">
                 <div class="row">
-                  <div class="d-none d-md-block col-1 text-center small"><?= ++$i ?></div>
-                  <div class="col-md col-xl-4 pr-1" data-field="date">
+                  <div class="d-none d-md-block col-1 text-md-center small"><?= ++$i ?></div>
+                  <div class="col-md col-xl-4 text-right text-md-left" data-field="date">
                     <?= strings::asShortDate( $dto->date) ?>
 
                   </div>
