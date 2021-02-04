@@ -165,7 +165,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
 
             }
             else {
-              print '<div class="col d-none d-lg-block"></div>';
+              print '<div class="col d-none d-sm-block"></div>';
 
             }
 
