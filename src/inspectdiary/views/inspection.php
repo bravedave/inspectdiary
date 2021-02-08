@@ -92,19 +92,19 @@ $dto = $this->data->dto;  ?>
       <div class="input-group">
         <input type="text" class="form-control bg-warning" readonly id="<?= $_uid ?>">
 
-        <div class="input-group-append" id="<?= $_UseNameControl = strings::rand() ?>">
-          <div class="input-group-text">
+        <div class="input-group-append">
+          <button type="button" class="btn input-group-text" id="<?= $_UseNameControl = strings::rand() ?>">
             <i class="bi bi-chevron-double-up"></i>
 
-          </div>
+          </button>
 
         </div>
 
-        <div class="input-group-append" id="<?= $_UpdatePerson = strings::rand() ?>">
-          <div class="input-group-text">
+        <div class="input-group-append">
+          <button type="button" class="btn input-group-text" id="<?= $_UpdatePerson = strings::rand() ?>">
             <i class="bi bi-chevron-double-down"></i>
 
-          </div>
+          </button>
 
         </div>
 
@@ -113,99 +113,6 @@ $dto = $this->data->dto;  ?>
     </div>
 
   </div>
-  <script>
-  ( _ => {
-    $('#<?= $_UseNameControl ?>').on( 'click', function( e) {
-      e.stopPropagation();e.preventDefault();
-
-      $('input[name="name"]', '#<?= $_form ?>').val( $('#<?= $_uid ?>').val());
-
-      $('#<?= $_form ?>').trigger( 'save');
-
-    });
-
-    $('#<?= $_UpdatePerson ?>').on( 'click', function( e) {
-      e.stopPropagation();e.preventDefault();
-
-      let id = Number( $('input[name="person_id"]', '#<?= $_form ?>').val());
-      if ( id > 0) {
-        let name = String( $('input[name="name"]', '#<?= $_form ?>').val()).trim();
-        if ( '' == name) {
-          _.ask.alert({ title : 'Error', text : 'name cannot be empty'});
-
-        }
-        else {
-
-          _.post({
-            url : _.url('<?= $this->route ?>'),
-            data : {
-              action : 'update-person-name',
-              id : $('input[name="person_id"]', '#<?= $_form ?>').val(),
-              name : name
-
-            },
-
-          })
-          .then( d => {
-            _.growl( d);
-            $('#<?= $_form ?>').trigger( 'check-conflicts');
-
-          });
-
-        }
-
-      }
-      else {
-        _.ask.alert({ title : 'Error', text : 'invalid person'});
-
-      }
-
-    });
-
-    $('#<?= $_form ?>').on( 'check-conflicts', function(e) {
-      let _form = $(this);
-      let _data = _form.serializeFormJSON();
-
-      if ( Number( _data.person_id) > 0) {
-        _.post({
-          url : _.url('<?= $this->route ?>'),
-          data : {
-            id : _data.person_id,
-            action : 'get-person-by-id'
-
-          },
-
-        }).then( d => {
-          if ( 'ack' == d.response) {
-            $('#<?= $_uid ?>').val( d.data.name);
-
-            if ( String( d.data.name).toLowerCase() != String( _data.name).toLowerCase()) {
-              $('#<?= $_uid ?>_row').removeClass( 'd-none');
-
-            }
-            else {
-              $('#<?= $_uid ?>_row').addClass( 'd-none');
-
-            }
-
-          }
-          else {
-            _.growl( d);
-
-          }
-
-        });
-
-      }
-      else {
-        $('#<?= $_uid ?>_row').addClass( 'd-none');
-
-      }
-
-    });
-
-  }) (_brayworth_);
-  </script>
 
   <div class="form-row row mb-2"><!-- mobile -->
     <div class="offset-md-3 col">
@@ -243,6 +150,64 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
+  <div class="form-row row mb-2 d-none" id="<?= $_uid ?>_row_mobile"><!-- confliction mobile -->
+    <label class="d-none d-md-block col-md-3 col-form-label font-italic" for="<?= $_uid ?>_mobile" >file mobile</label>
+
+    <div class="col-md mb-2 mb-md-0">
+      <div class="input-group">
+        <input type="text" class="form-control bg-warning" readonly id="<?= $_uid ?>_mobile">
+
+        <div class="input-group-append">
+          <button type="button" class="btn input-group-text" id="<?= $_UseMobileControl = strings::rand() ?>">
+            <i class="bi bi-chevron-double-up"></i>
+
+          </button>
+
+        </div>
+
+        <div class="input-group-append">
+          <button type="button" class="btn input-group-text" id="<?= $_UpdateMobile = strings::rand() ?>">
+            <i class="bi bi-chevron-double-down"></i>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-md">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">m<sup>2</sup></div>
+
+        </div>
+
+        <input type="text" class="form-control bg-warning" readonly id="<?= $_uid ?>_mobile2">
+
+        <div class="input-group-append" id="<?= $_UseMobile2Control = strings::rand() ?>">
+          <div class="input-group-text">
+            <i class="bi bi-chevron-double-up"></i>
+
+          </div>
+
+        </div>
+
+        <div class="input-group-append" id="<?= $_UpdateMobile2 = strings::rand() ?>">
+          <div class="input-group-text">
+            <i class="bi bi-chevron-double-down"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
   <div class="form-row row mb-2"><!-- email -->
     <div class="offset-md-3 col">
       <div class="input-group">
@@ -267,6 +232,329 @@ $dto = $this->data->dto;  ?>
     </div>
 
   </div>
+
+  <div class="form-row row mb-2 d-none" id="<?= $_uid ?>_row_email"><!-- confliction email -->
+    <label class="d-none d-md-block col-md-3 col-form-label font-italic" for="<?= $_uid ?>_email" >file email</label>
+
+    <div class="col">
+      <div class="input-group">
+        <input type="text" class="form-control bg-warning" readonly id="<?= $_uid ?>_email">
+
+        <div class="input-group-append">
+          <button type="button" class="btn input-group-text" id="<?= $_UseEmailControl = strings::rand() ?>">
+            <i class="bi bi-chevron-double-up"></i>
+
+          </button>
+
+        </div>
+
+        <div class="input-group-append">
+          <button type="button" class="btn input-group-text" id="<?= $_UpdateEmail = strings::rand() ?>">
+            <i class="bi bi-chevron-double-down"></i>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    ( _ => {
+      $('#<?= $_UseNameControl ?>').on( 'click', function( e) {
+        e.stopPropagation();e.preventDefault();
+
+        $('input[name="name"]', '#<?= $_form ?>').val( $('#<?= $_uid ?>').val());
+
+        $('#<?= $_form ?>').trigger( 'save');
+
+      });
+
+      $('#<?= $_UpdatePerson ?>').on( 'click', function( e) {
+        e.stopPropagation();e.preventDefault();
+
+        let id = Number( $('input[name="person_id"]', '#<?= $_form ?>').val());
+        if ( id > 0) {
+          let name = String( $('input[name="name"]', '#<?= $_form ?>').val()).trim();
+          if ( '' == name) {
+            _.ask.alert({ title : 'Error', text : 'name cannot be empty'});
+
+          }
+          else {
+
+            _.post({
+              url : _.url('<?= $this->route ?>'),
+              data : {
+                action : 'update-person-name',
+                id : $('input[name="person_id"]', '#<?= $_form ?>').val(),
+                name : name
+
+              },
+
+            })
+            .then( d => {
+              _.growl( d);
+              $('#<?= $_form ?>').trigger( 'check-conflicts');
+
+            });
+
+          }
+
+        }
+        else {
+          _.ask.alert({ title : 'Error', text : 'invalid person'});
+
+        }
+
+      });
+
+      $('#<?= $_UseMobileControl ?>').on( 'click', function( e) {
+        e.stopPropagation();e.preventDefault();
+
+        $('input[name="mobile"]', '#<?= $_form ?>')
+        .val( String($('#<?= $_uid ?>_mobile').val()).AsMobilePhone());
+
+        $('#<?= $_form ?>').trigger( 'save');
+
+      });
+
+      $('#<?= $_UpdateMobile ?>').on( 'click', function( e) {
+        e.stopPropagation();e.preventDefault();
+
+        let id = Number( $('input[name="person_id"]', '#<?= $_form ?>').val());
+        if ( id > 0) {
+          let mobile = String( $('input[name="mobile"]', '#<?= $_form ?>').val()).trim();
+          if ( '' == mobile) {
+            _.ask.alert({ title : 'Error', text : 'mobile cannot be empty'});
+
+          }
+          else {
+
+            _.post({
+              url : _.url('<?= $this->route ?>'),
+              data : {
+                action : 'update-person-mobile',
+                id : $('input[name="person_id"]', '#<?= $_form ?>').val(),
+                mobile : mobile
+
+              },
+
+            })
+            .then( d => {
+              _.growl( d);
+              $('#<?= $_form ?>').trigger( 'check-conflicts');
+
+            });
+
+          }
+
+        }
+        else {
+          _.ask.alert({ title : 'Error', text : 'invalid person'});
+
+        }
+
+      });
+
+      $('#<?= $_UseMobile2Control ?>').on( 'click', function( e) {
+        e.stopPropagation();e.preventDefault();
+
+        $('input[name="mobile"]', '#<?= $_form ?>')
+        .val( String( $('#<?= $_uid ?>_mobile2').val()).AsMobilePhone());
+
+        $('#<?= $_form ?>').trigger( 'save');
+
+      });
+
+      $('#<?= $_UpdateMobile2 ?>').on( 'click', function( e) {
+        e.stopPropagation();e.preventDefault();
+
+        let id = Number( $('input[name="person_id"]', '#<?= $_form ?>').val());
+        if ( id > 0) {
+          let mobile = String( $('input[name="mobile"]', '#<?= $_form ?>').val()).trim();
+          if ( '' == mobile) {
+            _.ask.alert({ title : 'Error', text : 'mobile cannot be empty'});
+
+          }
+          else {
+
+            _.post({
+              url : _.url('<?= $this->route ?>'),
+              data : {
+                action : 'update-person-mobile2',
+                id : $('input[name="person_id"]', '#<?= $_form ?>').val(),
+                mobile : mobile
+
+              },
+
+            })
+            .then( d => {
+              _.growl( d);
+              $('#<?= $_form ?>').trigger( 'check-conflicts');
+
+            });
+
+          }
+
+        }
+        else {
+          _.ask.alert({ title : 'Error', text : 'invalid person'});
+
+        }
+
+      });
+
+      $('#<?= $_UseEmailControl ?>').on( 'click', function( e) {
+        e.stopPropagation();e.preventDefault();
+
+        $('input[name="email"]', '#<?= $_form ?>')
+        .val( String( $('#<?= $_uid ?>_email').val()));
+
+        $('#<?= $_form ?>').trigger( 'save');
+
+      });
+
+      $('#<?= $_UpdateEmail ?>').on( 'click', function( e) {
+        e.stopPropagation();e.preventDefault();
+
+        let id = Number( $('input[name="person_id"]', '#<?= $_form ?>').val());
+        if ( id > 0) {
+          let email = String( $('input[name="email"]', '#<?= $_form ?>').val()).trim();
+          if ( '' == email) {
+            _.ask.alert({ title : 'Error', text : 'email cannot be empty'});
+
+          }
+          else {
+
+            _.post({
+              url : _.url('<?= $this->route ?>'),
+              data : {
+                action : 'update-person-email',
+                id : $('input[name="person_id"]', '#<?= $_form ?>').val(),
+                email : email
+
+              },
+
+            })
+            .then( d => {
+              _.growl( d);
+              $('#<?= $_form ?>').trigger( 'check-conflicts');
+
+            });
+
+          }
+
+        }
+        else {
+          _.ask.alert({ title : 'Error', text : 'invalid person'});
+
+        }
+
+      });
+
+      $('#<?= $_form ?>').on( 'check-conflicts', function(e) {
+        let _form = $(this);
+        let _data = _form.serializeFormJSON();
+
+        if ( Number( _data.person_id) > 0) {
+          _.post({
+            url : _.url('<?= $this->route ?>'),
+            data : {
+              id : _data.person_id,
+              action : 'get-person-by-id'
+
+            },
+
+          }).then( d => {
+            if ( 'ack' == d.response) {
+              $('#<?= $_uid ?>').val( d.data.name);
+              $('#<?= $_uid ?>_mobile').val( d.data.mobile);
+              $('#<?= $_uid ?>_mobile2').val( d.data.mobile2);
+              $('#<?= $_uid ?>_email').val( d.data.email);
+
+              if ( String( d.data.name).toLowerCase() != String( _data.name).toLowerCase()) {
+                $('#<?= $_uid ?>_row').removeClass( 'd-none');
+
+              }
+              else {
+                $('#<?= $_uid ?>_row').addClass( 'd-none');
+
+              }
+
+              let m = String( d.data.mobile);
+              let m2 = String( d.data.mobile2);
+              let thisMobile = String( _data.mobile).replace(/[^0-9]/g,'');
+              /** expose row if this mobile does not = the file mobile or mobile2 */
+              if ( m.replace(/[^0-9]/g,'') != thisMobile && m2.replace(/[^0-9]/g,'') != thisMobile) {
+                $('#<?= $_uid ?>_row_mobile').removeClass( 'd-none');
+
+              }
+              else {
+                $('#<?= $_uid ?>_row_mobile').addClass( 'd-none');
+
+              }
+
+              if ( m.IsPhone()) { // don't allow applying empty mobile
+                $('#<?= $_UseMobileControl ?>').removeClass( 'd-none');
+
+              }
+              else {
+                $('#<?= $_UseMobileControl ?>').addClass( 'd-none');
+
+              }
+
+              if ( m2.IsPhone()) { // don't allow applying empty mobile2
+                $('#<?= $_UseMobile2Control ?>').removeClass( 'd-none');
+
+              }
+              else {
+                $('#<?= $_UseMobile2Control ?>').addClass( 'd-none');
+
+              }
+
+              let email = String( d.data.email);
+              if ( email.toLowerCase() != String( _data.email).toLowerCase()) {
+                $('#<?= $_uid ?>_row_email').removeClass( 'd-none');
+
+              }
+              else {
+                $('#<?= $_uid ?>_row_email').addClass( 'd-none');
+
+              }
+
+              if ( email.isEmail()) { // don't allow applying empty email
+                $('#<?= $_UseEmailControl ?>').removeClass( 'd-none');
+
+              }
+              else {
+                $('#<?= $_UseEmailControl ?>').addClass( 'd-none');
+
+              }
+
+              // console.table( d.data);
+              // console.table( _data);
+
+            }
+            else {
+              _.growl( d);
+
+            }
+
+          });
+
+        }
+        else {
+          $('#<?= $_uid ?>_row').addClass( 'd-none');
+
+        }
+
+      });
+
+    }) (_brayworth_);
+  </script>
 
   <div class="form-row row mb-2"><!-- property2sell -->
     <label class="col-md-3 col-form-label d-none d-md-block" for="<?= $_uid = strings::rand() ?>">Property to Sell</label>

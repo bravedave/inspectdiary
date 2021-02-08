@@ -316,7 +316,7 @@ class controller extends \Controller {
       Json::ack( $action);
 
     }
-		elseif ( $action == 'sms-complete-undo') {
+		elseif ( 'sms-complete-undo' == $action) {
       if ( $id = (int)$this->getPost( 'id')) {
         $a = [
           'fu_sms' => '',
@@ -582,6 +582,54 @@ class controller extends \Controller {
     elseif ( 'set-inspect-interface' == $action) {
 			currentUser::option( 'inspect-interface', $this->getPost('value'));
       Json::ack( $action);
+
+    }
+    elseif ( 'update-person-email' == $action) {
+      if ( $id = (int)$this->getPost('id')) {
+        if ( $email = $this->getPost('email')) {
+          $dao = new dao\people;
+          $dao->UpdateByID([
+            'email' => $email
+
+          ], $id);
+
+          Json::ack( $action);
+
+        } else { Json::nak( $action); }
+
+      } else { Json::nak( $action); }
+
+    }
+    elseif ( 'update-person-mobile' == $action) {
+      if ( $id = (int)$this->getPost('id')) {
+        if ( $mobile = $this->getPost('mobile')) {
+          $dao = new dao\people;
+          $dao->UpdateByID([
+            'mobile' => $mobile
+
+          ], $id);
+
+          Json::ack( $action);
+
+        } else { Json::nak( $action); }
+
+      } else { Json::nak( $action); }
+
+    }
+    elseif ( 'update-person-mobile2' == $action) {
+      if ( $id = (int)$this->getPost('id')) {
+        if ( $mobile = $this->getPost('mobile')) {
+          $dao = new dao\people;
+          $dao->UpdateByID([
+            'mobile2' => $mobile
+
+          ], $id);
+
+          Json::ack( $action);
+
+        } else { Json::nak( $action); }
+
+      } else { Json::nak( $action); }
 
     }
     elseif ( 'update-person-name' == $action) {
