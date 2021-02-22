@@ -608,8 +608,8 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
-  <div class="form-row row"><!-- fu_buyer / fu_neighbour / fu_interested_party / fu_nsl -->
-    <div class="offset-md-3 col text-center"><!-- fu_buyer -->
+  <div class="form-row row"><!-- fu_buyer / fu_neighbour / fu_interested_party / fu_nsl / fu_attend -->
+    <div class="offset-md-3 col-auto col-sm text-center"><!-- fu_buyer -->
       <div class="form-check">
         <input type="checkbox" class="form-check-input" name="fu_buyer" value="yes"
           <?php if ( 'yes' == $dto->fu_buyer) print 'checked' ?>
@@ -624,7 +624,7 @@ $dto = $this->data->dto;  ?>
 
     </div>
 
-    <div class="col text-center"><!-- fu_neighbour -->
+    <div class="col-auto col-sm text-center"><!-- fu_neighbour -->
       <div class="form-check">
         <input type="checkbox" class="form-check-input" name="fu_neighbour" value="yes"
           <?php if ( 'yes' == $dto->fu_neighbour) print 'checked' ?>
@@ -639,7 +639,7 @@ $dto = $this->data->dto;  ?>
 
     </div>
 
-    <div class="col text-center"><!-- fu_interested_party -->
+    <div class="col-auto col-sm text-center"><!-- fu_interested_party -->
       <div class="form-check">
         <input type="checkbox" class="form-check-input" name="fu_interested_party" value="yes"
           <?php if ( 'yes' == $dto->fu_interested_party) print 'checked' ?>
@@ -654,7 +654,7 @@ $dto = $this->data->dto;  ?>
 
     </div>
 
-    <div class="col text-center"><!-- fu_nsl -->
+    <div class="col-auto col-sm text-center"><!-- fu_nsl -->
       <div class="form-check">
         <input type="checkbox" class="form-check-input" name="fu_nsl" value="yes"
           <?php if ( 'yes' == $dto->fu_nsl) print 'checked' ?>
@@ -662,6 +662,21 @@ $dto = $this->data->dto;  ?>
 
         <label class="form-check-label" for="<?= $uid ?>">
           nsl
+
+        </label>
+
+      </div>
+
+    </div>
+
+    <div class="col text-center"><!-- fu_attend -->
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" name="fu_attend" value="yes"
+          <?php if ( 'yes' == $dto->fu_attend) print 'checked' ?>
+          id="<?= $uid = strings::rand() ?>">
+
+        <label class="form-check-label" for="<?= $uid ?>">
+          attend
 
         </label>
 

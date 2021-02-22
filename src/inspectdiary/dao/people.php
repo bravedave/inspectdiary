@@ -11,7 +11,6 @@
 namespace inspectdiary\dao;
 
 use green;
-use smokealarm;
 use strings;
 
 class people extends green\people\dao\people {}

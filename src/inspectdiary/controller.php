@@ -479,6 +479,7 @@ class controller extends \Controller {
         'fu_interested_party' => $this->getPost('fu_interested_party'),
         'fu_neighbour' => $this->getPost('fu_neighbour'),
         'fu_nsl' => $this->getPost('fu_nsl'),
+        'fu_attend' => $this->getPost('fu_attend'),
         'property2sell' => $this->getPost('property2sell'),
         'user_id' => currentUser::id(),
 

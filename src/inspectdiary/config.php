@@ -13,8 +13,8 @@ namespace inspectdiary;
 use Json;
 
 class config extends \config {
-  const label = 'Smoke Alarms 2022';
-	const inspectdiary_db_version = 0.31;
+  const label = 'Inspect';
+	const inspectdiary_db_version = 0.32;
 
 	static $INSPECTDIARY_ENABLE_SINGULAR_INSPECTION = false;
   static $INSPECTDIARY_ROUTE_PEOPLE = 'people';

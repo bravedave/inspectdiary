@@ -35,6 +35,7 @@ $dbc->defineField('fu_sms', 'varchar', 3 );
 $dbc->defineField('fu_sms_complete', 'datetime');
 $dbc->defineField('fu_sms_bulk', 'tinyint' );
 $dbc->defineField('email_sent', 'datetime');
+$dbc->defineField('fu_attend', 'varchar', 3 );
 $dbc->defineField('fu_nsl', 'varchar', 3 );
 $dbc->defineField('fu_buyer', 'varchar', 3 );
 $dbc->defineField('fu_interested_party', 'varchar', 3 );

@@ -11,7 +11,6 @@
 namespace inspectdiary\dao;
 
 use green;
-use smokealarm;
 use strings;
 
 class properties extends green\properties\dao\properties {}
