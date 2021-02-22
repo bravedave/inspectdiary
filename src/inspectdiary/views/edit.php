@@ -38,7 +38,7 @@ $dto = $this->data->dto;
 					<div class="row">
 						<div class="col">
 							<div class="form-row"><!-- date/time -->
-								<label class="d-none col-md-block col-md-2 col-form-label" for="<?= $_uid = strings::rand() ?>">Date</label>
+								<label class="d-none d-md-block col-md-2 col-form-label" for="<?= $_uid = strings::rand() ?>">Date</label>
 
 								<div class="col-7 col-md-5 pb-2">
 									<input type="date" class="form-control" name="date" required id="<?= $_uid ?>"
@@ -61,7 +61,7 @@ $dto = $this->data->dto;
 
 							</div>
 
-							<div class="form-row mb-2"><!-- type -->
+							<div class="form-row mb-2 <?php if ( !config::$INSPECTDIARY_ENABLE_SINGULAR_INSPECTION) print 'd-none'; ?>"><!-- type -->
 								<label class="col-3 col-md-2 col-form-label" for="<?= $_uid = strings::rand() ?>">Type</label>
 
 								<div class="col-9 col-md-10">

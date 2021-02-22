@@ -83,24 +83,13 @@ class controller extends \Controller {
     ];
 
     if ( currentUser::option( 'inspect-interface-modern')) {
-      /**
-       * cleanup old key
-       */
+      /** cleanup old key */
       currentUser::option( 'inspect-interface-modern','');
 
     }
 
-    // if ( 'legacy' == currentUser::option( 'inspect-interface')) {
-    //   $primary[] = 'interface-warning';
-
-    // }
-    // else {
-    //   $secondary[] = 'index-default-interface';
-
-    // }
-
     $this->render([
-      'title' => $this->title = 'Inspect Home : ' . $this->data->scope,
+      'title' => $this->title = 'Inspect : ' . $this->data->scope,
       'primary' => $primary,
 			'secondary' => $secondary
 

@@ -18,6 +18,16 @@ $_candidates = strings::rand();
 $_candidate = strings::rand();
 $_propertyContact = strings::rand();
 
+$showInspections = config::$INSPECTDIARY_ENABLE_SINGULAR_INSPECTION;
+foreach ( $this->data->data as $dto) {
+  if ( 'Inspect' == $dto->type) {
+    $showInspections = true;
+
+  }
+
+}
+
+
 ?>
 <style>
   .border-1 { border-width: .1rem!important; }
@@ -200,14 +210,14 @@ $_propertyContact = strings::rand();
             <div class="col-7 col-md-3">address</div>
             <div class="col-2">
               <div class="row">
-                <div class="col text-center">type</div>
+                <div class="col text-center <?= !$showInspections ? 'd-none' : '' ?>">type</div>
                 <div class="col d-none d-md-block text-center">no.</div>
 
               </div>
 
             </div>
 
-            <div class="col d-none d-md-block">person</div>
+            <div class="col d-none <?= $showInspections ? 'd-md-block' : '' ?>">person</div>
 
           </div>
 
@@ -277,14 +287,20 @@ $_propertyContact = strings::rand();
 
               <div class="col-2"><!-- type -->
                 <div class="row">
-                  <div class="col text-center" data-field="type">
+                  <div class="col text-center <?php if ( !$showInspections) print 'd-none'; ?>" data-field="type">
                     <?php
-                      if ( 'OH Inspect' == $dto->type)
+                      if ( 'OH Inspect' == $dto->type) {
                         print 'OH';
-                      elseif ( 'Inspect' == $dto->type)
+
+                      }
+                      elseif ( 'Inspect' == $dto->type) {
                         print 'Insp';
-                      else
+
+                      }
+                      else {
                         print $dto->type;
+
+                      }
 
                     ?>
                   </div>

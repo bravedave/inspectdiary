@@ -16,6 +16,7 @@ class config extends \config {
   const label = 'Smoke Alarms 2022';
 	const inspectdiary_db_version = 0.31;
 
+	static $INSPECTDIARY_ENABLE_SINGULAR_INSPECTION = false;
   static $INSPECTDIARY_ROUTE_PEOPLE = 'people';
   static protected $_INSPECTDIARY_VERSION = 0;
 
@@ -58,6 +59,7 @@ class config extends \config {
   static function inspectdiary_init() {
     $_a = [
       'inspectdiary_version' => self::$_INSPECTDIARY_VERSION,
+      'inspectdiary_enable_singular_inspection' => self::$INSPECTDIARY_ENABLE_SINGULAR_INSPECTION,
 
     ];
 
@@ -66,6 +68,7 @@ class config extends \config {
       $j = (object)array_merge( $_a, (array)Json::read( $config));
 
       self::$_INSPECTDIARY_VERSION = (float)$j->inspectdiary_version;
+      self::$INSPECTDIARY_ENABLE_SINGULAR_INSPECTION = (float)$j->inspectdiary_enable_singular_inspection;
 
 		}
 
