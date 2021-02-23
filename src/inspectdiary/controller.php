@@ -88,6 +88,11 @@ class controller extends \Controller {
 
     }
 
+    if ( config::$INSPECTDIARY_DEVELOPER ) {
+      $secondary[] = 'index-developer';
+
+    }
+
     $this->render([
       'title' => $this->title = 'Inspect : ' . $this->data->scope,
       'primary' => $primary,

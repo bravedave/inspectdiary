@@ -16,6 +16,7 @@ class config extends \config {
   const label = 'Inspect';
 	const inspectdiary_db_version = 0.32;
 
+	static $INSPECTDIARY_DEVELOPER = false;
 	static $INSPECTDIARY_ENABLE_SINGULAR_INSPECTION = false;
   static $INSPECTDIARY_ROUTE_PEOPLE = 'people';
   static protected $_INSPECTDIARY_VERSION = 0;
@@ -60,6 +61,7 @@ class config extends \config {
     $_a = [
       'inspectdiary_version' => self::$_INSPECTDIARY_VERSION,
       'inspectdiary_enable_singular_inspection' => self::$INSPECTDIARY_ENABLE_SINGULAR_INSPECTION,
+      'inspectdiary_developer' => self::$INSPECTDIARY_DEVELOPER,
 
     ];
 
@@ -69,6 +71,7 @@ class config extends \config {
 
       self::$_INSPECTDIARY_VERSION = (float)$j->inspectdiary_version;
       self::$INSPECTDIARY_ENABLE_SINGULAR_INSPECTION = (float)$j->inspectdiary_enable_singular_inspection;
+      self::$INSPECTDIARY_DEVELOPER = (float)$j->inspectdiary_developer;
 
 		}
 

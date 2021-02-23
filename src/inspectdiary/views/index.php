@@ -90,8 +90,8 @@ use strings;	?>
 						$('input[name="type"]', form).val( 'OH Inspect').trigger('change');
 						$('input[name="property_id"]', form).val( data.property_id).trigger('resolve');
 
-						console.log( data);
-						console.log( $('input[name="property_id"]', form));
+						// console.log( data);
+						// console.log( $('input[name="property_id"]', form));
 
 						modal.on( 'success', () => window.location.reload());
 
