@@ -10,6 +10,7 @@
 
 namespace inspectdiary\dao\dto;
 
+use inspectdiary\config;
 use dao\dto\_dto;
 
 class inspect_diary extends _dto {
@@ -17,7 +18,7 @@ class inspect_diary extends _dto {
   public $date = '';
   public $time = '10 am';
   public $property_id = 0;
-  public $type = 'OH Inspect';
+  public $type = config::inspectdiary_openhome;
   public $inspect_id = 0;
   public $address_street = '';
   public $contact_id = 0;

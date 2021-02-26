@@ -66,8 +66,8 @@ $dto = $this->data->dto;
 
 								<div class="col-9 col-md-10">
 									<select class="form-control" name="type" id="<?= $_uid ?>" <?php if ( $dto->inspect_id > 0) print 'disabled' ?> >
-										<option value="Inspect" <?= $dto->type == 'Inspect' ? 'selected' : '' ?>>Buyer Inspection</option>
-										<option value="OH Inspect" <?= $dto->type == 'OH Inspect' ? 'selected' : '' ?>>OH Inspection</option>
+										<option value="<?= config::inspectdiary_inspection ?>" <?= $dto->type == config::inspectdiary_inspection ? 'selected' : '' ?>>Buyer Inspection</option>
+										<option value="<?= config::inspectdiary_openhome ?>" <?= $dto->type == config::inspectdiary_openhome ? 'selected' : '' ?>>OH Inspection</option>
 
 									</select>
 
@@ -342,7 +342,7 @@ $dto = $this->data->dto;
 			$('select[name="type"]', '#<?= $_form ?>').on( 'change', function(e) {
 				let _me = $(this);
 
-				if ( 'Inspect' == _me.val()) {
+				if ( '<?= config::inspectdiary_inspection ?>' == _me.val()) {
 					$('#<?= $_contactDetails ?>').removeClass( 'd-none');
 					$('input[name="contact_name"]', '#<?= $_form ?>').trigger( 'required', true);
 					$('input[name="contact_mobile"], input[name="contact_email"]', '#<?= $_form ?>').trigger( 'change');

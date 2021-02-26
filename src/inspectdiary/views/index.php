@@ -87,7 +87,7 @@ use strings;	?>
 						let d = _.dayjs( data.date);
 						$('input[name="date"]', form).val( d.format('YYYY-MM-DD'))
 						$('input[name="time"]', form).val( d.format('h:mm a')).trigger('change');
-						$('input[name="type"]', form).val( 'OH Inspect').trigger('change');
+						$('input[name="type"]', form).val( '<?= config::inspectdiary_openhome ?>').trigger('change');
 						$('input[name="property_id"]', form).val( data.property_id).trigger('resolve');
 
 						// console.log( data);

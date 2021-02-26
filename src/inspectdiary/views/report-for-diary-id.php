@@ -584,7 +584,7 @@ $emailLog = sys::dbi()->table_exists( 'email_log'); ?>
                 },
                 property_id: <?= (int)$this->data->dto->property_id ?>,
                 inspect_id: _data.id,
-                inspect_type : 'Inspect' == _data.type ? 'insp' : 'oh',
+                inspect_type : '<?= config::inspectdiary_inspection ?>' == _data.type ? 'insp' : 'oh',
 
               }
 

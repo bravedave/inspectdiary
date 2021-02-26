@@ -200,6 +200,12 @@ class controller extends \Controller {
       } else { Json::nak( $action); }
 
     }
+    elseif ( 'get-future-inspections' == $action) {
+      $dao = new dao\inspect_diary;
+      Json::ack( $action)
+        ->add( 'data', $dao->getInspectsOfFuture( date('Y-m-d'), (int)$this->getPost('property_id')));
+
+    }
     elseif ( 'get-person-by-id' == $action) {
       /*
         ( _ => {
@@ -329,7 +335,7 @@ class controller extends \Controller {
       if ( $id = (int)$this->getPost('id')) {
         $dao = new dao\inspect_diary;
         if ( $dto = $dao->getByID( $id)) {
-          if ( 'Inspect' == $dto->type) {
+          if ( config::inspectdiary_inspection == $dto->type) {
             $count = $dao->getInspectionCount( $dto);
             $dao->Q( sprintf( 'DELETE FROM inspect WHERE inspect_diary_id = %d', $dto->id));
             \sys::logger( sprintf('<there were %s inspects> %s', $count, __METHOD__));
@@ -412,7 +418,7 @@ class controller extends \Controller {
           ];
 
           if ( $dto->inspect_id) {
-            if ( 'Inspect' == $dto->type) {
+            if ( config::inspectdiary_inspection == $dto->type) {
               $dao = new dao\inspect;
               if ( $dao->getByID( $dto->inspect_id)) {
                 $dao->UpdateByID( $aI, $dto->inspect_id);
@@ -438,7 +444,7 @@ class controller extends \Controller {
 
           }
           else {
-            if ( 'Inspect' == $dto->type) {
+            if ( config::inspectdiary_inspection == $dto->type) {
               $dao = new dao\inspect;
               $dto->inspect_id = $dao->Insert( $aI);
 
@@ -551,6 +557,43 @@ class controller extends \Controller {
       // $dbc->defineField('fu_sms_bulk', 'tinyint' );
       // $dbc->defineField('email_sent', 'datetime');
       // $dbc->defineField('reminder', 'bigint' );
+
+    }
+    elseif ( 'quickbook' == $action) {
+      $a = [
+        'type' => $this->getPost('type'),
+        'property_id' => $this->getPost('property_id'),
+        'name' => $this->getPost('name'),
+        'mobile' => strings::cleanPhoneString( $this->getPost('mobile')),
+        'email' => $this->getPost('email'),
+        'comment' => $this->getPost('comment'),
+        'inspect_diary_id' => $this->getPost('inspect_diary_id'),
+        'user_id' => currentUser::id(),
+
+      ];
+
+      $qp = QuickPerson::find([
+        'name' => $this->getPost('name'),
+        'mobile' => $this->getPost('mobile'),
+        'email' => $this->getPost('email'),
+
+        ]
+
+      );
+
+      if ( $a['name'] != $qp->name && strtolower( $a['name']) == strtolower( $qp->name)) {
+        $a['name'] = $qp->name;
+
+      }
+
+      $pid = (int)$this->getPost('person_id');
+      if ( !$pid && $qp->id) $pid = $qp->id;
+      $a['person_id'] = $pid;
+
+      $dao = new dao\inspect;
+      $dao->Insert( $a);
+
+      Json::ack( $action);
 
     }
     elseif ( 'search-people' == $action) {
@@ -828,21 +871,6 @@ class controller extends \Controller {
 
   }
 
-  public function noinspectoninspect() {
-    $this->load( 'no-inspect-on-inspect');
-
-  }
-
-  public function noreminderstoset() {
-    $this->load( 'no-reminders-to-set');
-
-  }
-
-  public function nosmstosend() {
-    $this->load( 'no-sms-to-send');
-
-  }
-
   public function js( $lib = '') {
     $s = [];
     $r = [];
@@ -855,6 +883,21 @@ class controller extends \Controller {
 
     Response::javascript_headers();
     print $js;
+
+  }
+
+  public function noinspectoninspect() {
+    $this->load( 'no-inspect-on-inspect');
+
+  }
+
+  public function noreminderstoset() {
+    $this->load( 'no-reminders-to-set');
+
+  }
+
+  public function nosmstosend() {
+    $this->load( 'no-sms-to-send');
 
   }
 
@@ -976,6 +1019,43 @@ class controller extends \Controller {
       $this->load( 'inspection-not-found');
 
     }
+
+  }
+
+  public function quickbook() {
+    $data = (object)[
+      'title' => $this->title = 'QuickBook',
+      'inspect_diary_id' => (int)$this->getParam('inspect_diary_id'),
+      'property_id' => (int)$this->getParam('property_id'),
+      'address_street' => '',
+      'people_id' => (int)$this->getParam('people_id'),
+      'name' => '',
+      'mobile' => '',
+      'email' => '',
+      'comment' => '',
+      'type' => config::inspectdiary_openhome,
+
+    ];
+
+    if ( $data->property_id) {
+      $dao = new dao\properties;
+      $data->address_street = $dao->getFieldByID( $data->property_id, 'address_street');
+
+    }
+
+    if ( $data->people_id) {
+      $dao = new dao\people;
+      if ( $dto = $dao->getByID($data->people_id)) {
+        $data->name = $dto->name;
+        $data->mobile = $dto->mobile;
+        $data->email = $dto->email;
+
+      }
+
+    }
+
+    $this->data = $data;
+    $this->load( 'quickbook');
 
   }
 

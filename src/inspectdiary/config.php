@@ -16,6 +16,9 @@ class config extends \config {
   const label = 'Inspect';
 	const inspectdiary_db_version = 0.32;
 
+	const inspectdiary_openhome = 'OH Inspect';
+	const inspectdiary_inspection = 'Inspect';
+
 	static $INSPECTDIARY_DEVELOPER = false;
 	static $INSPECTDIARY_ENABLE_SINGULAR_INSPECTION = false;
   static $INSPECTDIARY_ROUTE_PEOPLE = 'people';

@@ -20,7 +20,7 @@ $_propertyContact = strings::rand();
 
 $showInspections = config::$INSPECTDIARY_ENABLE_SINGULAR_INSPECTION;
 foreach ( $this->data->data as $dto) {
-  if ( 'Inspect' == $dto->type) {
+  if ( config::inspectdiary_inspection == $dto->type) {
     $showInspections = true;
 
   }
@@ -275,7 +275,7 @@ foreach ( $this->data->data as $dto) {
                 <div class="row d-md-none">
                   <div class="col text-muted">
                     <div class="text-truncate" data-field="contact_name">
-                      <?php  if ( $dto->type == 'Inspect') print $dto->contact_name; ?>
+                      <?php  if ( $dto->type == config::inspectdiary_inspection) print $dto->contact_name; ?>
 
                     </div>
 
@@ -289,11 +289,11 @@ foreach ( $this->data->data as $dto) {
                 <div class="row">
                   <div class="col text-center <?php if ( !$showInspections) print 'd-none'; ?>" data-field="type">
                     <?php
-                      if ( 'OH Inspect' == $dto->type) {
+                      if ( config::inspectdiary_openhome == $dto->type) {
                         print 'OH';
 
                       }
-                      elseif ( 'Inspect' == $dto->type) {
+                      elseif ( config::inspectdiary_inspection == $dto->type) {
                         print 'Insp';
 
                       }
@@ -312,7 +312,7 @@ foreach ( $this->data->data as $dto) {
               </div>
 
               <div class="d-none d-md-block col text-truncate"><?php
-                if ( $dto->type == 'Inspect') print $dto->contact_name;
+                if ( $dto->type == config::inspectdiary_inspection) print $dto->contact_name;
 
               ?></div>
 
@@ -430,7 +430,7 @@ foreach ( $this->data->data as $dto) {
     e.stopPropagation();
 
     let type = $('#<?= $_candidates ?>content').data('type');
-    if ( 'Inspect' == String( type)) {
+    if ( '<?= config::inspectdiary_inspection ?>' == String( type)) {
       _.get.modal( _.url( '<?= $this->route ?>/noinspectoninspect'));
 
     }
@@ -687,7 +687,7 @@ foreach ( $this->data->data as $dto) {
         let _data = _me.data();
         let _context = _.context();
 
-        if ( 'Inspect' == _data.type) {
+        if ( '<?= config::inspectdiary_inspection ?>' == _data.type) {
           if ( _data.inspect_id > 0) {
             _context.append(
               $('<a class="font-weight-bold" href="#">inspection</a>')
@@ -736,7 +736,7 @@ foreach ( $this->data->data as $dto) {
 
         }));
 
-        if ( 'Inspect' == _data.type || 0 == Number( _data.inspections)) {
+        if ( '<?= config::inspectdiary_inspection ?>' == _data.type || 0 == Number( _data.inspections)) {
           _context.append( $('<a href="#"><i class="bi bi-trash"></i>delete</a>').on( 'click', function( e) {
             e.stopPropagation();e.preventDefault();
 
@@ -845,11 +845,11 @@ foreach ( $this->data->data as $dto) {
             $('[data-field="time"]', _me).html( d.data.shorttime);
             $('[data-field="street"]', _me).html( d.data.address_street);
             $('[data-field="contact_name"]', _me).html( d.data.contact_name);
-            if ( 'OH Inspect' == d.data.type) {
+            if ( '<?= config::inspectdiary_openhome ?>' == d.data.type) {
               $('[data-field="type"]', _me).html( 'OH');
 
             }
-            else if ( 'Inspect' == d.data.type) {
+            else if ( '<?= config::inspectdiary_inspection ?>' == d.data.type) {
               $('[data-field="type"]', _me).html( 'Insp');
 
             }

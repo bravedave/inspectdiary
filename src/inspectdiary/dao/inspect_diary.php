@@ -10,6 +10,7 @@
 
 namespace inspectdiary\dao;
 
+use inspectdiary\config;
 use dao\_dao;
 use DateInterval;
 use DateTime;
@@ -61,11 +62,11 @@ class inspect_diary extends _dao {
 				$end->setTimezone( new DateTimeZone('UTC'));
 				$type = $dto->type;
 				$_type = strtolower( preg_replace( '@[^a-zA-Z0-9\.]@', '_', $dto->type));
-				if ( 'OH Inspect' == $dto->type) {
+				if ( config::inspectdiary_openhome == $dto->type) {
 					$type = 'OH';
 
 				}
-				elseif ( 'Inspect' == $dto->type) {
+				elseif ( config::inspectdiary_inspection == $dto->type) {
 					$type = 'Insp';
 
 				}
@@ -268,10 +269,50 @@ class inspect_diary extends _dao {
 				`inspect_diary` i
 				LEFT JOIN `properties` p on p.`id` = i.`property_id`
 			WHERE
-				`date` = "%s" AND `type` = "OH Inspect"',
-			$date
+				`date` = "%s" AND `type` = "%s"',
+			$date,
+			config::inspectdiary_openhome
 
 		);
+
+		if ( $res = $this->Result( $sql)) {
+			return $res->dtoSet();
+
+		}
+
+		return [];
+
+	}
+
+	public function getInspectsOfFuture( string $date, int $property_id = 0) : array {
+		$where = [
+			sprintf( 'DATE( `date`) >= "%s"', $date),
+			sprintf( '`type` = "%s"', config::inspectdiary_openhome)
+
+		];
+
+		if ( $property_id) {
+			array_unshift( $where, sprintf( 'i.`property_id` = %s', $property_id));
+
+		}
+
+		$sql = sprintf(
+			'SELECT
+				i.`id`,
+				i.`date`,
+				i.`time`,
+				i.`type`,
+				i.`property_id`,
+				p.`address_street`
+			FROM
+				`inspect_diary` i
+				LEFT JOIN `properties` p on p.`id` = i.`property_id`
+			WHERE %s',
+			implode( ' AND ', $where)
+
+		);
+
+		// \sys::logSQL( sprintf('<%s> %s', $sql, __METHOD__));
 
 		if ( $res = $this->Result( $sql)) {
 			return $res->dtoSet();
