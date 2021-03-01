@@ -1024,7 +1024,7 @@ class controller extends \Controller {
 
   public function quickbook() {
     $data = (object)[
-      'title' => $this->title = 'QuickBook',
+      'title' => $this->title = config::label . ' Book',
       'inspect_diary_id' => (int)$this->getParam('inspect_diary_id'),
       'property_id' => (int)$this->getParam('property_id'),
       'address_street' => '',
