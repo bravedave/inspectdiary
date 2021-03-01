@@ -228,8 +228,20 @@ $data = $this->data;  ?>
                 $('input[name="property_id"]', form).val(_data.property_id);
                 $('input[name="address_street"]', form).val(_data.address_street);
 
-                modal
-                .on( 'success', () => _.get.modal( _.url( '<?= $this->route ?>/quickbook/?property_id=' + _data.property_id)))
+                modal.on( 'success', () => {
+                  _.get.modal( _.url( '<?= $this->route ?>/quickbook/?property_id=' + _data.property_id))
+                  .then( modal => {
+
+                    // this modal is back with adding a 'OH Inspect'
+                    let _modal_form = modal.closest( 'form');
+                    $('input[name="people_id"]', _modal_form).val(_data.people_id);
+                    $('input[name="name"]', _modal_form).val(_data.name);
+                    $('input[name="mobile"]', _modal_form).val(_data.mobile);
+                    $('input[name="email"]', _modal_form).val(_data.email);
+
+                  });
+
+                });
 
               });
 
@@ -254,7 +266,6 @@ $data = $this->data;  ?>
     .on( 'submit', function( e) {
       let _form = $(this);
       let _data = _form.serializeFormJSON();
-      let _modalBody = $('.modal-body', _form);
 
       // console.table( _data);
       _.post({
