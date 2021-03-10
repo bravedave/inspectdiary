@@ -55,7 +55,7 @@ class inspect_diary extends _dao {
 
 				);
 
-				$end->add(new DateInterval('PT30M'));
+				// $end->add(new DateInterval('PT30M'));
 
 				// $end = new DateTime( sprintf( '%s 08:00:00', $dto->settlement_deposit_due));
 				$start->setTimezone( new DateTimeZone('UTC'));
