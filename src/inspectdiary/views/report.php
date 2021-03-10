@@ -103,94 +103,7 @@ foreach ( $this->data->data as $dto) {
   <div class="collapse" id="<?= $_report ?>" data-parent="#<?= $_collapse ?>">
     <?php
       $_uid = strings::rand();
-      if ( false) { ?>
-      <div class="form-row mb-2">
-        <div class="col">
-          <div class="form-check form-check-inline">
-            <input type="checkbox" class="form-check-input" id="<?= $_uid ?>chk-open-homes" />
-            <label class="form-check-label" for="<?= $_uid ?>chk-open-homes">
-              OH
-
-            </label>
-
-          </div>
-
-          <div class="form-check form-check-inline">
-            <input type="checkbox" class="form-check-input" id="<?= $_uid ?>chk-inspections" />
-            <label class="form-check-label" for="<?= $_uid ?>chk-inspections">
-              Inspections
-
-            </label>
-
-          </div>
-
-          <div class="form-check form-check-inline">
-            <input type="checkbox" class="form-check-input" id="<?= $_uid ?>chk-rental-open-homes" />
-            <label class="form-check-label" for="<?= $_uid ?>chk-rental-open-homes">
-              Rental OH
-
-            </label>
-
-          </div>
-
-        </div>
-
-      </div>
-      <script>
-      ( _ => $(document).ready( () => {
-        (params => {
-          let j = {
-            OH : true,
-            inspections : true,
-            ROH : true,
-
-          }
-
-          $.extend( j, JSON.parse( params));
-
-          $('#<?= $_uid ?>chk-open-homes').prop( 'checked', j.OH).trigger( 'change');
-          $('#<?= $_uid ?>chk-inspections').prop( 'checked', j.inspections).trigger( 'change');
-          $('#<?= $_uid ?>chk-rental-open-homes').prop( 'checked', j.ROH).trigger( 'change');
-
-        })( localStorage.getItem('inspect_diary'));
-
-        let setDefault = () => {
-          let j = {
-            OH : $('#<?= $_uid ?>chk-open-homes').prop( 'checked'),
-            inspections : $('#<?= $_uid ?>chk-inspections').prop( 'checked'),
-            ROH : $('#<?= $_uid ?>chk-rental-open-homes').prop( 'checked'),
-
-          }
-
-          localStorage.setItem( 'inspect_diary', JSON.stringify( j));
-
-        };
-
-        let setVisibility = () => {
-          $('#<?= $_uid ?>chk-open-homes').prop('checked') ?
-            $('#<?= $_uid ?>RentalDiary').addClass('show-oh') :
-            $('#<?= $_uid ?>RentalDiary').removeClass('show-oh');
-
-          $('#<?= $_uid ?>chk-inspections').prop('checked') ?
-            $('#<?= $_uid ?>RentalDiary').addClass('show-insp') :
-            $('#<?= $_uid ?>RentalDiary').removeClass('show-insp');
-
-          $('#<?= $_uid ?>chk-rental-open-homes').prop('checked') ?
-            $('#<?= $_uid ?>RentalDiary').addClass('show-roh') :
-            $('#<?= $_uid ?>RentalDiary').removeClass('show-roh');
-
-        }
-
-        $('#<?= $_uid ?>chk-open-homes').on( 'change', () => { setVisibility(); setDefault();});
-        $('#<?= $_uid ?>chk-inspections').on( 'change', () => { setVisibility(); setDefault(); });
-        $('#<?= $_uid ?>chk-rental-open-homes').on( 'change', () => { setVisibility(); setDefault(); });
-
-        setVisibility();
-
-      }))( _brayworth_);
-      </script>
-
-    <?php } ?>
+ ?>
 
     <div class="container-fluid">
       <div class="row" id="<?= $_uid ?>RentalDiary">
@@ -894,9 +807,35 @@ foreach ( $this->data->data as $dto) {
 
     $('[data-role="content-primary"]')
     .removeClass('pt-3')
-    .addClass('pt-0 pt-md-3')
+    .addClass('pt-0 pt-md-3');
 
-    $('#<?= $_report ?>').collapse('show');
+    <?php if ( $act = (int)$this->getParam('activate')) { ?>
+      ( row => {
+        if ( 1 == row.length) {
+          let _data = row.data();
+
+          if ( _data.inspect_id > 0) {
+            row.trigger( 'view-inspection');
+
+          }
+          else {
+            $(document).trigger( 'load-inspects', _data);
+
+          }
+
+        }
+        else {
+          $('#<?= $_report ?>').collapse('show');
+
+        }
+
+      })($('div[data-role="item"][data-id="<?= $act ?>"]', '#<?= $_uid ?>RentalDiary'));
+
+    <?php } else { ?>
+
+      $('#<?= $_report ?>').collapse('show');
+
+    <?php } ?>
 
   });
 
