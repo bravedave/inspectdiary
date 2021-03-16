@@ -73,8 +73,11 @@ class inspect_diary extends _dao {
 
 				}
 
+				$summary = [$type, $dto->address_street];
+				if ( $dto->team) $summary[] = $dto->team;
+
 				$vevent = $vcal->add( 'VEVENT', [
-					'SUMMARY' => sprintf( '%s - %s', $type, $dto->address_street),
+					'SUMMARY' => implode(' - ', $summary),
 					'UID' => sprintf( '%s-%d@cmss.darcy.com.au', $_type, $dto->id),
 					'DTSTART' => $start,
 					'DTEND'   => $end
