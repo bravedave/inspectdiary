@@ -73,7 +73,14 @@ class inspect_diary extends _dao {
 
 				}
 
-				$summary = [$type, $dto->address_street];
+				$summary = [];
+				if ( config::$INSPECTDIARY_ENABLE_SINGULAR_INSPECTION) {
+					$summary[] = $type;
+
+				}
+
+				$summary[] = $dto->address_street;
+
 				if ( $dto->team) $summary[] = $dto->team;
 
 				$vevent = $vcal->add( 'VEVENT', [
