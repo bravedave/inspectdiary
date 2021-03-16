@@ -342,6 +342,7 @@ class inspect_diary extends _dao {
 				i.date,
 				i.time,
 				i.type,
+				i.team,
 				p.address_street
 			FROM `%s` i
 				LEFT JOIN
