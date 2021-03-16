@@ -51,6 +51,7 @@
             <a class="dropdown-item" href="<?= strings::url('baths') ?>">Baths</a>
             <a class="dropdown-item" href="<?= strings::url('property_type') ?>">Property Type</a>
             <a class="dropdown-item" href="<?= strings::url('postcodes') ?>">Postcodes</a>
+            <a class="dropdown-item" href="<?= strings::url('users') ?>">Users</a>
 
           </div>
 

@@ -367,7 +367,8 @@ class controller extends \Controller {
         'property_id' => (int)$this->getPost('property_id'),
 				'date' => $this->getPost('date'),
 				'time' => strings::HoursMinutes( $this->getPost('time')),
-        'auto' => 0
+        'auto' => 0,
+				'team' => $this->getPost('team'),
 
       ];
 
@@ -754,9 +755,13 @@ class controller extends \Controller {
   }
 
 	public function edit( $id = 0) {
+    $dao = new dao\users;
+
 		$this->data = (object)[
       'dto' => new dao\dto\inspect_diary,
-      'title' => $this->title = 'New Diary Entry'
+      'title' => $this->title = 'New Diary Entry',
+      'teams' => $dao->getTeams()
+
     ];
 
 		if ( ( $id = (int)$id) || ( $clone = (int)$this->getParam('clone'))) {

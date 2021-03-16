@@ -25,16 +25,18 @@ class inspect_diary extends _dao {
 
 	public $debug = false;
 
-	const fields = 'id.id, id.date, id.time, id.type, id.property_id, id.inspect_id, p.address_street,
+	const fields = 'id.id, id.date, id.time, id.type, id.team, id.property_id, id.inspect_id, p.address_street,
 		i.person_id contact_id, i.name contact_name, i.mobile contact_mobile, i.email contact_email';
 
-	public function getCalendary( $from, $to) : string {
+	public function getCalendary( $from, $to, $filter = null) : string {
 		$vcal = new  VCalendar;
 		$vcal->add('REFRESH-INTERVAL;VALUE=DURATION','PT5M');
 		$vcal->add('X-PUBLISHED-TTL','PT5M');
 
 		if ( $dtoSet = $this->getRange( $from, $to)) {
 			foreach ($dtoSet as $dto) {
+				if ( $filter && !$filter( $dto)) continue;
+
 				$start = new DateTime(
 					sprintf(
 						'%s %s',

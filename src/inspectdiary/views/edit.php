@@ -86,6 +86,28 @@ $dto = $this->data->dto;
 
 							</div>
 
+							<div class="form-row mb-2"><!-- team -->
+								<label class="col-3 col-md-2 col-form-label" for="<?= $_uid = strings::rand() ?>">Team</label>
+
+								<div class="col-9 col-md-10">
+									<select name="team" class="form-control" id="<?= $_uid ?>">
+										<option value=""></option>
+									<?php	foreach ($this->data->teams as $team) {
+										printf(
+											'<option value="%s" %s>%s</option>',
+											$team,
+											$team == $dto->team ? 'selected' : '',
+											$team
+
+										);
+
+									}	?>
+									</select>
+
+								</div>
+
+							</div>
+
 						</div>
 
 					</div>

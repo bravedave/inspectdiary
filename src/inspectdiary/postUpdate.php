@@ -23,6 +23,7 @@ class postUpdate extends dvc\service {
     config::route_register( 'baths', 'green\\baths\\controller');
     config::route_register( 'property_type', 'green\\property_type\\controller');
     config::route_register( 'postcodes', 'green\\postcodes\\controller');
+    config::route_register( 'users', 'green\\users\\controller');
     config::route_register( 'sms', 'sms\\controller');
 
     green\beds_list\config::green_beds_list_checkdatabase();

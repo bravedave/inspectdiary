@@ -27,7 +27,6 @@ foreach ( $this->data->data as $dto) {
 
 }
 
-
 ?>
 <style>
   .border-1 { border-width: .1rem!important; }
@@ -108,9 +107,9 @@ foreach ( $this->data->data as $dto) {
     <div class="container-fluid">
       <div class="row" id="<?= $_uid ?>RentalDiary">
         <div class="col">
-          <div class="row bg-light border-bottom">
+          <div class="form-row bg-light border-bottom">
             <div class="col-3">
-              <div class="row">
+              <div class="form-row">
                 <div class="d-none d-md-block col-1 text-center small">
                   <?= count( $this->data->data) ?>
                 </div>
@@ -120,8 +119,9 @@ foreach ( $this->data->data as $dto) {
               </div>
 
             </div>
-            <div class="col-7 col-md-3">address</div>
-            <div class="col-2">
+            <div class="col-7 col-md-<?= $showInspections ? '3' : '4' ?>">address</div>
+            <div class="d-none d-md-block col-md-2 col-xl-1">team</div>
+            <div class="col-2"><!-- type -->
               <div class="row">
                 <div class="col text-center <?= !$showInspections ? 'd-none' : '' ?>">type</div>
                 <div class="col d-none d-md-block text-center">no.</div>
@@ -137,7 +137,7 @@ foreach ( $this->data->data as $dto) {
           <?php
             $i = 0;
             foreach ( $this->data->data as $dto) {	?>
-            <div class="row py-1 border-bottom"
+            <div class="form-row py-1 border-bottom"
               data-role="item"
               data-id="<?= $dto->id ?>"
               data-property_id="<?= $dto->property_id ?>"
@@ -150,7 +150,7 @@ foreach ( $this->data->data as $dto) {
               data-type="<?= $dto->type ?>">
 
               <div class="col-3">
-                <div class="row">
+                <div class="form-row">
                   <div class="d-none d-md-block col-1 text-md-center small"><?= ++$i ?></div>
                   <div class="col-md col-xl-4 text-right text-md-left" data-field="date">
                     <?= strings::asShortDate( $dto->date) ?>
@@ -173,10 +173,10 @@ foreach ( $this->data->data as $dto) {
 
               </div>
 
-              <div class="col-7 col-md-3">
+              <div class="col-7 col-md-<?= $showInspections ? '3' : '4' ?>">
                 <div class="row">
                   <div class="col">
-                    <div class="" data-field="street">
+                    <div class="text-truncate" data-field="street">
                       <?= strings::GoodStreetString( $dto->address_street) ?>
 
                     </div>
@@ -188,7 +188,7 @@ foreach ( $this->data->data as $dto) {
                 <div class="row d-md-none">
                   <div class="col text-muted">
                     <div class="text-truncate" data-field="contact_name">
-                      <?php  if ( $dto->type == config::inspectdiary_inspection) print $dto->contact_name; ?>
+                      <?php if ( $dto->type == config::inspectdiary_inspection) print $dto->contact_name; ?>
 
                     </div>
 
@@ -197,6 +197,8 @@ foreach ( $this->data->data as $dto) {
                 </div>
 
               </div>
+
+              <div class="d-none d-md-block col-md-2 col-xl-1 text-truncate"><?= $dto->team ?></div>
 
               <div class="col-2"><!-- type -->
                 <div class="row">
@@ -224,7 +226,7 @@ foreach ( $this->data->data as $dto) {
 
               </div>
 
-              <div class="d-none d-md-block col text-truncate"><?php
+              <div class="d-none <?= $showInspections ? 'd-md-block' : '' ?> col text-truncate"><?php
                 if ( $dto->type == config::inspectdiary_inspection) print $dto->contact_name;
 
               ?></div>
