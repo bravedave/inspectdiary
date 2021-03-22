@@ -73,9 +73,20 @@ class inspect_diary extends _dao {
 
 				}
 
+				/**
+				 * I'm actually super confused through this part
+				 * The request has been to change everything to Inspections
+				 * and no longer allow singular inspections
+				 * So now the majority of Inspections which are Open Homes
+				 * are called Insp ...
+				 */
 				$summary = [];
 				if ( config::$INSPECTDIARY_ENABLE_SINGULAR_INSPECTION) {
 					$summary[] = $type;
+
+				}
+				else {
+					$summary[] = 'Insp';
 
 				}
 
