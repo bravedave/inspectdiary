@@ -79,7 +79,7 @@ class inspect_diary extends _dao {
 
 				}
 
-				$summary[] = $dto->address_street;
+				$summary[] = strings::GoodStreetString( $dto->address_street);
 
 				if ( $dto->team) $summary[] = $dto->team;
 
