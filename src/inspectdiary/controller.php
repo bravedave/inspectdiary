@@ -721,7 +721,7 @@ class controller extends \Controller {
 
 		$this->data = (object)[
       'dto' => new dao\dto\inspect_diary,
-      'title' => $this->title = 'New Diary Entry',
+      'title' => sprintf( 'New %s Entry', config::label),
       'teams' => $dao->getTeams()
 
     ];
@@ -733,7 +733,7 @@ class controller extends \Controller {
           $dto = $dao->getDetail( $dto);
 
 					$this->data->dto = $dto;
-          $this->data->title = $this->title = 'Edit Diary Entry';
+          $this->data->title = sprintf( 'Edit %s Entry', config::label);
 
         }
 
@@ -745,7 +745,7 @@ class controller extends \Controller {
 					$this->data->dto->property_id = $dto->property_id;
 					$this->data->dto->address_street = $dto->address_street;
           $this->data->dto->type = $dto->type;
-          $this->data->dto->title = 'clone';
+          $this->data->title = sprintf( 'Clone %s Entry', config::label);
 
 				}
 
@@ -753,6 +753,7 @@ class controller extends \Controller {
 
 		}
 
+    $this->title = $this->data->title;
     $this->load('edit');
 
   }
