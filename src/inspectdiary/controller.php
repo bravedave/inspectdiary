@@ -27,12 +27,6 @@ class controller extends \Controller {
 
   ];
 
-  // protected $theme = [
-  //   'navbar' => 'bg-light navbar-light',
-  //   'navbutton' => 'btn-light',
-
-  // ];
-
   protected function _index() {
 
 		$dao = new dao\inspect_diary;
@@ -693,38 +687,6 @@ class controller extends \Controller {
     }
 
   }
-
-  /*
-
-    public function calendar() {
-      $from = $this->getParam( 'from');
-      if ( !$from || strtotime( $from) < 1) {
-        $from = date( 'Y-m-d', strtotime('-2 months'));
-
-      }
-
-      $to = $this->getParam( 'to');
-      if ( !$to || strtotime( $to) < 1) {
-        $to = date( 'Y-m-d', strtotime('+2 months'));
-
-      }
-
-      $dao = new dao\inspect_diary;
-      $cal = $dao->getCalendary( $from, $to);
-
-      // Response::headers('text/plain');
-      Response::headers('text/calendar');
-      header( sprintf( 'Content-disposition: inline; name="%s"; filename="%s.ics"',
-        \config::$WEBNAME,
-        strtolower( preg_replace( '@[^a-zA-Z0-9\.]@', '_', \config::$WEBNAME))
-        ));
-
-      print $cal;
-
-
-    }
-
-  */
 
 	public function changeInspectionofInspect( $id = 0) {
 
