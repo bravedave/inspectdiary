@@ -20,6 +20,7 @@ $dbc->defineField('type', 'varchar', 20 );
 $dbc->defineField('inspect_id', 'bigint', 20 );
 $dbc->defineField('auto', 'tinyint');
 $dbc->defineField('team', 'varchar');
+$dbc->defineField('team_players', 'varchar');
 
 $dbc->defineIndex('date', 'date' );
 $dbc->defineIndex('tdpt', 'type ASC, date ASC, property_id ASC, time ASC' );

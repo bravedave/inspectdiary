@@ -34,6 +34,11 @@ class inspect_diary extends _dao {
 		$vcal->add('X-PUBLISHED-TTL','PT5M');
 
 		if ( $dtoSet = $this->getRange( $from, $to)) {
+
+			$udao = new users;
+			$players = $udao->getTeam();
+			$players = $players ? $players->dtoSet() : [];
+
 			foreach ($dtoSet as $dto) {
 				if ( $filter && !$filter( $dto)) continue;
 
@@ -92,7 +97,27 @@ class inspect_diary extends _dao {
 
 				$summary[] = strings::GoodStreetString( $dto->address_street);
 
-				if ( $dto->team) $summary[] = $dto->team;
+				// \sys::logger( sprintf('<%s> %s', $dto->team_players, __METHOD__));
+
+				if ( $dto->team_players) {
+					$_team_players = explode(',', $dto->team_players);
+					$_the_team = [];
+					foreach ($_team_players as $_player) {
+						# code...
+						$_pi = \array_search( $_player, array_column($players, 'id'));
+						if ( false !== $_pi) {
+							$_the_team[] = strings::initials( $players[$_pi]->name);
+
+						}
+
+					}
+					$summary[] = implode( '|', $_the_team);
+
+				}
+				elseif ( $dto->team) {
+					$summary[] = $dto->team;
+
+				}
 
 				$vevent = $vcal->add( 'VEVENT', [
 					'SUMMARY' => implode(' - ', $summary),
@@ -354,6 +379,7 @@ class inspect_diary extends _dao {
 				i.time,
 				i.type,
 				i.team,
+				i.team_players,
 				p.address_street
 			FROM `%s` i
 				LEFT JOIN

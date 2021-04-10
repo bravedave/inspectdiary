@@ -257,6 +257,18 @@ class controller extends \Controller {
         ->add( 'data', currentUser::option( 'inspect-sms-template'));
 
 		}
+    elseif ( 'get-team' == $action) {
+      if ( $team = $this->getPost( 'team')) {
+        $dao = new dao\users;
+        if ( $res = $dao->getTeam( $team)) {
+          Json::ack( $action)
+            ->add( 'data', $res->dtoSet());
+
+        } else { Json::nak( $action); }
+
+      } else { Json::nak( $action); }
+
+    }
 		elseif ( 'save-owner-report-template' == $action) {
       $text = $this->getPost('text');
       sys::option('inspect-owner-report-template', $text);
@@ -363,8 +375,18 @@ class controller extends \Controller {
 				'time' => strings::HoursMinutes( $this->getPost('time')),
         'auto' => 0,
 				'team' => $this->getPost('team'),
+				'team_players' => (array)$this->getPost('team_players'),
 
       ];
+
+      if ( $a['team_players']) {
+        $a['team_players'] = implode( ',', $a['team_players']);
+
+      }
+      else {
+        $a['team_players'] = '';
+
+      }
 
       if ( $type = (string)$this->getPost('type')) {
         $a['type'] = $type;

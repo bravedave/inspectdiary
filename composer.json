@@ -39,7 +39,8 @@
 
   },
   "scripts": {
-    "post-update-cmd": "inspectdiary\\postUpdate::upgrade"
+    "post-update-cmd": "inspectdiary\\postUpdate::upgrade",
+    "tests-feed": "tests\\feed::test"
 
   }
 

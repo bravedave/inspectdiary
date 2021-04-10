@@ -109,6 +109,13 @@ $dto = $this->data->dto;
 
 							</div>
 
+							<div class="form-row mb-2"><!-- team members attending -->
+								<div class="offset-3 col-9 offset-md-2 col-md-10"
+									id="<?= $_uidTeamMembers = strings::rand() ?>"
+									data-team_players="<?= $dto->team_players ?>"></div>
+
+							</div>
+
 						</div>
 
 					</div>
@@ -379,6 +386,60 @@ $dto = $this->data->dto;
 
 			})
 			.trigger('change');
+
+			$('select[name="team"]', '#<?= $_form ?>').on( 'change', function( e) {
+				let _me = $(this);
+				let team = _me.val();
+
+				if ( '' == _me.val()) {
+					$('#<?= $_uidTeamMembers ?>').html('');
+
+				}
+				else {
+					$('#<?= $_uidTeamMembers ?>').html('<div class="text-center"><i class="spinner-border spinner-border-sm"></i></div>');
+
+					_.post({
+						url : _.url('<?= $this->route ?>'),
+						data : {
+							action : 'get-team',
+							team : _me.val()
+
+						},
+
+					}).then( d => {
+						if ( 'ack' == d.response) {
+							$('#<?= $_uidTeamMembers ?>').html('');
+							let players = String( $('#<?= $_uidTeamMembers ?>').data('team_players'));
+							if ( '' != players) {
+								players = players.split(',');
+
+							}
+
+							d.data.forEach(player => {
+
+								let uid = 'player_' + parseInt(Math.random() * 1000000);
+								let ctrl = $('<input type="checkbox" class="form-check-input" name="team_players[]" id="' + uid + '">');
+								let label = $('<label class="form-check-label" for="' + uid + '"></label>');
+
+								ctrl.val( player.id).prop('checked', players.indexOf( String( player.id)) > -1);
+								label.html( player.name);
+
+								$('<div class="form-check form-check-inline"></div>').append( ctrl).append( label).appendTo('#<?= $_uidTeamMembers ?>')
+
+							});
+
+						}
+						else {
+							_.growl( d);
+
+						}
+
+					});
+
+				}
+
+			})
+			.trigger( 'change');
 
 			$('#<?= $_form ?>')
 			.on( 'submit', function( e) {

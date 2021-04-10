@@ -30,6 +30,7 @@ class inspect_diary extends _dto {
   public $property_contact_mobile = '';
   public $property_contact_email = '';
   public $team = '';
+  public $team_players = '';
 
   public function __construct( $row = null ) {
     $this->date = date( 'Y-m-d');
