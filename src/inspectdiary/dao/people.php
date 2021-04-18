@@ -8,7 +8,7 @@
  *
 */
 
-namespace dao;
+namespace inspectdiary\dao;
 
 use green;
 
