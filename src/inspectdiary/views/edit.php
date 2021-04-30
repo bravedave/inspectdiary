@@ -116,7 +116,7 @@ $dto = $this->data->dto;
 
 							</div>
 
-							<div class="form-row d-none">
+							<div class="form-row d-none"><!-- add a candidate after form closes -->
 								<div class="offset-3 col-9 offset-md-2 col-md-10">
 									<div class="form-check">
 										<input type="checkbox" class="form-check-input" name="next" value="add candidate" id="<?= $uid = strings::rand() ?>">

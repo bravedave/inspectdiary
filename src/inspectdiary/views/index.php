@@ -70,7 +70,6 @@ use strings;	?>
 						}).then( d => {
 							// console.log( d)
 							// console.log( _.url( '<?= $this->route ?>?filter=thisweek&seed=' + d.data.date + '&activate=' + d.data.id + '&add=yes'));
-							// http://localhost:1900/inspectdiary?filter=thisweek&seed=2021-04-30&activate=20&add=yes
 							window.location.href = _.url( '<?= $this->route ?>?filter=thisweek&seed=' + d.data.date + '&activate=' + d.data.id + '&add=yes');
 
 						});
