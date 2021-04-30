@@ -84,12 +84,12 @@ foreach ( $this->data->data as $dto) {
       <div class="d-flex flex-fill">
         <div class="navbar-brand mr-auto text-truncate" id="<?= $_title ?>-candidates">Inspection</div>
         <button type="button" class="btn <?= $this->theme['navbutton'] ?> d-none" aria-label="context menu"
-          id="<?= $_context = strings::rand() ?>"><?= icon::get( icon::menu_up ) ?></button>
+          id="<?= $_context = strings::rand() ?>"><i class="bi bi-menu-up"></i></button>
         <button type="button" class="btn <?= $this->theme['navbutton'] ?>"
           title="add inspection"
-          id="<?= $_addInspection ?>-candidates"><?= icon::get( icon::person_plus ) ?></button>
+          id="<?= $_addInspection ?>-candidates"><i class="bi bi-person-plus"></i></button>
         <button type="button" class="btn <?= $this->theme['navbutton'] ?>" aria-label="Close" data-toggle="collapse"
-          data-target="#<?= $_report ?>"><?= icon::get( icon::x ) ?></button>
+          data-target="#<?= $_report ?>"><i class="bi bi-x"></i></button>
 
       </div>
 
@@ -554,6 +554,19 @@ foreach ( $this->data->data as $dto) {
     .each( ( i, row) => $('[inspections]', row).addClass( 'text-warning'));
 
   })
+  .on( 'load-inspect-add', ( e, data) => {
+
+    // console.log( data);
+    $('#<?= $_title ?>-candidates, #<?= $_title ?>-candidate, #<?= $_title ?>-property-contact').html( data.pretty_street + ' ' + data.short_time);
+
+    $('#<?= $_candidates ?>content')
+    .data('id', data.id)
+    .data('type', data.type)
+    .trigger( 'add-inspection');
+
+    $('#<?= $_candidates ?>').collapse('show');
+
+  })
   .on( 'load-inspects', ( e, data) => {
 
     // console.log( data);
@@ -821,7 +834,18 @@ foreach ( $this->data->data as $dto) {
 
           }
           else {
-            $(document).trigger( 'load-inspects', _data);
+
+            <?php if ( 'yes' == $this->getParam('add')) { ?>
+              $(document).trigger( 'load-inspect-add', _data);
+              // http://localhost:1900/inspectdiary?filter=thisweek&seed=2021-04-30&activate=20&add=yes
+              history.replaceState({ view : 'Inspect Diary'}, 'Inspect Diary', '<?= $this->route ?>')
+
+            <?php } else { ?>
+
+              $(document).trigger( 'load-inspects', _data);
+              console.log( 'load-inspects');
+
+            <?php } ?>
 
           }
 

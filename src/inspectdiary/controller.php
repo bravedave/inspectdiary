@@ -475,7 +475,8 @@ class controller extends \Controller {
         }
 
         // \sys::logger( sprintf('<%s> %s', $action, __METHOD__));
-        Json::ack( $action);
+        Json::ack( $action)
+          ->add( 'id', $id);
 
 			}
 			else {

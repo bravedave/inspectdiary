@@ -56,7 +56,33 @@ use strings;	?>
 
 			_.get.modal( _.url( '<?= $this->route ?>/edit/'))
 			.then( modal => {
-				modal.on( 'success', () => window.location.reload());
+				modal
+				.trigger('show-add-candidate')
+				.on( 'add-candidate', (e,d) => {
+					if ( Number( d.id) > 0) {
+						_.post({
+							url : _.url('<?= $this->route ?>'),
+							data : {
+								action : 'get-by-id',
+								id : d.id
+							},
+
+						}).then( d => {
+							// console.log( d)
+							// console.log( _.url( '<?= $this->route ?>?filter=thisweek&seed=' + d.data.date + '&activate=' + d.data.id + '&add=yes'));
+							// http://localhost:1900/inspectdiary?filter=thisweek&seed=2021-04-30&activate=20&add=yes
+							window.location.href = _.url( '<?= $this->route ?>?filter=thisweek&seed=' + d.data.date + '&activate=' + d.data.id + '&add=yes');
+
+						});
+
+					}
+					else {
+						window.location.reload();
+
+					}
+
+				})
+				.on( 'success', (e,d) => window.location.reload());
 
 			});
 

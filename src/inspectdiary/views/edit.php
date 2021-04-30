@@ -116,6 +116,18 @@ $dto = $this->data->dto;
 
 							</div>
 
+							<div class="form-row d-none">
+								<div class="offset-3 col-9 offset-md-2 col-md-10">
+									<div class="form-check">
+										<input type="checkbox" class="form-check-input" name="next" value="add candidate" id="<?= $uid = strings::rand() ?>">
+										<label class="form-check-label" for="<?= $uid ?>">add candidate</label>
+
+									</div>
+
+								</div>
+
+							</div>
+
 						</div>
 
 					</div>
@@ -175,6 +187,7 @@ $dto = $this->data->dto;
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">close</button>
+					<button type="submit" id="<?= $_btnAddCandidate = strings::rand() ?>" class="btn btn-primary d-none">Add Candidate</button>
 					<button type="submit" class="btn btn-primary">Save</button>
 
 				</div>
@@ -297,7 +310,9 @@ $dto = $this->data->dto;
 
 		};
 
-		$('#<?= $_modal ?>').on('shown.bs.modal', e => $('input[name="date"]', '#<?= $_form ?>').focus());
+		$('#<?= $_modal ?>')
+		.on('show-add-candidate', e => $('#<?= $_btnAddCandidate ?>').removeClass('d-none'))
+		.on('shown.bs.modal', e => $('input[name="date"]', '#<?= $_form ?>').focus());
 
 		$('input[name="property_id"]', '#<?= $_form ?>').on('resolve', function(e) {
 			let _me = $(this);
@@ -328,133 +343,104 @@ $dto = $this->data->dto;
 
 		});
 
-		$(document).ready( () => {
-			$('input[name="time"]', '#<?= $_form ?>').on('change', _.CheckTimeFormat);	// cms has a function for this
+		$('input[name="time"]', '#<?= $_form ?>').on('change', _.CheckTimeFormat);	// cms has a function for this
 
-			$('input[name="address_street"]', '#<?= $_form ?>').autofill({
-				autoFocus: true,
-				source: _.search.address,
-				select: ( e, ui) => {
-					let o = ui.item;
-					$('input[name="property_id"]', '#<?= $_form ?>').val( o.id);
+		$('input[name="address_street"]', '#<?= $_form ?>').autofill({
+			autoFocus: true,
+			source: _.search.address,
+			select: ( e, ui) => {
+				let o = ui.item;
+				$('input[name="property_id"]', '#<?= $_form ?>').val( o.id);
 
-				},
+			},
 
-			});
+		});
 
-			$('input[name="contact_name"]', '#<?= $_form ?>').autofill({
-				autoFocus: true,
-				source: _.search.inspectdiary_people,
-				select: ( e, ui) => {
-					let o = ui.item;
-					$('input[name="contact_id"]', '#<?= $_form ?>').val( o.id);
-					$('input[name="contact_mobile"]', '#<?= $_form ?>').val( o.mobile).trigger('change');
-					$('input[name="contact_email"]', '#<?= $_form ?>').val( o.email).trigger('change');
+		$('input[name="contact_name"]', '#<?= $_form ?>').autofill({
+			autoFocus: true,
+			source: _.search.inspectdiary_people,
+			select: ( e, ui) => {
+				let o = ui.item;
+				$('input[name="contact_id"]', '#<?= $_form ?>').val( o.id);
+				$('input[name="contact_mobile"]', '#<?= $_form ?>').val( o.mobile).trigger('change');
+				$('input[name="contact_email"]', '#<?= $_form ?>').val( o.email).trigger('change');
 
-				},
+			},
 
-			});
+		});
 
-			$('input[name="contact_mobile"]', '#<?= $_form ?>').on( 'change', function(e) {
-				let _me = $(this);
-				$('input[name="contact_email"]', '#<?= $_form ?>')
-				.prop( 'required', !(String( _me.val()).IsPhone()))
+		$('input[name="contact_mobile"]', '#<?= $_form ?>').on( 'change', function(e) {
+			let _me = $(this);
+			$('input[name="contact_email"]', '#<?= $_form ?>')
+			.prop( 'required', !(String( _me.val()).IsPhone()))
 
-			});
+		});
 
-			$('input[name="contact_email"]', '#<?= $_form ?>').on( 'change', function(e) {
-				let _me = $(this);
-				$('input[name="contact_mobile"]', '#<?= $_form ?>')
-				.prop( 'required', !(String( _me.val()).isEmail()))
+		$('input[name="contact_email"]', '#<?= $_form ?>').on( 'change', function(e) {
+			let _me = $(this);
+			$('input[name="contact_mobile"]', '#<?= $_form ?>')
+			.prop( 'required', !(String( _me.val()).isEmail()))
 
-			});
+		});
 
-			$('select[name="type"]', '#<?= $_form ?>').on( 'change', function(e) {
-				let _me = $(this);
+		$('select[name="type"]', '#<?= $_form ?>').on( 'change', function(e) {
+			let _me = $(this);
 
-				if ( '<?= config::inspectdiary_inspection ?>' == _me.val()) {
-					$('#<?= $_contactDetails ?>').removeClass( 'd-none');
-					$('input[name="contact_name"]', '#<?= $_form ?>').trigger( 'required', true);
-					$('input[name="contact_mobile"], input[name="contact_email"]', '#<?= $_form ?>').trigger( 'change');
+			if ( '<?= config::inspectdiary_inspection ?>' == _me.val()) {
+				$('#<?= $_contactDetails ?>').removeClass( 'd-none');
+				$('input[name="contact_name"]', '#<?= $_form ?>').trigger( 'required', true);
+				$('input[name="contact_mobile"], input[name="contact_email"]', '#<?= $_form ?>').trigger( 'change');
 
-				}
-				else {
-					$('#<?= $_contactDetails ?>').addClass( 'd-none');
-					$('input[name="contact_name"], input[name="contact_mobile"], input[name="contact_email"]', '#<?= $_form ?>').prop( 'required', false);
+			}
+			else {
+				$('#<?= $_contactDetails ?>').addClass( 'd-none');
+				$('input[name="contact_name"], input[name="contact_mobile"], input[name="contact_email"]', '#<?= $_form ?>').prop( 'required', false);
 
-				}
+			}
 
-			})
-			.trigger('change');
+		})
+		.trigger('change');
 
-			$('select[name="team"]', '#<?= $_form ?>').on( 'change', function( e) {
-				let _me = $(this);
-				let team = _me.val();
+		$('select[name="team"]', '#<?= $_form ?>').on( 'change', function( e) {
+			let _me = $(this);
+			let team = _me.val();
 
-				if ( '' == _me.val()) {
-					$('#<?= $_uidTeamMembers ?>').html('');
+			if ( '' == _me.val()) {
+				$('#<?= $_uidTeamMembers ?>').html('');
 
-				}
-				else {
-					$('#<?= $_uidTeamMembers ?>').html('<div class="text-center"><i class="spinner-border spinner-border-sm"></i></div>');
+			}
+			else {
+				$('#<?= $_uidTeamMembers ?>').html('<div class="text-center"><i class="spinner-border spinner-border-sm"></i></div>');
 
-					_.post({
-						url : _.url('<?= $this->route ?>'),
-						data : {
-							action : 'get-team',
-							team : _me.val()
-
-						},
-
-					}).then( d => {
-						if ( 'ack' == d.response) {
-							$('#<?= $_uidTeamMembers ?>').html('');
-							let players = String( $('#<?= $_uidTeamMembers ?>').data('team_players'));
-							if ( '' != players) {
-								players = players.split(',');
-
-							}
-
-							d.data.forEach(player => {
-
-								let uid = 'player_' + parseInt(Math.random() * 1000000);
-								let ctrl = $('<input type="checkbox" class="form-check-input" name="team_players[]" id="' + uid + '">');
-								let label = $('<label class="form-check-label" for="' + uid + '"></label>');
-
-								ctrl.val( player.id).prop('checked', players.indexOf( String( player.id)) > -1);
-								label.html( player.name);
-
-								$('<div class="form-check form-check-inline"></div>').append( ctrl).append( label).appendTo('#<?= $_uidTeamMembers ?>')
-
-							});
-
-						}
-						else {
-							_.growl( d);
-
-						}
-
-					});
-
-				}
-
-			})
-			.trigger( 'change');
-
-			$('#<?= $_form ?>')
-			.on( 'submit', function( e) {
-				let _form = $(this);
-				let _data = _form.serializeFormJSON();
-
-				// console.table( _data);
 				_.post({
 					url : _.url('<?= $this->route ?>'),
-					data : _data,
+					data : {
+						action : 'get-team',
+						team : _me.val()
+
+					},
 
 				}).then( d => {
-
 					if ( 'ack' == d.response) {
-						$('#<?= $_modal ?>').trigger('success');
+						$('#<?= $_uidTeamMembers ?>').html('');
+						let players = String( $('#<?= $_uidTeamMembers ?>').data('team_players'));
+						if ( '' != players) {
+							players = players.split(',');
+
+						}
+
+						d.data.forEach(player => {
+
+							let uid = 'player_' + parseInt(Math.random() * 1000000);
+							let ctrl = $('<input type="checkbox" class="form-check-input" name="team_players[]" id="' + uid + '">');
+							let label = $('<label class="form-check-label" for="' + uid + '"></label>');
+
+							ctrl.val( player.id).prop('checked', players.indexOf( String( player.id)) > -1);
+							label.html( player.name);
+
+							$('<div class="form-check form-check-inline"></div>').append( ctrl).append( label).appendTo('#<?= $_uidTeamMembers ?>')
+
+						});
 
 					}
 					else {
@@ -462,15 +448,58 @@ $dto = $this->data->dto;
 
 					}
 
-					$('#<?= $_modal ?>').modal('hide');
-
 				});
 
-				return false;
+			}
+
+		})
+		.trigger( 'change');
+
+		$('#<?= $_btnAddCandidate ?>').on( 'click', function( e) {
+			let _me = $(this)
+			$('input[name="next"]', '#<?= $_form ?>').prop('checked', true);
+			$('input[name="next"]', '#<?= $_form ?>').closest('.form-row').removeClass('d-none');
+
+			_me.addClass('d-none');
+
+		})
+
+		$('#<?= $_form ?>')
+		.on( 'submit', function( e) {
+			let _form = $(this);
+			let _data = _form.serializeFormJSON();
+
+			_.post({
+				url : _.url('<?= $this->route ?>'),
+				data : _data,
+
+			}).then( d => {
+
+				if ( 'ack' == d.response) {
+					if ( 'add candidate' == _data.next) {
+						$('#<?= $_modal ?>').trigger('add-candidate', d);
+
+					}
+					else {
+						$('#<?= $_modal ?>').trigger('success', d);
+
+					}
+
+				}
+				else {
+					_.growl( d);
+
+				}
+
+				$('#<?= $_modal ?>').modal('hide');
 
 			});
 
+			return false;
+
 		});
+
+		$(document).ready( () => {});
 
 	})( _brayworth_);
 	</script>
@@ -478,32 +507,3 @@ $dto = $this->data->dto;
 </form>
 
 <form>
-
-<script>
-$(document).ready( function() {
-	return;
-
-	$('#inspect-diary-delete').on('click', function( e) {
-		e.stopPropagation(); e.preventDefault();
-		_brayworth_.modal({
-			title : 'Are you Sure ?',
-			text : '<p>This will delete the date.<br />Note if there are inspects for this date, the date will be recreated</p>',
-			width: 350,
-			buttons : {
-				yes : function() {
-					_post({
-						'format' : 'json',
-						'action' : 'delete',
-						'id' :  <?php print (int)$dto->id ?>,
-					});
-
-				}
-
-			}
-
-		});
-
-	});
-
-});
-</script>
