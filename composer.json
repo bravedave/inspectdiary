@@ -21,7 +21,8 @@
     "bravedave/sms": "*"
   },
   "require-dev" : {
-    "twbs/bootstrap": "<5.0"
+    "twbs/bootstrap": "<5.0",
+    "matthiasmullie/scrapbook":"*"
 
   },
   "autoload": {
