@@ -10,6 +10,6 @@
 
 namespace inspectdiary\dao;
 
-use green;
+use dao;
 
-class people extends green\people\dao\people {}
+class people extends dao\people {}
