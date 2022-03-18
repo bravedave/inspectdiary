@@ -443,6 +443,7 @@ class controller extends \Controller {
         'notes' => $this->getPost('notes'),
         'tasks' => $this->getPost('tasks'),
         'fu_buyer' => $this->getPost('fu_buyer'),
+        'fu_invest' => $this->getPost('fu_invest'),
         'fu_interested_party' => $this->getPost('fu_interested_party'),
         'fu_neighbour' => $this->getPost('fu_neighbour'),
         'fu_nsl' => $this->getPost('fu_nsl'),
@@ -452,15 +453,11 @@ class controller extends \Controller {
 
       ];
 
-      $qp = QuickPerson::find(
-        [
-          'name' => $this->getPost('name'),
-          'mobile' => $this->getPost('mobile'),
-          'email' => $this->getPost('email'),
-
-        ]
-
-      );
+      $qp = QuickPerson::find([
+        'name' => $this->getPost('name'),
+        'mobile' => $this->getPost('mobile'),
+        'email' => $this->getPost('email'),
+      ]);
 
       if ($a['name'] != $qp->name && strtolower($a['name']) == strtolower($qp->name)) {
         $a['name'] = $qp->name;
@@ -487,26 +484,12 @@ class controller extends \Controller {
         $dao = new dao\people;
         $dao->UpdateByID([
           'property2sell' => $this->getPost('property2sell')
-
         ], $pid);
       }
 
       Json::ack($action)
         ->add('id', $id)
         ->add('name', $a['name']);
-
-      // $dbc->defineField('date', 'date');
-      // $dbc->defineField('inspect_time', 'varchar', 10);
-      // $dbc->defineField('home_address', 'varchar', 100 );
-      // $dbc->defineField('fu_info', 'varchar', 3 );
-      // $dbc->defineField('fu_info_complete', 'datetime');
-      // $dbc->defineField('fu_task', 'varchar', 3 );
-      // $dbc->defineField('fu_task_complete', 'datetime');
-      // $dbc->defineField('fu_sms', 'varchar', 3 );
-      // $dbc->defineField('fu_sms_complete', 'datetime');
-      // $dbc->defineField('fu_sms_bulk', 'tinyint' );
-      // $dbc->defineField('email_sent', 'datetime');
-      // $dbc->defineField('reminder', 'bigint' );
 
     } elseif ('quickbook' == $action) {
       $a = [

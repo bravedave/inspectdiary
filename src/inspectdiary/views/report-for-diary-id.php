@@ -33,29 +33,36 @@ $emailLog = sys::dbi()->table_exists('email_log'); ?>
     }
   </style>
 
-  <div class="form-row d-none d-lg-flex border-bottom" id="<?= $_headline = strings::rand()  ?>">
+  <div class="form-row d-none d-lg-flex border-bottom small" id="<?= $_headline = strings::rand()  ?>">
     <div class="col">name</div>
     <div class="col-8">
       <div class="form-row">
-        <div class="col text-center" title="conflict"><i class="bi bi-exclamation"></i></div>
+        <div class="col d-none d-sm-block text-center" title="conflict"><i class="bi bi-exclamation"></i></div>
+
         <div class="col d-none d-xl-block text-center" title="has home address"><i class="bi bi-person-lines-fill"></i></div>
         <div class="col d-none d-xl-block text-center" title="has phone"><?= icon::get(icon::phone) ?></div>
         <div class="col d-none d-xl-block text-center" title="has email"><i class="bi bi-at"></i></div>
+
         <div class="col text-center" title="has comment"><i class="bi bi-sticky"></i></div>
-        <div class="col text-center" title="has info"><i class="bi bi-info"></i></div>
-        <div class="col text-center" title="has task"><i class="bi bi-list-task"></i></div>
-        <div class="col text-center" title="reminder"><i class="bi bi-bell"></i></div>
+
+        <div class="col d-none d-xl-block text-center" title="has info"><i class="bi bi-info"></i></div>
+        <div class="col d-none d-lg-block text-center text-center" title="has task"><i class="bi bi-list-task"></i></div>
+        <div class="col d-none d-lg-block text-center text-center" title="reminder"><i class="bi bi-bell"></i></div>
+
+        <div class="col d-lg-none text-center py-2" title="attend"><i class=" bi bi-check-circle"></i></div>
+
         <div class="col text-center" title="sms"><?= icon::get(icon::chat_dots_fill) ?></div>
         <?php if ($emailLog) { ?>
           <div class="col text-center" title="documents sent"><i class="bi bi-file-text"></i></div>
           <div class="col text-center text-truncate" title="offer to buy">otb</div>
         <?php } // if ( $emailLog)
         ?>
-        <div class="col text-center text-truncate" title="attend"><i class="bi bi-check-circle"></i></div>
-        <div class="col text-center text-truncate" title="new seller lead">nsl</div>
-        <div class="col text-center text-truncate" title="buyer">buy</div>
-        <div class="col text-center text-truncate" title="neighbour">nbr</div>
-        <div class="col text-center text-truncate" title="interested party">ip</div>
+        <div class="col d-none d-lg-block text-center text-truncate px-0" title="attend"><i class="bi bi-check-circle"></i></div>
+        <div class="col d-none d-lg-block text-center text-truncate px-0" title="new seller lead">nsl</div>
+        <div class="col d-none d-lg-block text-center text-truncate px-0" title="buyer">buy</div>
+        <div class="col d-none d-lg-block text-center text-truncate px-0" title="investor">inv</div>
+        <div class="col d-none d-lg-block text-center text-truncate px-0" title="neighbour">nbr</div>
+        <div class="col d-none d-lg-block text-center text-truncate px-0" title="interested party">ip</div>
         <div class="col-2 d-none d-xl-block text-center text-truncate" title="updated">update</div>
         <div class="col d-none d-xl-block text-center text-truncate" title="user">user</div>
 
@@ -87,50 +94,56 @@ $emailLog = sys::dbi()->table_exists('email_log'); ?>
       <div class="col py-2 <?php if ($ip) print 'text-danger font-weight-bold'; ?>"><?= $dto->name ?></div>
       <div class="col-4 col-lg-8">
         <div class="form-row">
-          <div class="col d-none d-sm-block text-center py-2"><?php
-                                                              if ($conflict) {
-                                                                print '<i class="bi bi-person-fill text-warning" title="name conflict"></i>';
-                                                              } elseif ($mobileConflict) {
-                                                                print '<i class="bi bi-phone text-warning" title="mobile conflict"></i>';
-                                                              } elseif ($emailConflict) {
-                                                                print '<i class="bi bi-at text-warning" title="email conflict"></i>';
-                                                              }
+          <div class="col d-none d-sm-block text-center py-2">
+            <?php
+            if ($conflict) {
+              print '<i class="bi bi-person-fill text-warning" title="name conflict"></i>';
+            } elseif ($mobileConflict) {
+              print '<i class="bi bi-phone text-warning" title="mobile conflict"></i>';
+            } elseif ($emailConflict) {
+              print '<i class="bi bi-at text-warning" title="email conflict"></i>';
+            }
 
-                                                              ?></div>
+            ?></div>
+
           <div class="col d-none d-xl-block text-center py-2"><?php if ($dto->home_address) print strings::html_tick ?></div>
           <div class="col d-none d-xl-block text-center py-2"><?php if (strings::isPhone($dto->mobile)) print strings::html_tick ?></div>
           <div class="col d-none d-xl-block text-center py-2"><?php if (strings::isEmail($dto->email)) print strings::html_tick ?></div>
+
           <div class="col text-center py-2"><?php if ($dto->comment) print 'C' ?></div>
-          <div class="col d-none d-lg-block text-center py-2"><?php if ($dto->notes) print strings::html_tick ?></div>
-          <div class="col d-none d-lg-block text-center py-2"><?php if ($dto->tasks) print strings::html_tick ?></div>
+
+          <div class="col d-none d-xl-block text-center py-2"><?php if ($dto->notes) print strings::html_tick ?></div>
+          <div class="col d-none d-lg-block text-center py-2" title="has a task"><?php if ($dto->tasks) print strings::html_tick ?></div>
           <div class="col d-none d-lg-block text-center py-2"><?php if ((int)$dto->reminder > 0) print strings::html_tick ?></div>
+
           <div class="col d-lg-none text-center py-2"><?= 'yes' == $dto->fu_attend ? '<i class="bi bi-check"></i>' : '' ?></div>
-          <div class="col text-center py-2" sms><?php
-                                                if ($dto->fu_sms == 'com') {
-                                                  if ($dto->fu_sms_bulk == 1)
-                                                    print '&bull;';
-                                                  else
-                                                    print '<i class="bi bi-star"></i>';
-                                                } elseif ($dto->fu_sms == 'yes') {
-                                                  if (strings::isMobilePhone($dto->mobile)) {
-                                                    printf(
-                                                      '<div
+          <div class="col text-center py-2" sms>
+            <?php
+            if ($dto->fu_sms == 'com') {
+              if ($dto->fu_sms_bulk == 1)
+                print '&bull;';
+              else
+                print '<i class="bi bi-star"></i>';
+            } elseif ($dto->fu_sms == 'yes') {
+              if (strings::isMobilePhone($dto->mobile)) {
+                printf(
+                  '<div
                     data-role="sms"
                     data-id="%s"
                     data-mobile="%s"
                     data-name="%s"
                     data-property="%s">O</div>',
-                                                      $dto->id,
-                                                      $dto->mobile,
-                                                      htmlentities($dto->name),
-                                                      htmlentities($this->data->dto->address_street)
-                                                    );
-                                                  } else {
-                                                    print '<i class="bi bi-exclamation"></i>';
-                                                  }
-                                                }
+                  $dto->id,
+                  $dto->mobile,
+                  htmlentities($dto->name),
+                  htmlentities($this->data->dto->address_street)
+                );
+              } else {
+                print '<i class="bi bi-exclamation"></i>';
+              }
+            }
 
-                                                ?></div>
+            ?></div>
 
           <?php if ($emailLog) {
             printf(
@@ -151,12 +164,13 @@ $emailLog = sys::dbi()->table_exists('email_log'); ?>
           } // if ( $emailLog)
           ?>
 
-          <div class="col d-none d-lg-block text-center text-truncate py-2"><?= $dto->fu_attend ?></div>
-          <div class="col d-none d-lg-block text-center text-truncate py-2"><?= $dto->fu_nsl ?></div>
-          <div class="col d-none d-lg-block text-center text-truncate py-2"><?= $dto->fu_buyer ?></div>
-          <div class="col d-none d-lg-block text-center text-truncate py-2"><?= $dto->fu_neighbour ?></div>
-          <div class="col d-none d-lg-block text-center text-truncate py-2"><?= $dto->fu_interested_party ?></div>
-          <div class="col-2 d-none d-xl-block text-center text-truncate py-2"><?= strings::asShortDate($dto->updated) ?></div>
+          <div class="col d-none d-lg-block text-center text-truncate px-0 py-2" title="attended"><small><?= $dto->fu_attend ?></small></div>
+          <div class="col d-none d-lg-block text-center text-truncate px-0 py-2"><small><?= $dto->fu_nsl ?></small></div>
+          <div class="col d-none d-lg-block text-center text-truncate px-0 py-2"><small><?= $dto->fu_buyer ?></small></div>
+          <div class="col d-none d-lg-block text-center text-truncate px-0 py-2"><small><?= $dto->fu_invest ?></small></div>
+          <div class="col d-none d-lg-block text-center text-truncate px-0 py-2"><small><?= $dto->fu_neighbour ?></small></div>
+          <div class="col d-none d-lg-block text-center text-truncate px-0 py-2"><small><?= $dto->fu_interested_party ?></small></div>
+          <div class="col-2 d-none d-xl-block text-center text-truncate py-2"><small><?= strings::asShortDate($dto->updated) ?></small></div>
           <div class="col d-none d-xl-block text-center"><?= \html::icon($dto->user_name, $dto->user_name) ?></div>
 
         </div>
@@ -188,21 +202,6 @@ $emailLog = sys::dbi()->table_exists('email_log'); ?>
 
 </div>
 <script>
-  // window._cms_ = {
-  //   property : {
-  //     reminderAuto : ( parms) => {
-  //       return new Promise( r => {
-  //         console.log( parms);
-  //         r();
-
-  //       });
-
-  //     }
-
-  //   }
-
-  // };
-
   (_ => $(document).ready(() => {
     $('#<?= $_wrapper ?> > [data-id]').each((i, row) => {
       let _row = $(row);

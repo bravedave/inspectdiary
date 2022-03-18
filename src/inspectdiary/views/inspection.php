@@ -64,8 +64,8 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
+  <!-- name -->
   <div class="form-row row mb-2">
-    <!-- name -->
     <label class="d-none d-md-block col-md-3 col-form-label" for="<?= $_uid = strings::rand() ?>">Contact</label>
 
     <div class="col">
@@ -86,8 +86,8 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
+  <!-- confliction name -->
   <div class="form-row row mb-2 d-none" id="<?= $_uid = strings::rand() ?>_row">
-    <!-- confliction name -->
     <label class="d-none d-md-block col-md-3 col-form-label font-italic" for="<?= $_uid ?>">file name</label>
 
     <div class="col">
@@ -116,8 +116,8 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
+  <!-- mobile -->
   <div class="form-row row mb-2">
-    <!-- mobile -->
     <div class="offset-md-3 col">
       <div class="input-group">
         <div class="input-group-prepend">
@@ -152,8 +152,8 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
+  <!-- confliction mobile -->
   <div class="form-row row mb-2 d-none" id="<?= $_uid ?>_row_mobile">
-    <!-- confliction mobile -->
     <label class="d-none d-md-block col-md-3 col-form-label font-italic" for="<?= $_uid ?>_mobile">file mobile</label>
 
     <div class="col-md mb-2 mb-md-0">
@@ -211,8 +211,8 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
+  <!-- email -->
   <div class="form-row row mb-2">
-    <!-- email -->
     <div class="offset-md-3 col">
       <div class="input-group">
         <div class="input-group-prepend">
@@ -236,8 +236,8 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
+  <!-- confliction email -->
   <div class="form-row row mb-2 d-none" id="<?= $_uid ?>_row_email">
-    <!-- confliction email -->
     <label class="d-none d-md-block col-md-3 col-form-label font-italic" for="<?= $_uid ?>_email">file email</label>
 
     <div class="col">
@@ -576,8 +576,8 @@ $dto = $this->data->dto;  ?>
     })(_brayworth_);
   </script>
 
+  <!-- property2sell -->
   <div class="form-row row mb-2">
-    <!-- property2sell -->
     <label class="col-md-3 col-form-label d-none d-md-block" for="<?= $_uid = strings::rand() ?>">Property to Sell</label>
 
     <div class="col">
@@ -594,8 +594,8 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
+  <!-- comment -->
   <div class="form-row row mb-2">
-    <!-- comment -->
     <label class="col-md-3 col-form-label pb-0" for="<?= $_comment = strings::rand() ?>">Comment</label>
 
     <div class="col">
@@ -605,8 +605,8 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
+  <!-- notes -->
   <div class="form-row row mb-2">
-    <!-- notes -->
     <label class="col-md-3 col-form-label pb-0" for="<?= $_notes = strings::rand() ?>">Notes</label>
 
     <div class="col">
@@ -616,8 +616,8 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
+  <!-- tasks -->
   <div class="form-row row mb-2">
-    <!-- tasks -->
     <label class="col-md-3 col-form-label pb-0" for="<?= $_tasks = strings::rand() ?>">Tasks</label>
 
     <div class="col">
@@ -627,73 +627,63 @@ $dto = $this->data->dto;  ?>
 
   </div>
 
+  <!-- fu_buyer / fu_invest / fu_neighbour / fu_interested_party / fu_nsl / fu_attend -->
   <div class="form-row row">
-    <!-- fu_buyer / fu_neighbour / fu_interested_party / fu_nsl / fu_attend -->
+    <!-- fu_buyer -->
     <div class="offset-md-3 col-auto col-sm text-center">
-      <!-- fu_buyer -->
       <div class="form-check">
-        <input type="checkbox" class="form-check-input" name="fu_buyer" value="yes" <?php if ('yes' == $dto->fu_buyer) print 'checked' ?> id="<?= $uid = strings::rand() ?>">
-
-        <label class="form-check-label" for="<?= $uid ?>">
-          buy
-
-        </label>
+        <input type="checkbox" class="form-check-input" name="fu_buyer" value="yes" <?= 'yes' == $dto->fu_buyer ? 'checked' : '' ?> id="<?= $uid = strings::rand() ?>">
+        <label class="form-check-label" for="<?= $uid ?>">buy</label>
 
       </div>
 
     </div>
 
+    <!-- fu_invest -->
     <div class="col-auto col-sm text-center">
-      <!-- fu_neighbour -->
       <div class="form-check">
-        <input type="checkbox" class="form-check-input" name="fu_neighbour" value="yes" <?php if ('yes' == $dto->fu_neighbour) print 'checked' ?> id="<?= $uid = strings::rand() ?>">
-
-        <label class="form-check-label" for="<?= $uid ?>">
-          nbr
-
-        </label>
+        <input type="checkbox" class="form-check-input" name="fu_invest" value="yes" <?= 'yes' == $dto->fu_invest ? 'checked' : '' ?> id="<?= $uid = strings::rand() ?>">
+        <label class="form-check-label" for="<?= $uid ?>">inv</label>
 
       </div>
 
     </div>
 
+    <!-- fu_neighbour -->
     <div class="col-auto col-sm text-center">
-      <!-- fu_interested_party -->
       <div class="form-check">
-        <input type="checkbox" class="form-check-input" name="fu_interested_party" value="yes" <?php if ('yes' == $dto->fu_interested_party) print 'checked' ?> id="<?= $uid = strings::rand() ?>">
-
-        <label class="form-check-label" for="<?= $uid ?>">
-          ip
-
-        </label>
+        <input type="checkbox" class="form-check-input" name="fu_neighbour" value="yes" <?= 'yes' == $dto->fu_neighbour ? 'checked' : '' ?> id="<?= $uid = strings::rand() ?>">
+        <label class="form-check-label" for="<?= $uid ?>">nbr</label>
 
       </div>
 
     </div>
 
+    <!-- fu_interested_party -->
     <div class="col-auto col-sm text-center">
-      <!-- fu_nsl -->
       <div class="form-check">
-        <input type="checkbox" class="form-check-input" name="fu_nsl" value="yes" <?php if ('yes' == $dto->fu_nsl) print 'checked' ?> id="<?= $uid = strings::rand() ?>">
-
-        <label class="form-check-label" for="<?= $uid ?>">
-          nsl
-
-        </label>
+        <input type="checkbox" class="form-check-input" name="fu_interested_party" value="yes" <?= 'yes' == $dto->fu_interested_party ? 'checked' : '' ?> id="<?= $uid = strings::rand() ?>">
+        <label class="form-check-label" for="<?= $uid ?>">ip</label>
 
       </div>
 
     </div>
 
+    <!-- fu_nsl -->
+    <div class="col-auto col-sm text-center">
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" name="fu_nsl" value="yes" <?= 'yes' == $dto->fu_nsl ? 'checked' : '' ?> id="<?= $uid = strings::rand() ?>">
+        <label class="form-check-label" for="<?= $uid ?>">nsl</label>
+
+      </div>
+
+    </div>
+
+    <!-- fu_attend -->
     <div class="col text-center">
-      <!-- fu_attend -->
       <div class="form-check">
         <input type="checkbox" class="form-check-input" name="fu_attend" value="yes" <?php if ('yes' == $dto->fu_attend) print 'checked' ?> id="<?= $uid = strings::rand() ?>">
-
-        <label class="form-check-label" for="<?= $uid ?>">
-          attend
-
-        </label>
+        <label class="form-check-label" for="<?= $uid ?>">attend</label>
 
       </div>
 

@@ -38,6 +38,7 @@ $dbc->defineField('email_sent', 'datetime');
 $dbc->defineField('fu_attend', 'varchar', 3 );
 $dbc->defineField('fu_nsl', 'varchar', 3 );
 $dbc->defineField('fu_buyer', 'varchar', 3 );
+$dbc->defineField('fu_invest', 'varchar', 3 );
 $dbc->defineField('fu_interested_party', 'varchar', 3 );
 $dbc->defineField('fu_neighbour', 'varchar', 3 );
 $dbc->defineField('reminder', 'bigint' );
@@ -47,7 +48,8 @@ $dbc->defineField('archive_date', 'datetime');
 // $dbc->defineField('inspection_id', 'bigint' );
 $dbc->defineField('inspect_diary_id', 'bigint' );
 
-$dbc->defineIndex('date', 'date' );
+$dbc->defineIndex('idx_inspect_date', 'date' );
+$dbc->defineIndex('idx_inspect_fu_invest_id', 'fu_invest ASC, id ASC' );
 
 $dbc->check();
 

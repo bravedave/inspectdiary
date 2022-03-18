@@ -14,7 +14,7 @@ use Json;
 
 class config extends \config {
   const label = 'Inspect';
-	const inspectdiary_db_version = 0.34;
+	const inspectdiary_db_version = 0.36;
 
 	const inspectdiary_openhome = 'OH Inspect';
 	const inspectdiary_inspection = 'Inspect';

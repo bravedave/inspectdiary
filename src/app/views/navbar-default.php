@@ -1,4 +1,5 @@
 <?php
+
 /**
  * David Bray
  * BrayWorth Pty Ltd
@@ -6,22 +7,26 @@
  *
  * MIT License
  *
- */	?>
+ */  ?>
 
 <style>
-@media screen and (max-width: 767px) {
-  .navbar-brand {max-width: 70%;}
-}
-@media screen and (min-width: 768px) {
-  .navbar-brand {min-width: 30%;}
-}
-</style>
-<nav class="navbar navbar-expand-md navbar-dark bg-primary sticky-top" role="navigation" >
-	<div class="container-fluid">
-    <div class="navbar-brand text-truncate"><?= $this->data->title	?></div>
+  @media screen and (max-width: 767px) {
+    .navbar-brand {
+      max-width: 70%;
+    }
+  }
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#<?= $_uid = strings::rand() ?>"
-      aria-controls="<?= $_uid ?>" aria-expanded="false" aria-label="Toggle navigation">
+  @media screen and (min-width: 768px) {
+    .navbar-brand {
+      min-width: 30%;
+    }
+  }
+</style>
+<nav id="<?= $navID = strings::rand()  ?>" class="navbar navbar-expand-md navbar-dark bg-primary sticky-top" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-brand text-truncate"><?= $this->data->title  ?></div>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#<?= $_uid = strings::rand() ?>" aria-controls="<?= $_uid ?>" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
 
     </button>
@@ -38,7 +43,7 @@
 
         <li class="nav-item dropdown">
           <a class="nav-link pb-0 dropdown-toggle" href="#" id="navbarDropdown" role="button" aria-label="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <?= dvc\icon::get( dvc\icon::gear ) ?>
+            <?= dvc\icon::get(dvc\icon::gear) ?>
 
           </a>
 
@@ -59,7 +64,7 @@
 
         <li class="nav-item">
           <a class="nav-link" href="<?= strings::url() ?>">
-            <?= dvc\icon::get( dvc\icon::house ) ?>
+            <?= dvc\icon::get(dvc\icon::house) ?>
             <span class="sr-only">home</span>
 
           </a>
@@ -68,7 +73,7 @@
 
         <li class="nav-item">
           <a class="nav-link" href="https://github.com/bravedave/">
-            <?= dvc\icon::get( dvc\icon::github ) ?>
+            <?= dvc\icon::get(dvc\icon::github) ?>
             <span class="sr-only">github</span>
 
           </a>
@@ -82,3 +87,13 @@
   </div>
 
 </nav>
+<script>
+  (_ => {
+    $('#<?= $navID ?>').on('dblclick', e => {
+      let secondary = $('[data-role="content-secondary"]');
+      if (secondary.length > 0) {
+        secondary[0].classList.toggle('d-none');
+      }
+    });
+  })(_brayworth_);
+</script>

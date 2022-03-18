@@ -123,13 +123,14 @@ foreach ($this->data->data as $dto) {
               </div>
 
             </div>
-            <div class="col-7 col-md-<?= $showInspections ? '3' : '4' ?>">address</div>
+            <div class="col-7 col-md<?= $showInspections ? '-3' : '' ?>">address</div>
             <div class="d-none d-md-block col-md-2 col-xl-1">team</div>
             <div class="col-2">
               <!-- type -->
               <div class="row">
                 <div class="col text-center <?= !$showInspections ? 'd-none' : '' ?>">type</div>
                 <div class="col d-none d-md-block text-center">no.</div>
+                <div class="col d-none d-md-block text-center">inv.</div>
 
               </div>
 
@@ -151,21 +152,22 @@ foreach ($this->data->data as $dto) {
                     <?= strings::asShortDate($dto->date) ?>
 
                   </div>
-                  <div class="col-md text-right text-md-left" data-field="time"><?php
-                                                                                $time = strings::AMPM($dto->time);
-                                                                                if (preg_match('@[0-9][0-9]:00@', $dto->time)) {
-                                                                                  print $time;
-                                                                                } else {
-                                                                                  print preg_replace('@(am|pm)$@i', '', $time);
-                                                                                }
+                  <div class="col-md text-right text-md-left" data-field="time">
+                    <?php
+                    $time = strings::AMPM($dto->time);
+                    if (preg_match('@[0-9][0-9]:00@', $dto->time)) {
+                      print $time;
+                    } else {
+                      print preg_replace('@(am|pm)$@i', '', $time);
+                    }
 
-                                                                                ?></div>
+                    ?></div>
 
                 </div>
 
               </div>
 
-              <div class="col-7 col-md-<?= $showInspections ? '3' : '4' ?>">
+              <div class="col-7 col-md<?= $showInspections ? '-3' : '' ?>">
                 <div class="row">
                   <div class="col">
                     <div class="text-truncate" data-field="street">
@@ -192,9 +194,10 @@ foreach ($this->data->data as $dto) {
 
               <div class="d-none d-md-block col-md-2 col-xl-1 text-truncate"><?= $dto->team ?></div>
 
+              <!-- type / inspections / investors -->
               <div class="col-2">
-                <!-- type -->
-                <div class="row">
+                <div class="form-row">
+                  <!-- type -->
                   <div class="col text-center <?php if (!$showInspections) print 'd-none'; ?>" data-field="type">
                     <?php
                     if (config::inspectdiary_openhome == $dto->type) {
@@ -208,21 +211,23 @@ foreach ($this->data->data as $dto) {
                     ?>
                   </div>
 
+                  <!-- inspections  -->
                   <div class="col text-center" inspections><?= $dto->inspections ?></div>
+
+                  <!-- investors  -->
+                  <div class="col text-center" investors><?= $dto->investors ?></div>
 
                 </div>
 
               </div>
 
-              <div class="d-none <?= $showInspections ? 'd-md-block' : '' ?> col text-truncate"><?php
-                                                                                                if ($dto->type == config::inspectdiary_inspection) print $dto->contact_name;
-
-                                                                                                ?></div>
+              <div class="d-none <?= $showInspections ? 'd-md-block' : '' ?> col text-truncate">
+                <?php
+                if ($dto->type == config::inspectdiary_inspection) print $dto->contact_name;
+                ?></div>
 
             </div>
-          <?php
-          }  // foreach ( $this->data as $dto)
-          ?>
+          <?php }  /* foreach ( $this->data as $dto) */ ?>
 
         </div>
 
@@ -233,12 +238,6 @@ foreach ($this->data->data as $dto) {
   </div>
 
 </div>
-
-<!-- style>
-#<?= $_uid ?>RentalDiary div[data-role="item"]:nth-of-type(odd) {
-    background-color: rgba(0,0,0,.05)
-}
-</style -->
 
 <script>
   (_ => {
@@ -349,6 +348,8 @@ foreach ($this->data->data as $dto) {
 
       })
       .on('load-candidate', function(e) {
+        e.stopPropagation();
+
         let _me = $(this);
         let _data = _me.data();
 
@@ -356,9 +357,10 @@ foreach ($this->data->data as $dto) {
         _me.collapse('show');
 
         $('#<?= $_candidate ?>content')
-          .data('id', _me.id)
+          .data('id', _data.id)
           .trigger('refresh');
 
+        // console.log('trigger load-candidate ...', _data.id);
       });
 
     $('#<?= $_candidate ?>content')
@@ -402,8 +404,11 @@ foreach ($this->data->data as $dto) {
       .on('view-inspection', function(e, id) {
         e.stopPropagation();
 
-        $('#<?= $_candidate ?>content').data('id', id);
-        $('#<?= $_candidate ?>content').trigger('load-candidate');
+        // console.log('trigger load-candidate', id);
+        $('#<?= $_candidate ?>')
+          .data('id', id)
+          .trigger('load-candidate');
+        // console.log('triggered load-candidate');
 
       });
 
@@ -484,7 +489,10 @@ foreach ($this->data->data as $dto) {
     window.viewInspection = id => $('#<?= $_candidates ?>content').trigger('view-inspection', id);
 
     $(document)
-      .on('candidate-saved', e => resetSaveState().then(el => el.addClass('border-success')))
+      .on('candidate-saved', e => {
+        resetSaveState().then(el => el.addClass('border-success'));
+        $(document).trigger('invalidate-investor-counts');
+      })
       .on('candidate-saving', e => resetSaveState().then(el => el.addClass('border-primary')))
       .on('candidate-saving-error', e => resetSaveState().then(el => el.addClass('border-danger')))
       .on('candidate-unsaved', e => resetSaveState().then(el => el.addClass('border-warning')))
@@ -496,7 +504,6 @@ foreach ($this->data->data as $dto) {
           .then(modal => modal.on('success', e => {
             $('#<?= $_candidates ?>content').trigger('refresh');
             $(document).trigger('invalidate-counts');
-
 
           }));
 
@@ -537,7 +544,12 @@ foreach ($this->data->data as $dto) {
       })
       .on('invalidate-counts', (e) => {
         $('div[data-role="item"]', '#<?= $_uid ?>RentalDiary')
-          .each((i, row) => $('[inspections]', row).addClass('text-warning'));
+          .each((i, row) => $('[inspections], [investors]', row).addClass('text-warning'));
+
+      })
+      .on('invalidate-investor-counts', (e) => {
+        $('div[data-role="item"]', '#<?= $_uid ?>RentalDiary')
+          .each((i, row) => $('[investors]', row).addClass('text-warning'));
 
       })
       .on('load-inspect-add', (e, data) => {

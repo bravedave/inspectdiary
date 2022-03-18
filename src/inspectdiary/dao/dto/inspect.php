@@ -39,6 +39,7 @@ class inspect extends _dto {
   public $fu_sms_bulk = '';
   public $email_sent = '';
   public $fu_nsl = '';
+  public $fu_invest = '';
   public $fu_attend = '';
   public $fu_buyer = '';
   public $fu_interested_party = '';
