@@ -11,7 +11,7 @@
 namespace inspectdiary\dao\dto;
 
 use inspectdiary\config;
-use dao\dto\_dto;
+use dvc\dao\dto\_dto;
 
 class inspect_diary extends _dto {
   public $id = 0;
