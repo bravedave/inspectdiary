@@ -11,7 +11,7 @@
 namespace inspectdiary\dao;
 
 use inspectdiary\config;
-use dao\_dao;
+use dvc\dao\_dao;
 use DateInterval;
 use DateTime;
 use DateTimeZone;

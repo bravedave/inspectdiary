@@ -10,7 +10,7 @@
 
 namespace inspectdiary\dao;
 
-use dao\_dao;
+use dvc\dao\_dao;
 
 class inspect extends _dao {
 	protected $_db_name = 'inspect';

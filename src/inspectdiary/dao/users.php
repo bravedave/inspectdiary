@@ -10,9 +10,9 @@
 
 namespace inspectdiary\dao;
 
-use green;
+use dao;
 
-class users extends green\users\dao\users {
+class users extends dao\users {
 	public function getTeam( string $team = '', string $fields = 'id, name, email', string $order = 'ORDER BY name' ) : object {
 
     if ( (string)$team == '') {
