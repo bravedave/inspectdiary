@@ -93,7 +93,7 @@ $dto = $this->data->dto;
 								<div class="col-9 col-md-10">
 									<select name="team" class="form-control" id="<?= $_uid ?>">
 										<option value=""></option>
-									<?php	foreach ($this->data->teams as $team) {
+									<?php	foreach ($this->data->teams as $team => $ids) {
 										printf(
 											'<option value="%s" %s>%s</option>',
 											$team,

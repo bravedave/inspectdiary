@@ -12,4 +12,26 @@ namespace dao;
 
 use green;
 
-class users extends green\users\dao\users {}
+class users extends green\users\dao\users {
+  public function getTeams(): array {
+
+    $sql = 'SELECT
+			`group`, `id`
+		FROM
+			users
+		WHERE
+			`group` != ""
+			AND active
+			AND name != ""';
+
+    $ret = [];
+    if ($res = $this->Result($sql)) {
+      while ($dto = $res->dto()) {
+        if (!isset($ret[$dto->group])) $ret[$dto->group] = [];
+        $ret[$dto->group][] = $dto->id;
+      }
+    }
+
+    return $ret;
+  }
+}

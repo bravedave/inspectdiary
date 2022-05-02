@@ -31,6 +31,7 @@
   },
   "scripts": {
     "post-update-cmd": "inspectdiary\\postUpdate::upgrade",
-    "tests-feed": "tests\\feed::test"
+    "tests-feed": "tests\\feed::test",
+    "start": "bash ./run.sh"
   }
 }
