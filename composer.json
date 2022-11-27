@@ -14,7 +14,8 @@
     "php": ">=7.3",
     "bravedave/green": "*",
     "sabre/vobject": "*",
-    "bravedave/sms": "*"
+    "bravedave/sms": "*",
+    "parsecsv/php-parsecsv": "^1.0"
   },
   "require-dev": {
     "matthiasmullie/scrapbook": "*"

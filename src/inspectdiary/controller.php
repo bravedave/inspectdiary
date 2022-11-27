@@ -1,31 +1,21 @@
 <?php
-
-/**
+/*
  * David Bray
  * BrayWorth Pty Ltd
  * e. david@brayworth.com.au
  *
  * MIT License
  *
- */
+*/
 
 namespace inspectdiary;
 
-use db;
-use currentUser;
-use green;
-use Json;
-use Response;
-use strings;
-use sys;
+use currentUser, db, green,  Json,  Response, strings, sys;
 
 class controller extends \Controller {
-  protected $viewPath = __DIR__ . '/views/';
-
   protected $theme = [
     'navbar' => 'navbar navbar-dark bg-primary',
     'navbutton' => 'btn-primary',
-
   ];
 
   protected function _index() {
@@ -46,6 +36,7 @@ class controller extends \Controller {
     }
 
     if ($seed = $this->getParam('seed')) {
+
       setcookie('seed', $seed, [
         'expires' => time() + 3600,
         'path' => '/',
@@ -53,7 +44,6 @@ class controller extends \Controller {
         'secure' => !\application::Request()->ServerIsLocal(),
         'httponly' => false,
         'samesite' => 'lax'
-
       ]);
     } elseif (isset($_COOKIE['seed'])) {
       $seed = $_COOKIE['seed'];
@@ -96,14 +86,15 @@ class controller extends \Controller {
       $this->theme['navbar'] = \cms\theme::navbar(['defaults' => 'navbar', 'sticky' => '']);
       $this->theme['navbutton'] = \cms\theme::navbutton();
     }
+    $this->viewPath[] = __DIR__ . '/views/';
   }
 
   protected function page($params) {
     if (!isset($params['latescripts'])) $params['latescripts'] = [];
+
     $params['latescripts'][] = sprintf(
       '<script type="text/javascript" src="%s"></script>',
       strings::url($this->route . '/js')
-
     );
 
     return parent::page($params);
@@ -490,7 +481,6 @@ class controller extends \Controller {
       Json::ack($action)
         ->add('id', $id)
         ->add('name', $a['name']);
-
     } elseif ('quickbook' == $action) {
       $a = [
         'type' => $this->getPost('type'),
@@ -763,7 +753,7 @@ class controller extends \Controller {
     $this->load('inspection');
   }
 
-  public function inspects($inspectdiaryID = 0) {
+  public function inspects($inspectdiaryID = 0, $format = '') {
     if ($inspectdiaryID = (int)$inspectdiaryID) {
       $dao = new dao\inspect;
 
@@ -773,13 +763,27 @@ class controller extends \Controller {
 
       ];
 
-      $dao = new dao\inspect_diary;
-      if ($dto = $dao->getByID($inspectdiaryID)) {
-        $this->data->dto = $dao->getDetail($dto);
-      }
+      if ('csv' == $format) {
 
-      // \sys::dump( $this->data, null, false);return;
-      $this->load('report-for-diary-id');
+        $header = array_keys((array)$this->data->dtoSet[0]);
+        $csv = new \ParseCsv\Csv;
+        $csv->output(
+          'inspections.csv',
+          array_map(fn ($dto) => (array)$dto, $this->data->dtoSet),
+          $header,
+          ','
+        );
+        // \sys::dump( );
+      } else {
+
+        $dao = new dao\inspect_diary;
+        if ($dto = $dao->getByID($inspectdiaryID)) {
+          $this->data->dto = $dao->getDetail($dto);
+        }
+
+        // \sys::dump( $this->data, null, false);return;
+        $this->load('report-for-diary-id');
+      }
     }
   }
 
@@ -802,14 +806,17 @@ class controller extends \Controller {
   }
 
   public function noreminderstoset() {
+
     $this->load('no-reminders-to-set');
   }
 
   public function nosmstosend() {
+
     $this->load('no-sms-to-send');
   }
 
   public function openThisWeek() {
+
     $dao = new dao\inspect_diary;
     $daoProperties = new dao\properties;
 

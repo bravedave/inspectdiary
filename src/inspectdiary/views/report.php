@@ -92,6 +92,7 @@ foreach ($this->data->data as $dto) {
       <div class="d-flex flex-fill">
         <div class="navbar-brand mr-auto text-truncate" id="<?= $_title ?>-candidates">Inspection</div>
         <button type="button" class="btn <?= $this->theme['navbutton'] ?> d-none" aria-label="context menu" id="<?= $_context = strings::rand() ?>"><i class="bi bi-menu-up"></i></button>
+        <button type="button" class="btn <?= $this->theme['navbutton'] ?> js-csv d-none" title="download as csv"><i class="bi bi-filetype-csv"></i></button>
         <button type="button" class="btn <?= $this->theme['navbutton'] ?>" title="add inspection" id="<?= $_addInspection ?>-candidates"><i class="bi bi-person-plus"></i></button>
         <button type="button" class="btn <?= $this->theme['navbutton'] ?>" aria-label="Close" data-toggle="collapse" data-target="#<?= $_report ?>"><i class="bi bi-x"></i></button>
 
