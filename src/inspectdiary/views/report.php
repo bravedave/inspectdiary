@@ -251,6 +251,7 @@ foreach ($this->data->data as $dto) {
           setTimeout(() => {
             $('#<?= $_candidates ?>content').html('');
             $('#<?= $_context ?>').addClass('d-none').off('click');
+            $('.js-csv').addClass('d-none');
             // console.log( 'remove people content');
 
           }, 50);
@@ -390,7 +391,21 @@ foreach ($this->data->data as $dto) {
 
       });
 
+    $('.js-csv').on( 'click', function( e) {
+      e.stopPropagation();e.preventDefault();
+
+      '#<?= $_candidates ?>content').trigger('csv');
+    })
+
+
     $('#<?= $_candidates ?>content')
+      .on('csv', function(e) {
+
+        let _me = $(this);
+        let _data = _me.data();
+
+        window.location.href = _.url(`<?= $this->route ?>/inspects/${_data.id}/csv`);
+      })
       .on('refresh', function(e) {
 
         let _me = $(this);
@@ -475,6 +490,7 @@ foreach ($this->data->data as $dto) {
         .off('click')
         .on('click', context);
 
+      if ( !_.browser.isMobileDevice) $('.js-csv').removeClass('d-none');
     };
 
     window.setPersonContext = context => {
