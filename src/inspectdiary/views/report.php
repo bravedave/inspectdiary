@@ -394,7 +394,7 @@ foreach ($this->data->data as $dto) {
     $('.js-csv').on( 'click', function( e) {
       e.stopPropagation();e.preventDefault();
 
-      '#<?= $_candidates ?>content').trigger('csv');
+      $('#<?= $_candidates ?>content').trigger('csv');
     })
 
 
