@@ -11,9 +11,9 @@
 namespace inspectdiary\dao\dto;
 
 use inspectdiary\config;
-use dvc\dao\dto\_dto;
+use bravedave\dvc\dto;
 
-class inspect_diary extends _dto {
+class inspect_diary extends dto {
   public $id = 0;
   public $date = '';
   public $time = '10 am';

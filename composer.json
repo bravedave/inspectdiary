@@ -2,7 +2,6 @@
   "name": "bravedave/inspectdiary",
   "description": "Real Estate Agent House Inspect Scheduling",
   "minimum-stability": "dev",
-  "prefer-stable": true,
   "license": "MIT",
   "authors": [
     {

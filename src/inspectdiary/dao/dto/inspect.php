@@ -10,9 +10,9 @@
 
 namespace inspectdiary\dao\dto;
 
-use dvc\dao\dto\_dto;
+use bravedave\dvc\dto;
 
-class inspect extends _dto {
+class inspect extends dto {
   public $id = 0;
   public $created = '';
   public $updated = '';
